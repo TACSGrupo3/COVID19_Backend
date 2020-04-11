@@ -17,7 +17,6 @@ import com.tacs.rest.entity.User;
 //Indiciamos que es un controlador rest
 @RestController
 @RequestMapping("/userWS") //esta sera la raiz de la url, es decir http:	//127.0.0.1:8080/userWS/
-
 public class UserRestController {
 	
 	//Inyectamos el servicio para poder hacer uso de el

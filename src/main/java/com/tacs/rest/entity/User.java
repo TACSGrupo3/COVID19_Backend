@@ -1,5 +1,7 @@
 package com.tacs.rest.entity;
 
+import java.util.List;
+
 public class User {
 
 	private int id;
@@ -14,6 +16,8 @@ public class User {
 	private String password;
 	private String documentNumber;
 	private int active;
+	
+	private List<ListaPaises> listados;
 	
 	public User() {}
 	
@@ -110,5 +114,19 @@ public class User {
 	public void setActive(int active) {
 		this.active = active;
 	}
+
+	public List<ListaPaises> getListados() {
+		return listados;
+	}
+
+	public void setListados(List<ListaPaises> listados) {
+		this.listados = listados;
+	}
+
+	public int getActive() {
+		return active;
+	}
+	
+	
 
 }
