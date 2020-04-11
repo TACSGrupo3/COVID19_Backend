@@ -11,17 +11,19 @@ public class User {
 	private String location;
 	private String address;
 	private int age;
+	private String password;
 	private String documentNumber;
 	private int active;
 	
 	public User() {}
 	
-	public User(int id, String username, String firstName, String lastName) {
+	public User(int id, String username, String firstName, String lastName, String password) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.password = password;
 	}
 	
 	public int getId() {
@@ -50,6 +52,14 @@ public class User {
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	public String getCountry() {
