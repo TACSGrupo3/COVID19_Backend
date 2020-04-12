@@ -2,9 +2,13 @@ package com.tacs.rest.entity;
 
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class User {
 
 	private int id;
+	@NotEmpty(message= "No puede el USERNAME ser null")
 	private String username;
 	private String firstName;
 	private String lastName;
@@ -13,6 +17,7 @@ public class User {
 	private String location;
 	private String address;
 	private int age;
+	@NotEmpty(message= "No puede el PASSWORD ser null")
 	private String password;
 	private String documentNumber;
 	private int active;
