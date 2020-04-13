@@ -18,7 +18,7 @@ import com.tacs.rest.entity.User;
 
 @RestController
 @RequestMapping("/countries") 
-public class CountriesController {
+public class CountryRestController {
 
 //	@Autowired
 //	private CountriesService countriesService;
