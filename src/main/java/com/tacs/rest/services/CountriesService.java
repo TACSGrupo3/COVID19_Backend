@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.tacs.rest.entity.User;
 
-public interface PaisesService {
+public interface CountriesService {
 	
 	public List<User> findAll();
 	
