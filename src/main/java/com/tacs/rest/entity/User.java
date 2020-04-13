@@ -22,7 +22,7 @@ public class User {
 	private String documentNumber;
 	private int active;
 	
-	private List<ListaPaises> listados;
+	private List<CountriesList> countriesList;
 	
 	public User() {}
 	
@@ -120,12 +120,12 @@ public class User {
 		this.active = active;
 	}
 
-	public List<ListaPaises> getListados() {
-		return listados;
+	public List<CountriesList> getCountriesList() {
+		return countriesList;
 	}
 
-	public void setListados(List<ListaPaises> listados) {
-		this.listados = listados;
+	public void setCountriesList(List<CountriesList> countriesList) {
+		this.countriesList = countriesList;
 	}
 
 	public int getActive() {
