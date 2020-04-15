@@ -4,6 +4,7 @@ public class Country {
 
 	private int id;
 	private String name;
+	private Region region;
 
 	public int getId() {
 		return id;
@@ -17,4 +18,11 @@ public class Country {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public Region getRegion() {
+		return region;
+	}
+	public void setRegion(Region region) {
+		this.region = region;
+	}
+	
 }
