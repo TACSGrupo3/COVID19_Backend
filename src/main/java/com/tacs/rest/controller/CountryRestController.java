@@ -51,7 +51,7 @@ public class CountryRestController {
 	}
 	
 	
-	@GetMapping("/findNearList/{locationId}")
+	@GetMapping("/near/{locationId}")
 	public List<Country> listaDePaisesCercanos(@PathVariable int locationId){
 		/**
 		 * TODO: A definir: 
@@ -84,16 +84,14 @@ public class CountryRestController {
 		return countries;
 	}
 	
-	@PostMapping("/addListCountries")
+	@PostMapping("/listCountries")
 	public List<CountriesList> addListCountries(@RequestBody User user) {
-		//retornará la lista de paises cercanos
 		//return countriesService.addListCountries(user);
-		
 		//Mock
 		return user.getCountriesList();
 	}
 	
-	@PutMapping("/modifyListCountries")
+	@PutMapping("/listCountries")
 	public List<CountriesList> modifyListCountries(@RequestBody User user) {
 		//retornará la lista de paises cercanos
 		//return countriesService.addListCountries(user);
