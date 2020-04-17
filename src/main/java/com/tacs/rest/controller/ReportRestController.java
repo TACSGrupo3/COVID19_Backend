@@ -6,10 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/users/{userId}")
+@RequestMapping("/users/{userId}")
 public class ReportRestController {
 
-    @GetMapping(value = "/report", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/report")
+    // add produces = MediaType.APPLICATION_JSON_VALUE when done
     public String getReport(@PathVariable("userId") int userId, @RequestParam int baseCountryId) {
         // User user = userService.findById(userId);
         // countries = user.suscribedCountries(); --> validate that baseCountryId belongs to the suscribedCountries
