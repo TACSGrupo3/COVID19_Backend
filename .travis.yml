@@ -4,5 +4,4 @@ services:
   - docker
 
 before_install:
-  - docker build -t covid19_grupo3/api .
-  - docker run -p 8080:8080 -t covid19_grupo3/api
+  - chmod +x mvnw

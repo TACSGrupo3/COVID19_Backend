@@ -1,12 +1,22 @@
 package com.tacs.rest.entity;
 
+import java.util.Date;
 import java.util.List;
 
 public class CountriesList {
 
 	private int id;
 	private String name;
+	private Date creationDate;
 	private List<Country> countries;
+	
+	public void addCountrie(Country newCountrie){
+		countries.add(newCountrie);
+	}
+	
+	public void removeCountrie(Country exCountrie){
+		countries.remove(exCountrie);
+	}
 	
 	public int getId() {
 		return id;
@@ -25,6 +35,12 @@ public class CountriesList {
 	}
 	public void setCountries(List<Country> countries) {
 		this.countries = countries;
+	}
+	public Date getCreationDate() {
+		return creationDate;
+	}
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 	
 	
