@@ -1,5 +1,6 @@
 package com.tacs.rest.entity;
 
+import java.util.Date;
 import java.util.List;
 
 public class User {
@@ -9,6 +10,7 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String password;
+	private Date lastAccess;
 	
 	private List<CountriesList> countriesList;
 	
@@ -22,6 +24,15 @@ public class User {
 		this.lastName = lastName;
 		this.password = password;
 	}
+	
+	public void addList(CountriesList newList){
+		countriesList.add(newList);
+	}
+	
+	public void removeList(CountriesList exList){
+		countriesList.remove(exList);
+	}
+	
 	
 	public int getId() {
 		return id;
@@ -65,6 +76,14 @@ public class User {
 
 	public void setCountriesList(List<CountriesList> countriesList) {
 		this.countriesList = countriesList;
+	}
+
+	public Date getLastAccess() {
+		return lastAccess;
+	}
+
+	public void setLastAccess(Date lastAccess) {
+		this.lastAccess = lastAccess;
 	}	
 
 }
