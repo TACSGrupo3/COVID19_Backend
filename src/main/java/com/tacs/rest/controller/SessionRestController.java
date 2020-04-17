@@ -53,12 +53,12 @@ public class SessionRestController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No ingreso el usuario o la contrasena");
 		}
 		else if(user.getPassword().equals(user2.getPassword())&& user.getUsername().equals(user2.getUsername())
-				|| user2.getPassword().equals("admin") && user2.getUsername().equals("admin")){
+				|| user2.getPassword().toLowerCase().equals("admin") && user2.getUsername().toLowerCase().equals("admin")){
 			user2.setToken(generateNewToken());
 			return new ResponseEntity<User> (user2,HttpStatus.OK);	
 		}
 		else {
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, user2.getPassword());
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "La combinación de Usuario y Contraseña es inválida");
 		}
 	}
 	
