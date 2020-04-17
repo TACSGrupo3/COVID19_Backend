@@ -9,6 +9,7 @@ public class User {
 	private String firstName;
 	private String lastName;
 	private String password;
+	private String token;
 	
 	private List<CountriesList> countriesList;
 	
@@ -65,6 +66,14 @@ public class User {
 
 	public void setCountriesList(List<CountriesList> countriesList) {
 		this.countriesList = countriesList;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}	
 
 }
