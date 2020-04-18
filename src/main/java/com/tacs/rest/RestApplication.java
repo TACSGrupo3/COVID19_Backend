@@ -14,19 +14,24 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class RestApplication {
 
     public static void main(String[] args) {
+        
         SpringApplication.run(RestApplication.class, args);
 
+        // todo: A realizar wrap de las proximas para Telegram
         //TELEGRAM BOT starts
         // Initialize Api Context
         ApiContextInitializer.init();
         // Instantiate Telegram Bots API
         TelegramBotsApi botsApi = new TelegramBotsApi();
         // Register our bot
-        try {
-            botsApi.registerBot(new Telegram());
+
+        //No se habilita hasta tratar correctamente el Token de la API
+
+        /*try {
+            //botsApi.registerBot(new Telegram());
         } catch (TelegramApiException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
