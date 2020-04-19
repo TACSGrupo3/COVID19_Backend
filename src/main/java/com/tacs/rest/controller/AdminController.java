@@ -168,8 +168,8 @@ public class AdminController {
 	//http://127.0.0.1:8080/admin/lists/compare?IDlistas=1,2
 	//o es igual de valido:
 	//http://127.0.0.1:8080/admin/lists/compare?IDlistas=1&IDlistas=2
-	@GetMapping("/lists/compare")
-	public List<Country> getCountries(@RequestParam List<String> IDlistas){
+	@GetMapping("/lists/{IDlista1}")
+	public List<Country> getCountries(@PathVariable int IDlista1, @RequestParam int compare){
 		
 		//MOCK
 		//En vez de esto va a la BDD y busca las dos listas por ID.
@@ -210,12 +210,12 @@ public class AdminController {
 		paisesP.add(brasil);
 		
 		CountriesList paisesSudAmericanos  = new CountriesList();
-		paisesSudAmericanos.setId(1);
+		paisesSudAmericanos.setId(IDlista1);
 		paisesSudAmericanos.setName("Paises sudamericanos");
 		paisesSudAmericanos.setCountries(paisesSA);
 		
 		CountriesList paisesPotencias  = new CountriesList();
-		paisesPotencias.setId(2);
+		paisesPotencias.setId(compare);
 		paisesPotencias.setName("Paices potencias mundiales");
 		paisesPotencias.setCountries(paisesP);
 		
@@ -238,9 +238,9 @@ public class AdminController {
 	//LOGICA
 	//Me parece que se soluciona con una query a la BDD nomas.
 
-	//http://127.0.0.1:8080/admin/countries?countryId=3
-	@GetMapping("/countries")
-	public int getInteresados(@RequestParam int countryId){
+	//http://127.0.0.1:8080/admin/country/3
+	@GetMapping("/country/{countryId}")
+	public int getInteresados(@PathVariable int countryId){
 
 		return countryId;
 	}
