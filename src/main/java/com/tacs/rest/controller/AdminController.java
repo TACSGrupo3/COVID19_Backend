@@ -85,7 +85,7 @@ public class AdminController {
 		paisesPotencias.setCountries(paisesP);
 		
 		//pruebo nueva funcion de addCountrie
-		paisesPotencias.addCountrie(rusia);
+		paisesPotencias.addCountry(rusia);
 		
 		List<CountriesList> listaDeUsuario = new ArrayList<CountriesList>();
 		listaDeUsuario.add(paisesPotencias);

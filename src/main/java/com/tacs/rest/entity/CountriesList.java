@@ -10,8 +10,8 @@ public class CountriesList {
 	private Date creationDate;
 	private List<Country> countries;
 	
-	public void addCountrie(Country newCountrie){
-		countries.add(newCountrie);
+	public void addCountry(Country newCountry){
+		countries.add(newCountry);
 	}
 	
 	public void removeCountrie(Country exCountrie){
