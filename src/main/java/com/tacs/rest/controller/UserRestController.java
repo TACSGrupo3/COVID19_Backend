@@ -2,6 +2,9 @@ package com.tacs.rest.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -9,14 +12,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.tacs.rest.entity.User;
+import com.tacs.rest.validator.UserValidator;
 
 //Indiciamos que es un controlador rest
 @RestController
-@RequestMapping("/userWS") //esta sera la raiz de la url, es decir http:	//127.0.0.1:8080/userWS/
 public class UserRestController {
 	
 	//Inyectamos el servicio para poder hacer uso de el
@@ -26,7 +29,7 @@ public class UserRestController {
 	/*Este método se hará cuando por una petición GET (como indica la anotación) se llame a la url 
 	  URL: http://127.0.0.1:8080/userWS/users  
 	*/
-	@GetMapping("/users")
+	@GetMapping("/user")
 	public List<User> findAll(){
 		//retornará todos los usuarios
 //		return userService.findAll();
@@ -43,9 +46,9 @@ public class UserRestController {
 	}
 	
 	/*Este método se hará cuando por una petición GET (como indica la anotación) se llame a la url + el id de un usuario
-	  URL: http://127.0.0.1:8080/userWS/users/1
+	  URL: http://127.0.0.1:8080/user/1
 	*/
-	@GetMapping("/users/{userId}")
+	@GetMapping("/user/{userId}")
 	public User getUser(@PathVariable int userId){
 //		User user = userService.findById(userId);
 //		
@@ -64,22 +67,20 @@ public class UserRestController {
 		return user;
 	}
 	
-	/*Este método se hará cuando por una petición POST (como indica la anotación) se llame a la url
-	  URL: http://127.0.0.1:8080/userWS/users/  
-	*/
-	@PostMapping("/users")
-	public User addUser(@RequestBody User user) {
-//		user.setId(0);
-//		
-//		//Este metodo guardará al usuario enviado
-//		userService.save(user);
-//		
-		return user;
+	@PostMapping("/user")
+	public ResponseEntity<User> registration(@Validated @RequestBody User user2) {
+			
+		UserValidator uv = new UserValidator();
+		
+		if(uv.registrationValidator(user2)){
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No ingreso todos los datos requeridos");
+		}
+		else {
+			return new ResponseEntity<User> (user2,HttpStatus.OK);
+		}
 	}
-	/*Este método se hará cuando por una petición PUT (como indica la anotación) se llame a la url
-	  URL: http://127.0.0.1:8080/userWS/users/  
-	*/
-	@PutMapping("/users")
+
+	@PutMapping("/user")
 	public User putUser(@RequestBody User user) {
 		
 //		userService.save(user);
@@ -88,11 +89,8 @@ public class UserRestController {
 		
 		return user;
 	}
-	
-	/*Este método se hará cuando por una petición PUT (como indica la anotación) se llame a la url
-	  URL: http://127.0.0.1:8080/userWS/users/  
-	*/
-	@PatchMapping("/users")
+
+	@PatchMapping("/user")
 	public User patchUser(@RequestBody User user) {
 		
 //		userService.save(user);
