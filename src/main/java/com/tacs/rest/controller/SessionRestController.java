@@ -62,6 +62,25 @@ public class SessionRestController {
 		}
 	}
 	
+	@PostMapping("/sessionWithSocial")
+	public ResponseEntity<User> logInWithSocial(@RequestBody User user2) {
+			
+		User user = new User();
+		List<User> list = new ArrayList<User>();
+		user.setId(1);
+		list.add(user);	
+		UserValidator uv = new UserValidator();
+		
+		if(uv.logInGoogleValidator(user2)) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error en la autenticación");
+		}
+		else{
+			//Agregar autenticacion en la BD
+			user2.setToken(generateNewToken());
+			return new ResponseEntity<User> (user2,HttpStatus.OK);	
+		}
+	}
+	
 	@DeleteMapping("/session")
 	public ResponseEntity<?> logOut(@RequestBody User user){
 	return new ResponseEntity<Object>(HttpStatus.OK);

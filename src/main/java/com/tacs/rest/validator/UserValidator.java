@@ -10,6 +10,10 @@ public class UserValidator {
 	public boolean registrationValidator(User user) {
 		return this.logInValidator(user)||user.getFirstName()==null||user.getLastName()==null;
 	}
+	
+	public boolean logInGoogleValidator(User user) {
+		return user == null || user.getUsername()==null;
+	}
 }
 
 
