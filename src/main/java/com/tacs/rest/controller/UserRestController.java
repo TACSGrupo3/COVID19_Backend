@@ -29,7 +29,7 @@ public class UserRestController {
 	/*Este método se hará cuando por una petición GET (como indica la anotación) se llame a la url 
 	  URL: http://127.0.0.1:8080/userWS/users  
 	*/
-	@GetMapping("/user")
+	@GetMapping("/users")
 	public List<User> findAll(){
 		//retornará todos los usuarios
 //		return userService.findAll();
@@ -48,7 +48,7 @@ public class UserRestController {
 	/*Este método se hará cuando por una petición GET (como indica la anotación) se llame a la url + el id de un usuario
 	  URL: http://127.0.0.1:8080/user/1
 	*/
-	@GetMapping("/user/{userId}")
+	@GetMapping("/users/{userId}")
 	public User getUser(@PathVariable int userId){
 //		User user = userService.findById(userId);
 //		
@@ -67,7 +67,7 @@ public class UserRestController {
 		return user;
 	}
 	
-	@PostMapping("/user")
+	@PostMapping("/users")
 	public ResponseEntity<User> registration(@Validated @RequestBody User user2) {
 			
 		UserValidator uv = new UserValidator();
@@ -80,7 +80,7 @@ public class UserRestController {
 		}
 	}
 
-	@PutMapping("/user")
+	@PutMapping("/users")
 	public User putUser(@RequestBody User user) {
 		
 //		userService.save(user);
@@ -90,7 +90,7 @@ public class UserRestController {
 		return user;
 	}
 
-	@PatchMapping("/user")
+	@PatchMapping("/users")
 	public User patchUser(@RequestBody User user) {
 		
 //		userService.save(user);

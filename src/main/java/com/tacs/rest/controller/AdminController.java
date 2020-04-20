@@ -37,7 +37,7 @@ public class AdminController {
 	 * http://127.0.0.1:8080/admin/users/1
 	 */
 	
-	@GetMapping("/user/{userId}")
+	@GetMapping("/users/{userId}")
 	public User getUser(@PathVariable int userId){
 		
 //		MOCK
