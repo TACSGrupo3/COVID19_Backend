@@ -11,3 +11,6 @@ Frameworks Usados:
 -SpringBoot
 
 -Maven
+
+## Endpoints de los servicios:
+Publicados en : https://documenter.getpostman.com/view/11044257/Szf6Z9Z9
