@@ -1,0 +1,195 @@
+{
+	"countries": [
+		{
+			"id": "1",
+			"name": "Argentina",
+			"region": {
+				"id": "1",
+				"nameRegion": "America del Sur",
+				"subRegion": "Sur"
+			}
+		},
+		{
+			"id": "2",
+			"name": "Brasil",
+			"region": {
+				"id": "2",
+				"nameRegion": "America del Sur",
+				"subRegion": "Centro"
+			}
+		},
+		{
+			"id": "3",
+			"name": "Chile",
+			"region": {
+				"id": "1",
+				"nameRegion": "America del Sur",
+				"subRegion": "Sur"
+			}
+		}
+	],
+	"users": [
+		{
+			"id": "1",
+			"username": "TEST",
+			"firstName": "TESTNAME",
+			"lastName": "TESTLASTNAME",
+			"countriesList": [
+				{
+					"id": "1",
+					"name": "Listado TEST",
+					"countries": [
+						{
+							"id": "1",
+							"name": "Argentina",
+							"region": {
+								"id": "1",
+								"nameRegion": "America del Sur",
+								"subRegion": "Sur"
+							}
+						},
+						{
+							"id": "2",
+							"name": "Brasil",
+							"region": {
+								"id": "2",
+								"nameRegion": "America del Sur",
+								"subRegion": "Centro"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "2",
+			"username": "Rufus",
+			"firstName": "Rufus",
+			"lastName": "Carmaicol",
+			"countriesList": [
+				{
+					"id": "2",
+					"name": "Listado 1 de Rufus",
+					"countries": [
+						{
+							"id": "1",
+							"name": "Argentina",
+							"region": {
+								"id": "1",
+								"nameRegion": "America del Sur",
+								"subRegion": "Sur"
+							}
+						},
+						{
+							"id": "3",
+							"name": "Chile",
+							"region": {
+								"id": "1",
+								"nameRegion": "America del Sur",
+								"subRegion": "Sur"
+							}
+						}
+					]
+				},
+				{
+					"id": "3",
+					"name": "Listado 2 de Rufus",
+					"countries": [
+						{
+							"id": "3",
+							"name": "Chile",
+							"region": {
+								"id": "1",
+								"nameRegion": "America del Sur",
+								"subRegion": "Sur"
+							}
+						},
+						{
+							"id": "2",
+							"name": "Brasil",
+							"region": {
+								"id": "2",
+								"nameRegion": "America del Sur",
+								"subRegion": "Centro"
+							}
+						}
+					]
+				}
+			]
+		}
+	],
+	"countriesList": [
+		{
+			"id": "1",
+			"name": "Listado TEST",
+			"countries": [
+				{
+					"id": "1",
+					"name": "Argentina",
+					"region": {
+						"id": "1",
+						"nameRegion": "America del Sur",
+						"subRegion": "Sur"
+					}
+				},
+				{
+					"id": "2",
+					"name": "Brasil",
+					"region": {
+						"id": "2",
+						"nameRegion": "America del Sur",
+						"subRegion": "Centro"
+					}
+				}
+			]
+		},
+		{
+			"id": "2",
+			"name": "Listado 1 de Rufus",
+			"countries": [
+				{
+					"id": "1",
+					"name": "Argentina",
+					"region": {
+						"id": "1",
+						"nameRegion": "America del Sur",
+						"subRegion": "Sur"
+					}
+				},
+				{
+					"id": "3",
+					"name": "Chile",
+					"region": {
+						"id": "1",
+						"nameRegion": "America del Sur",
+						"subRegion": "Sur"
+					}
+				}
+			]
+		},
+		{
+			"id": "3",
+			"name": "Listado 2 de Rufus",
+			"countries": [
+				{
+					"id": "3",
+					"name": "Chile",
+					"region": {
+						"id": "1",
+						"nameRegion": "America del Sur",
+						"subRegion": "Sur"
+					}
+				},
+				{
+					"id": "2",
+					"name": "Brasil",
+					"region": {
+						"id": "2",
+						"nameRegion": "America del Sur",
+						"subRegion": "Centro"
+					}
+				}
+			]
+		}
+	]
+}
