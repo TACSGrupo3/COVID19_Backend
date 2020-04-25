@@ -1,3 +1,4 @@
+sudo: required
 language: java
 
 services:
@@ -5,6 +6,20 @@ services:
 
 env:
   - DOCKER_COMPOSE_VERSION=1.4.2
+  global:
+    - secure = "Id2P50PMN6BP2aVyiPdBy5gd2nkXdVaIdrM3JofKRj8Ia614vHh0Uuqyjv7NX6gSy7sV8Bz+rtNpedDHxfj6vB4dEw+iaV0nWgza2nHfHuIeJNlSGTDBBb3fDh5olQdc1o1h0A/9Plb0EpTZgXy2CzV5eiZ/FBVqguyYEMiHgso8gPQ89lmjawMrlcPrcep1jWthWLIt73FghN5eoH80L6nLjGWHm1QepfnivqeEAIwurXUqv0Zw57eSSjjF2yJhqi+oD2/2nRbtaZ9ENEoxaRbEML8ZnZJHWB/NFEZ7NdwFN7SK69xhDqSpVLgsWE9eA8eR/7sXFtZ7edlxLL5OwvxZfGfiu0i6JGDXUz373rpDDC70tqNNEHCEobyb9KrQSwEdfSuaYUy4gBQ4TJvDK3a62eIiDkcywmOPhbBGLLxTXsUEORyXLXAfCA9D43OkJDLlYgOhi0ZukAhl3hZeLxTpr/ZnL7OxzauPCmKK/JKGcwZ43aCXNqF0TU6V+A+ReeR6Za+KQahs6exuw52rsYJJLHVsIR2sqEQYmejp0e5DyeXaei5GBMmSDKN4YD/qF8krFuZNli0odLK8WGqXj3K1qmOTPtvcIuwLD/UwWmqtYilgfZo5FFulD011Oa5TVqidGY211esY0UFl0xbUot5z7ZiwhJfc+Stzk+x6OaE="
+    - secure = "piuVdanaWg+tOMod/fw3uxV2py8xrrytFwbjuepeP9Tod/B+J8a54yOpN0a3pu/sXdBFZJUtubI01NsW5uWicYBBERNbGa3zGAU+Gx1IFISVKKtS15eFzKG41nvXoF2uJzl7kjail6GgzgcQH0F3UGzdHXz9g8Nztk/Dh6BvujhSz26MzzQExiIqaA8yCTHJHKluofKt/bQSDqorVKFy+lPlk251bf9sRGLIJ+e3ogkDS45Ki3DnsnLbA+6VfO397sxxt+ZbJYPjpai4/Wlbvz5Xco7tu6nPsV0ey6HvUDI2tId+1DXo303T9N9Ka41ZSPM5XtZtNneDfP1c7wcKm4+zLlu1ACcH9FIyrebQGI2/cDA2sIrWC+Q4R4C253N/x1aGytUbbeEZpzs6V38uH1I4WrCqvkd/SiRPpJ+83NNGN1iqjdaRZBzj4CTdZ7jcprkWOAGHmF4Z6Hdx6IrDy1tW7NBBPzaYXWnx79LFc5kKz1j7RPE1pVp5Ic4x/Wp5LDqtOSqedj7gjDLWNGfac8cH8k5M+L6WHewN+wlCkqndmLRdQxR5LIDW8qKanJvAK9NA23h6rEgSyEVbTtee8kDPa0kJ/riaWvGipBecJfKlRY12AGCnjY8H539wuXZDy4kDR6Hsb+M+yLxzH9oKWB/EowSpooYPR6TeAn15Czk="
+    - SERVICE_DIR=config-server
+    - SERVICE_DIR=message-summary
+    -
+#before_install:
+#  - chmod +x mvnw
 
 before_install:
-  - chmod +x mvnw
+  - chmod +x ./.travis/pushimage.sh
+
+script: cd $SERVICE_DIR && mvn clean verify
+
+after_success:
+  - bash ../.travis/pushimage.sh config-server
+  - bash ../.travis/pushimage.sh message-summary
