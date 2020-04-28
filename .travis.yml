@@ -14,7 +14,7 @@ script:
 
 after_success:
   - docker login -u $USERDOCKER -p $PASSWORDDOCKER
-  - docker tag tacs-grupo3 $DOCKER_USER/tacs-grupo3:$TRAVIS_BUILD_NUMBER
-  - docker push $DOCKER_USER/tacs-grupo3:$TRAVIS_BUILD_NUMBER
-  - docker tag tacs-grupo3 $DOCKER_USER/tacs-grupo3:latest
-  - docker push $DOCKER_USER/tacs-grupo3:latest
+  - docker tag tacs-grupo3 $USERDOCKER/tacs-grupo3:$TRAVIS_BUILD_NUMBER
+  - docker push $USERDOCKER/tacs-grupo3:$TRAVIS_BUILD_NUMBER
+  - docker tag tacs-grupo3 $USERDOCKER/tacs-grupo3:latest
+  - docker push $USERDOCKER/tacs-grupo3:latest
