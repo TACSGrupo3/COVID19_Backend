@@ -1,6 +1,7 @@
 package com.tacs.rest.util;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -35,6 +36,7 @@ public class ParseUtil {
 		user.setFirstName((String) json.get("firstName"));
 		user.setLastName((String) json.get("lastName"));
 		user.setUsername((String) json.get("username"));
+		user.setPassword((String) json.get("password"));
 		JSONArray jsonCountriesList = (JSONArray) json.get("countriesList");
 		
 		List<CountriesList> listOfCountriesList = new ArrayList<CountriesList>();
@@ -52,6 +54,7 @@ public class ParseUtil {
 		
 		countriesList.setId(Integer.valueOf((String) json.get("id")));
 		countriesList.setName((String) json.get("name"));
+		countriesList.setCreationDate(new Date());
 		
 		JSONArray jsonCountries = (JSONArray) json.get("countries");
 		

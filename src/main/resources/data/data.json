@@ -32,12 +32,14 @@
 		{
 			"id": "1",
 			"username": "TEST",
+			"password": "TEST",
 			"firstName": "TESTNAME",
 			"lastName": "TESTLASTNAME",
 			"countriesList": [
 				{
 					"id": "1",
 					"name": "Listado TEST",
+					"creationDate": "2020-01-11T03:00:00.000+0000",
 					"countries": [
 						{
 							"id": "1",
@@ -64,12 +66,14 @@
 		{
 			"id": "2",
 			"username": "Rufus",
+			"password": "Rufus",
 			"firstName": "Rufus",
 			"lastName": "Carmaicol",
 			"countriesList": [
 				{
 					"id": "2",
 					"name": "Listado 1 de Rufus",
+					"creationDate": "2020-01-11T03:00:00.000+0000",
 					"countries": [
 						{
 							"id": "1",
@@ -94,6 +98,7 @@
 				{
 					"id": "3",
 					"name": "Listado 2 de Rufus",
+					"creationDate": "2020-01-11T03:00:00.000+0000",
 					"countries": [
 						{
 							"id": "3",
@@ -126,6 +131,7 @@
 				{
 					"id": "1",
 					"name": "Argentina",
+					"creationDate": "2020-01-11T03:00:00.000+0000",
 					"region": {
 						"id": "1",
 						"nameRegion": "America del Sur",
@@ -146,6 +152,7 @@
 		{
 			"id": "2",
 			"name": "Listado 1 de Rufus",
+			"creationDate": "2020-01-11T03:00:00.000+0000",
 			"countries": [
 				{
 					"id": "1",
@@ -170,6 +177,7 @@
 		{
 			"id": "3",
 			"name": "Listado 2 de Rufus",
+			"creationDate": "2020-01-11T03:00:00.000+0000",
 			"countries": [
 				{
 					"id": "3",

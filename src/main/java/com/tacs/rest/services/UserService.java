@@ -13,4 +13,6 @@ public interface UserService {
 	public void save(User user);
 	
 	public void deleteById(int id);
+	
+	public void registerUser(User user);
 }

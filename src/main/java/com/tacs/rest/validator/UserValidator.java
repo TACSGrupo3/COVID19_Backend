@@ -4,14 +4,14 @@ import com.tacs.rest.entity.User;
 
 public class UserValidator {
 	
-	public boolean logInValidator(User user) {
+	public static boolean logInValidator(User user) {
 		return user.getPassword()==null || user.getUsername()==null;
 	}
-	public boolean registrationValidator(User user) {
-		return this.logInValidator(user)||user.getFirstName()==null||user.getLastName()==null;
+	public static boolean registrationValidator(User user) {
+		return UserValidator.logInValidator(user)||user.getFirstName()==null||user.getLastName()==null;
 	}
 	
-	public boolean logInGoogleValidator(User user) {
+	public static boolean logInGoogleValidator(User user) {
 		return user == null || user.getUsername()==null;
 	}
 }

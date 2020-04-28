@@ -2,14 +2,14 @@ package com.tacs.rest.controller;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
@@ -18,22 +18,15 @@ import com.tacs.rest.entity.DataReport;
 @RestController
 public class ReportRestController {
 
-    @GetMapping("/report/{listId}")
+	//EJ: http://localhost:8080/api/report/list?country=ARGENTINA&offset=1&country=Brasil&offset=2
+    @GetMapping("/report/list")
     // add produces = MediaType.APPLICATION_JSON_VALUE when done
-    public List<CountriesList> getReport(@PathVariable("listId") int listId, @RequestParam int baseCountryId) {
-        // User user = userService.findById(userId);
-        // countries = user.suscribedCountries(); --> validate that baseCountryId belongs to the suscribedCountries
-        // call the external api for each countries element.
-        // do the correct mapping country/days(date, infected, dead, recovered)/offset (based on the baseCountryId first date)
-        // return the json to front end
-
+    public CountriesList getReport(@RequestParam(value="country") List<String> countries,
+    		@RequestParam(value="offset") List<String>  offsets) {
+    	if(countries.size() == offsets.size()) {
+    		System.out.println("---------------CANTIDAD CORRECTA---------------");
         //		MOCK
-    	List<CountriesList> listCountries = new ArrayList<CountriesList>();
-    	CountriesList countryList = new CountriesList();
-    	countryList.setId(listId);
-    	countryList.setCreationDate(new Date());
-    	countryList.setName("Listado1");
-    	
+    	CountriesList list = new CountriesList();
     	Country argentina = new Country();
     	argentina.setId(1);
     	argentina.setName("Argentina");
@@ -100,10 +93,11 @@ public class ReportRestController {
     	listOfCountries.add(brasil);
     	listOfCountries.add(chile);
 	    	
-    	countryList.setCountries(listOfCountries);
+    	list.setCountries(listOfCountries);
     	
-    	listCountries.add(countryList);
-    	
-    	return listCountries;
+    	return list;
+    	}else {
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Debe ingresar un offset para cada pais");
+    	}
     }
 }
