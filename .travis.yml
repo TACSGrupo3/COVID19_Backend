@@ -1,8 +1,16 @@
 language: java
-sudo: required
+
+sudo: required  #Docker runs as root, permissions are needed
 
 services:
   - docker
+
+before_script:
+  - chmod +x mvnw
+
+script:
+  - ./mvnw clean install
+  - docker build -t tacs-grupo3 .
 
 env:
   global:
@@ -11,14 +19,10 @@ env:
     - SERVICE_DIR=config-server
     - SERVICE_DIR=message-summary
     - DOCKER_COMPOSE_VERSION=1.4.2
-#before_install:
-#  - chmod +x mvnw
 
-before_install:
-  - chmod +x ./.travis/pushimage.sh
-
-script: cd $SERVICE_DIR && mvn clean verify
-
-after_success:
-  - bash ../.travis/pushimage.sh config-server
-  - bash ../.travis/pushimage.sh message-summary
+  after_success:
+    - docker login -u $USERDOCKER -p $PASSWORDDOCKER
+    - docker tag tacs-grupo3 $DOCKER_USER/tacs-grupo3:$TRAVIS_BUILD_NUMBER
+    - docker push $DOCKER_USER/tacs-grupo3:$TRAVIS_BUILD_NUMBER
+    - docker tag tacs-grupo3 $DOCKER_USER/tacs-grupo3:latest
+    - docker push $DOCKER_USER/tacs-grupo3:latest
