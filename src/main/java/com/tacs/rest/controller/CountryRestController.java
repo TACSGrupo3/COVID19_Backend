@@ -36,12 +36,12 @@ public class CountryRestController {
 		if (latitud != null && longitud != null) {
 //			retornará la lista de paises cercanos por region
 //			
-			String uri = "https://geocode.xyz/" + latitud + "," + longitud + "?geoit=json";
+			String uri = "http://api.geonames.org/countryCodeJSON?lat=" + latitud + "&lng=" + longitud + "&username=tacsg3";
 
 			RestTemplate restTemplate = new RestTemplate();
 			HashMap result = restTemplate.getForObject(uri, HashMap.class);
 
-			String country = (String) result.get("country");
+			String country = (String) result.get("countryName");
 			return countriesService.findNearCountrys(country);
 		} else {
 			// retornará todos los paises
