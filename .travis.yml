@@ -5,7 +5,7 @@ sudo: required  #Docker runs as root, permissions are needed
 services:
   - docker
 
-before_script:
+before_install:
   - chmod +x ./mvnw 
 
 script:
