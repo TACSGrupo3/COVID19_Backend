@@ -76,22 +76,24 @@ public class CountriesListServiceImpl implements CountriesListService {
 	@Override
 	public List<CountriesList> addListCountries(User user) {
 		// TODO:Agregar la lista de countries en la base de datos
-
+		
+		
 		// Mock
 		List<User> users = (List<User>) RestApplication.data.get("Users");
 		List<CountriesList> countriesList = (List<CountriesList>) RestApplication.data.get("CountriesList");
 		for (User userbd : users) {
 			if (userbd.getUsername().equals(user.getUsername())) {
-				for(CountriesList listToPersist : user.getCountriesList()) {
-					listToPersist.setId(countriesList.size()+1);
+				for (CountriesList listToPersist : user.getCountriesList()) {
+					listToPersist.setId(countriesList.size() + 1);
+					listToPersist.setCreationDate(new Date());
 					userbd.getCountriesList().add(listToPersist);
 					countriesList.add(listToPersist);
 				}
-				
+
 				break;
 			}
 		}
-		
+
 		RestApplication.data.put("CountriesList", countriesList);
 		RestApplication.data.put("Users", users);
 
@@ -101,33 +103,35 @@ public class CountriesListServiceImpl implements CountriesListService {
 	@Override
 	public CountriesList modifyListCountries(int countryListId, CountriesList list) {
 		// TODO:Modifica la lista de countries en la base de datos
-		
+
 		// Mock
 		boolean exists = false;
 		List<CountriesList> countriesList = (List<CountriesList>) RestApplication.data.get("CountriesList");
 		List<User> users = (List<User>) RestApplication.data.get("Users");
 		for (int k = 0; k < users.size(); k++) {
-			for(int j = 0; j < users.get(k).getCountriesList().size(); j++){
-				if(users.get(k).getCountriesList().get(j).getId() == countryListId) {
-					users.get(k).getCountriesList().set(j, list);
-					exists = true;
-					break;
+			if (users.get(k).getCountriesList() != null) {
+				for (int j = 0; j < users.get(k).getCountriesList().size(); j++) {
+					if (users.get(k).getCountriesList().get(j).getId() == countryListId) {
+						users.get(k).getCountriesList().set(j, list);
+						exists = true;
+						break;
+					}
 				}
 			}
 		}
-		
-		for(int i = 0; i < countriesList.size(); i++) {
-			if(countriesList.get(i).getId() == countryListId) {
+
+		for (int i = 0; i < countriesList.size(); i++) {
+			if (countriesList.get(i).getId() == countryListId) {
 				countriesList.set(i, list);
 			}
 		}
-		
-		if(exists) {
+
+		if (exists) {
 			RestApplication.data.put("CountriesList", countriesList);
 			RestApplication.data.put("Users", users);
 			return list;
 		}
-		
+
 		return null;
 	}
 

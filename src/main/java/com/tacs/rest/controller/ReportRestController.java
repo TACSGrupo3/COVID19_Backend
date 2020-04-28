@@ -18,8 +18,8 @@ import com.tacs.rest.entity.DataReport;
 @RestController
 public class ReportRestController {
 
-	//EJ: http://localhost:8080/api/report/list?country=ARGENTINA&offset=1&country=Brasil&offset=2
-    @GetMapping("/report/list")
+	//EJ: http://localhost:8080/api/report?country=ARGENTINA&offset=1&country=Brasil&offset=2
+    @GetMapping("/report")
     // add produces = MediaType.APPLICATION_JSON_VALUE when done
     public CountriesList getReport(@RequestParam(value="country") List<String> countries,
     		@RequestParam(value="offset") List<String>  offsets) {

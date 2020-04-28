@@ -31,6 +31,13 @@
 	"users": [
 		{
 			"id": "1",
+			"username": "Admin",
+			"password": "Admin",
+			"firstName": "Administrador",
+			"lastName": ""
+		},
+		{
+			"id": "2",
 			"username": "TEST",
 			"password": "TEST",
 			"firstName": "TESTNAME",
@@ -64,7 +71,7 @@
 			]
 		},
 		{
-			"id": "2",
+			"id": "3",
 			"username": "Rufus",
 			"password": "Rufus",
 			"firstName": "Rufus",
