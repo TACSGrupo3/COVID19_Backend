@@ -1,6 +1,8 @@
 package com.tacs.rest;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,6 +11,7 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -62,43 +65,50 @@ public class RestApplication {
 	@SuppressWarnings("unchecked")
     public static void initData() {
     	JSONParser parser = new JSONParser();
-    	
+    	Object obj = null;
     	try {
-			Object obj = parser.parse(new FileReader("src/main/resources/data/data.json"));
-			JSONObject jsonObject = (JSONObject) obj;
-			JSONArray companyList = (JSONArray) jsonObject.get("countries");
-			
-			List<Country> listCountries = new ArrayList<Country>();
-			Iterator<JSONObject> iterator = companyList.iterator();
-			while (iterator.hasNext()) {
-				listCountries.add(ParseUtil.parseJsonToCountry(iterator.next()));
-			}
-			
-			
-			JSONArray usersList = (JSONArray) jsonObject.get("users");
-			List<User> listUsers = new ArrayList<User>();
-			iterator = usersList.iterator();
-			while (iterator.hasNext()) {
-				listUsers.add(ParseUtil.parseJsonToUser(iterator.next()));
-			}
-			
-			JSONArray countriesList = (JSONArray) jsonObject.get("countriesList");
-			List<CountriesList> listCountriesList = new ArrayList<CountriesList>();
-			iterator = countriesList.iterator();
-			while (iterator.hasNext()) {
-				listCountriesList.add(ParseUtil.parseJsonToCountryList(iterator.next()));
-			}
-			
-			
-			//Persistencia de las Tablas en Memoria
-			RestApplication.data.put("Countries", listCountries);
-			RestApplication.data.put("Users", listUsers);
-			RestApplication.data.put("CountriesList", listCountriesList);
-			
-		} catch (Exception e) {
+    		obj = parser.parse(new FileReader("/data/data.json"));
+		}catch(FileNotFoundException e ) {
+			try {
+				obj = parser.parse(new FileReader("/src/main/resources/data/data.json"));
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				return;
+			} 
+		}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	
+    	JSONObject jsonObject = (JSONObject) obj;
+		JSONArray companyList = (JSONArray) jsonObject.get("countries");
+		
+		List<Country> listCountries = new ArrayList<Country>();
+		Iterator<JSONObject> iterator = companyList.iterator();
+		while (iterator.hasNext()) {
+			listCountries.add(ParseUtil.parseJsonToCountry(iterator.next()));
+		}
+		
+		
+		JSONArray usersList = (JSONArray) jsonObject.get("users");
+		List<User> listUsers = new ArrayList<User>();
+		iterator = usersList.iterator();
+		while (iterator.hasNext()) {
+			listUsers.add(ParseUtil.parseJsonToUser(iterator.next()));
+		}
+		
+		JSONArray countriesList = (JSONArray) jsonObject.get("countriesList");
+		List<CountriesList> listCountriesList = new ArrayList<CountriesList>();
+		iterator = countriesList.iterator();
+		while (iterator.hasNext()) {
+			listCountriesList.add(ParseUtil.parseJsonToCountryList(iterator.next()));
+		}
+		
+		
+		//Persistencia de las Tablas en Memoria
+		RestApplication.data.put("Countries", listCountries);
+		RestApplication.data.put("Users", listUsers);
+		RestApplication.data.put("CountriesList", listCountriesList);
     }
     
 }
