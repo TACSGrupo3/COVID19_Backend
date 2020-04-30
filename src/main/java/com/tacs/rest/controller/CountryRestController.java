@@ -4,26 +4,18 @@ package com.tacs.rest.controller;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import java.util.HashMap;
 
 import java.util.List;
 
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.json.JSONObject;
-import org.json.simple.JSONArray;
-import org.springframework.asm.Type;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.http.HttpStatus;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -36,15 +28,13 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.tacs.rest.RestApplication;
+
 import com.tacs.rest.apiCovid.ConnectionApiCovid;
 import com.tacs.rest.apiCovid.Covid19_latestResponse;
-import com.tacs.rest.apiCovid.Location;
 import com.tacs.rest.apiCovid.Covid19_briefResponse;
 
 import com.tacs.rest.entity.CountriesList;
@@ -53,8 +43,6 @@ import com.tacs.rest.entity.User;
 import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.CountryService;
 
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 @RestController
 public class CountryRestController {

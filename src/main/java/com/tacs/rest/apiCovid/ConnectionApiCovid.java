@@ -47,7 +47,6 @@ public class ConnectionApiCovid {
 	
 	public URI createURI (String iso, Boolean onlyCountries) throws URISyntaxException {
 		
-		
 		if(iso==null) {
 			return new URIBuilder(urlCon).addParameter("onlyCountries", onlyCountries.toString()).build();
 		}
