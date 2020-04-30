@@ -18,8 +18,8 @@ script:
   - docker build -t tacs-grupo3-back_end .
 
 after_success:
-  - docker login -u USERDOCKER -p PASSWORDDOCKER
-  - docker tag tacs-grupo3-back_end USERDOCKER/tacs-grupo3-back_end:TRAVIS_BUILD_NUMBER
-  - docker push USERDOCKER/tacs-grupo3-back_end:TRAVIS_BUILD_NUMBER
-  - docker tag tacs-grupo3-back_end USERDOCKER/tacs-grupo3-back_end:latest
-  - docker push USERDOCKER/tacs-grupo3-back_end:latest
+  - docker login -u $USERDOCKER -p $PASSWORDDOCKER
+  - docker tag tacs-grupo3-back_end $USERDOCKER/tacs-grupo3-back_end:$TRAVIS_BUILD_NUMBER
+  - docker push $USERDOCKER/tacs-grupo3-back_end:$TRAVIS_BUILD_NUMBER
+  - docker tag tacs-grupo3-back_end $USERDOCKER/tacs-grupo3-back_end:latest
+  - docker push $USERDOCKER/tacs-grupo3-back_end:latest
