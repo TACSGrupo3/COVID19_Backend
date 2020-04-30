@@ -1,7 +1,6 @@
 package com.tacs.rest;
 
-import com.tacs.rest.apiCovid.Covid19_Latestresponse;
-import com.tacs.rest.apiCovid.Covid19_briefResponse;
+import com.tacs.rest.apiCovid.Covid19_latestResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
@@ -86,7 +85,7 @@ class RestApplicationTests {
         HttpResponse response = HttpClientBuilder.create().build().execute(request);
 
         // Then
-        List<Covid19_Latestresponse> resource = RetrieveUtil.retrieveResourceFromResponseArray(response, Covid19_Latestresponse.class);
+        List<Covid19_latestResponse> resource = RetrieveUtil.retrieveResourceFromResponseArray(response, Covid19_latestResponse.class);
         assertThat("AR", Matchers.is(resource.get(0).getCountrycode().getIso2()));
     }
 

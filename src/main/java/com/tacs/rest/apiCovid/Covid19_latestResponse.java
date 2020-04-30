@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "deaths",
         "recovered"
 })
-public class Covid19_Latestresponse {
+public class Covid19_latestResponse {
     @JsonProperty("provincestate")
     private String provincestate;
     @JsonProperty("countryregion")
