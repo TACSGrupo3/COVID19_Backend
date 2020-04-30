@@ -141,17 +141,4 @@ public class CountryRestController {
 				
 		return new ResponseEntity<Collection<Covid19_latestResponse>>(latestResponse,HttpStatus.OK);
 	}
-
-	
-
-	
-	
-
 }	
-	
-	
-	
-
-=======
-}
->>>>>>> b7eccfe6e4f63c8f7dbfda50bb0984f91f009eb6
