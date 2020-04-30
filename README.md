@@ -17,12 +17,13 @@ Prerequisitos:
 -Maven
 -Docker Desktop
 
-1) Descargar el Repo de COVID19_Backend
-2) Abrir una consola de comandos y (parado en el proyecto) compilar con maven: mvn clean install
-3) Ejectuar los siguientes comandos:
-> docker build -t covid19_grupo3/api .
+1) Abrir una consola de comandos y descargar la imagen de Docker Hub: docker 
 
-> docker run -p 8080:8080 -t covid19_grupo3/api
+> pull maxbolt86/tacs-grupo3-back_end:48
+
+2) Correr la imagen: 
+
+> docker run -d -p 8080:8080 maxbolt86/tacs-grupo3-back_end
 
 
 ## Endpoints de los servicios:
