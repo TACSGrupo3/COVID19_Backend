@@ -38,13 +38,11 @@ public class TelegramController {
         return (String) JSONObject.stringToValue("Estado del bot de telegram: " + estado_servicio);
     }
 
-
-    @GetMapping("/telegram/countries")
     public List<Country> countries_list(@RequestParam int list_id) throws IOException {
 
         List<Country> countries = new ArrayList<Country>();
 
-        URL url = new URL("http://127.0.0.1:8080/api/countries?near=false");
+        URL url = new URL("http://127.0.0.1:8080/api/countries");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
@@ -79,7 +77,6 @@ public class TelegramController {
 
     }
 
-    @PutMapping("/telegram/countries")
     public String new_country(@RequestParam int list_id, int pais_id) {
 
         List<Country> countries = new ArrayList<Country>();
@@ -92,7 +89,6 @@ public class TelegramController {
 
     }
 
-    @GetMapping("/telegram/covid_data/data")
     public List<DataReport> last_data(@RequestParam int list_id, int pais_id) throws IOException {
         List<DataReport> reportePaises = new ArrayList<>();
 
@@ -123,7 +119,6 @@ public class TelegramController {
         return reportePaises;
     }
 
-    @GetMapping("/telegram/covid_data/compared")
     public CountriesList compared_data(@RequestParam int list_id, int days) throws IOException {
 
         // TODO: Generar logica que compare los paises de una lista para los ultimos x dias recibidos como parametro
