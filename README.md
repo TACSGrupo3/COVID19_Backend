@@ -17,7 +17,7 @@ Prerequisitos:
 -Maven
 -Docker Desktop
 
-1) Abrir una consola de comandos y descargar la imagen de Docker Hub: docker 
+1) Abrir una consola de comandos y descargar la imagen de Docker Hub con el comando: 
 
 > docker pull maxbolt86/tacs-grupo3-back_end:latest
 
