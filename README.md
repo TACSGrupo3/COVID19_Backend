@@ -19,7 +19,7 @@ Prerequisitos:
 
 1) Abrir una consola de comandos y descargar la imagen de Docker Hub: docker 
 
-> pull maxbolt86/tacs-grupo3-back_end:48
+> docker pull maxbolt86/tacs-grupo3-back_end:latest
 
 2) Correr la imagen: 
 
