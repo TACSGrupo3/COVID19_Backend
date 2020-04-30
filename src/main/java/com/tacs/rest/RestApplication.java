@@ -70,7 +70,7 @@ public class RestApplication {
     		obj = parser.parse(new FileReader("/data/data.json"));
 		}catch(FileNotFoundException e ) {
 			try {
-				obj = parser.parse(new FileReader("/src/main/resources/data/data.json"));
+				obj = parser.parse(new FileReader("src/main/resources/data/data.json"));
 			} catch (Exception e1) {
 				e1.printStackTrace();
 				return;
