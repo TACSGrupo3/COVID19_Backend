@@ -102,7 +102,14 @@ public class RestApplication {
 		iu.agregarPaises();
 
 		latestResponse= gson.fromJson(apiCovid.connectionWithoutParams("latest"), collectionType);
-		latestResponse.forEach(element-> listCountries.add(ParseUtil.latestResponseToCountry(element)));
+		
+		int id = 1;
+		for(Covid19_latestResponse response : latestResponse) {
+			Country country = ParseUtil.latestResponseToCountry(response);
+			country.setId(id);
+			listCountries.add(country);	
+			id++;
+		}
 		
 		JSONObject jsonObject = (JSONObject) obj;
 		
