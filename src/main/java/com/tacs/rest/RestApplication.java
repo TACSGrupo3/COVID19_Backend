@@ -3,7 +3,9 @@ package com.tacs.rest;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -20,20 +22,28 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+import com.tacs.rest.apiCovid.ConnectionApiCovid;
+import com.tacs.rest.apiCovid.Covid19_latestResponse;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.User;
+import com.tacs.rest.util.IsoUtil;
 import com.tacs.rest.util.ParseUtil;
 
 @SpringBootApplication
 public class RestApplication {
 	
 	public static HashMap<String,Object> data = new HashMap<String,Object>();
+
 	
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JsonIOException, JsonSyntaxException, IOException, URISyntaxException {
     	RestApplication.initData();
         SpringApplication.run(RestApplication.class, args);
-
+        
         // todo: A realizar wrap de las proximas para Telegram
         //TELEGRAM BOT starts
         // Initialize Api Context
@@ -63,7 +73,7 @@ public class RestApplication {
     }
     
 	@SuppressWarnings("unchecked")
-    public static void initData() {
+    public static void initData() throws JsonIOException, JsonSyntaxException, IOException, URISyntaxException {
     	JSONParser parser = new JSONParser();
     	Object obj = null;
     	try {
@@ -80,23 +90,29 @@ public class RestApplication {
 			e.printStackTrace();
 		}
     	
-    	JSONObject jsonObject = (JSONObject) obj;
-		JSONArray companyList = (JSONArray) jsonObject.get("countries");
 		
+		ConnectionApiCovid apiCovid = new ConnectionApiCovid();
+		Gson gson = new Gson();
+	
+		java.lang.reflect.Type collectionType = new TypeToken<Collection<Covid19_latestResponse>>(){}.getType();
+		Collection<Covid19_latestResponse> latestResponse;
 		List<Country> listCountries = new ArrayList<Country>();
-		Iterator<JSONObject> iterator = companyList.iterator();
-		while (iterator.hasNext()) {
-			listCountries.add(ParseUtil.parseJsonToCountry(iterator.next()));
-		}
 		
+		IsoUtil iu = new IsoUtil();
+		iu.agregarPaises();
+
+		latestResponse= gson.fromJson(apiCovid.connectionWithoutParams("latest"), collectionType);
+		latestResponse.forEach(element-> listCountries.add(ParseUtil.latestResponseToCountry(element)));
+		
+		JSONObject jsonObject = (JSONObject) obj;
 		
 		JSONArray usersList = (JSONArray) jsonObject.get("users");
 		List<User> listUsers = new ArrayList<User>();
-		iterator = usersList.iterator();
+		Iterator <JSONObject>iterator = usersList.iterator();
 		while (iterator.hasNext()) {
 			listUsers.add(ParseUtil.parseJsonToUser(iterator.next()));
 		}
-		
+				
 		JSONArray countriesList = (JSONArray) jsonObject.get("countriesList");
 		List<CountriesList> listCountriesList = new ArrayList<CountriesList>();
 		iterator = countriesList.iterator();
@@ -109,6 +125,8 @@ public class RestApplication {
 		RestApplication.data.put("Countries", listCountries);
 		RestApplication.data.put("Users", listUsers);
 		RestApplication.data.put("CountriesList", listCountriesList);
+
+		
     }
     
 }

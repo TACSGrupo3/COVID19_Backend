@@ -6,9 +6,9 @@ public class DataReport {
 	
 	private int id;
 	private Date date;
-	private long deaths;
-	private long infected;
-	private long cured;
+	private Integer deaths;
+	private Integer confirmed;
+	private Integer recovered;
 	
 	public int getId() {
 		return id;
@@ -25,20 +25,20 @@ public class DataReport {
 	public long getDeaths() {
 		return deaths;
 	}
-	public void setDeaths(long deaths) {
+	public void setDeaths(Integer deaths) {
 		this.deaths = deaths;
 	}
-	public long getInfected() {
-		return infected;
+	public Integer getRecovered() {
+		return recovered;
 	}
-	public void setInfected(long infected) {
-		this.infected = infected;
+	public void setRecovered(Integer recovered) {
+		this.recovered = recovered;
 	}
-	public long getCured() {
-		return cured;
+	public Integer getConfirmed() {
+		return confirmed;
 	}
-	public void setCured(long cured) {
-		this.cured = cured;
+	public void setConfirmed(Integer confirmed) {
+		this.confirmed = confirmed;
 	}
-	
+
 }

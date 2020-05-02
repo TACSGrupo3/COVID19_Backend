@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -32,7 +31,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-
+import com.tacs.rest.RestApplication;
 import com.tacs.rest.apiCovid.ConnectionApiCovid;
 import com.tacs.rest.apiCovid.Covid19_latestResponse;
 import com.tacs.rest.apiCovid.Covid19_briefResponse;
@@ -42,6 +41,7 @@ import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.User;
 import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.CountryService;
+import com.tacs.rest.util.ParseUtil;
 
 
 @RestController
@@ -52,10 +52,16 @@ public class CountryRestController {
 
 	@Autowired
 	private CountriesListService countriesListService;
+	
+	
+	ConnectionApiCovid apiCovid = new ConnectionApiCovid();
+	Gson gson = new Gson();
+	java.lang.reflect.Type collectionType = new TypeToken<Collection<Covid19_latestResponse>>(){}.getType();
+	Collection<Covid19_latestResponse> latestResponse;
 
 	@GetMapping("/countries")
 	public List<Country> listPaises(@RequestParam(required = false) String latitud,
-			@RequestParam(required = false) String longitud) {
+			@RequestParam(required = false) String longitud, @RequestParam(required=false)String iso) {
 		if (latitud != null && longitud != null) {
 //			retornará la lista de paises cercanos por region
 //			
@@ -66,14 +72,20 @@ public class CountryRestController {
 
 			String country = (String) result.get("countryName");
 			return countriesService.findNearCountrys(country);
-		} else {
+
+		}
+		else if (iso!=null) {
+			return countriesService.findByIso(iso);
+		}
+		
+		else {
 			// retornará todos los paises
 			return countriesService.findAll();
 		}
 	}
 
 	@GetMapping("/countriesList")
-	public List<CountriesList> getCountriesList() {
+	public List<CountriesList> getCountriesList(@RequestParam(required=false) String iso) throws JsonIOException, JsonSyntaxException, URISyntaxException, IOException {
 		return countriesListService.findAll();
 	}
 
@@ -100,33 +112,33 @@ public class CountryRestController {
 
 	
 	@GetMapping("/countries/brief")
-	public ResponseEntity<Covid19_briefResponse> cantidadMuertosTotales() throws JsonSyntaxException, JsonIOException, IOException{
+	public ResponseEntity<Covid19_briefResponse> cantidadMuertosTotales() throws JsonSyntaxException, JsonIOException, IOException, URISyntaxException{
 		
-		ConnectionApiCovid apiCovid = new ConnectionApiCovid();
- 
-		Gson gson = new Gson();
 		Covid19_briefResponse cv= gson.fromJson(apiCovid.connectionWithoutParams("brief"), Covid19_briefResponse.class);
 		return new ResponseEntity<Covid19_briefResponse> (cv,HttpStatus.OK);	
 				
 	}
 	
 	@GetMapping("/countries/latest")
-	public ResponseEntity<Collection<Covid19_latestResponse>>  latests(@RequestParam(required=false)String iso, @RequestParam(required=false)Boolean onlyCountries) throws JsonSyntaxException, JsonIOException, IOException, URISyntaxException{
-	
-		ConnectionApiCovid apiCovid = new ConnectionApiCovid();
-
-		Gson  gson = new Gson();
-		java.lang.reflect.Type collectionType = new TypeToken<Collection<Covid19_latestResponse>>(){}.getType();
+	public ResponseEntity<Collection<Covid19_latestResponse>>  latests(@RequestParam(required=false)String iso) throws JsonSyntaxException, JsonIOException, IOException, URISyntaxException{
 		
-		Collection<Covid19_latestResponse> latestResponse;
-		if(iso ==null && onlyCountries == null) {
+	
+		if(iso ==null) {
 			latestResponse= gson.fromJson(apiCovid.connectionWithoutParams("latest"), collectionType);
 			
-		}
-		else {
-			latestResponse = gson.fromJson(apiCovid.connectionWithParams("latest",iso, onlyCountries), collectionType);
+		} else {
+			latestResponse = gson.fromJson(apiCovid.connectionWithParams("latest",iso), collectionType);
 		}
 				
 		return new ResponseEntity<Collection<Covid19_latestResponse>>(latestResponse,HttpStatus.OK);
 	}
+	
 }	
+
+
+
+
+
+
+
+

@@ -15,4 +15,6 @@ public interface CountryService {
 	public void deleteById(int id);
 
 	public List<Country> findNearCountrys(String country);
+
+	public List<Country> findByIso(String iso);
 }

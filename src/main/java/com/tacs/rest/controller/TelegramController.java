@@ -96,24 +96,25 @@ public class TelegramController {
             DataReport reporte = new DataReport();
             reporte.setId(1);
             reporte.setDate(new GregorianCalendar(2020, Calendar.APRIL, 1).getTime());
-            reporte.setCured(100);
+            reporte.setRecovered(100);
             reporte.setDeaths(30);
-            reporte.setInfected(1000);
+            reporte.setConfirmed(1000);
             reportePaises.add(reporte);
+            
         } else if (list_id > 0 && pais_id == 0) {
             DataReport reporte1 = new DataReport();
             reporte1.setId(1);
             reporte1.setDate(new GregorianCalendar(2020, Calendar.APRIL, 1).getTime());
-            reporte1.setCured(100);
+            reporte1.setRecovered(100);
             reporte1.setDeaths(30);
-            reporte1.setInfected(1000);
+            reporte1.setConfirmed(1000);
             reportePaises.add(reporte1);
             DataReport reporte2 = new DataReport();
             reporte2.setId(2);
             reporte2.setDate(new GregorianCalendar(2020, Calendar.APRIL, 1).getTime());
-            reporte2.setCured(1200);
+            reporte2.setRecovered(1200);
             reporte2.setDeaths(20000);
-            reporte2.setInfected(43000);
+            reporte2.setConfirmed(43000);
             reportePaises.add(reporte2);
         }
         return reportePaises;

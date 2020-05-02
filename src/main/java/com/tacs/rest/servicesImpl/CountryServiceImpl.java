@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.springframework.cglib.core.Predicate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.tacs.rest.RestApplication;
 import com.tacs.rest.entity.Country;
@@ -33,7 +37,13 @@ public class CountryServiceImpl implements CountryService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	public List<Country> findByIso(String iso) {
+		List<Country> listOfCountriesList = (List<Country>) RestApplication.data.get("Countries");		
+		return listOfCountriesList.stream().filter(country->(country.getCountryCode().getIso2().equals(iso)||
+															country.getCountryCode().getIso3().equals(iso))).
+														collect(Collectors.toList());	
+	}
+	
 	@Override
 	public void save(Country country) {
 		// TODO Auto-generated method stub

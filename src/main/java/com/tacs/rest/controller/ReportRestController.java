@@ -36,14 +36,14 @@ public class ReportRestController {
     	DataReport dataArgentina = new DataReport();
     	dataArgentina.setDate(new GregorianCalendar(2020, Calendar.JANUARY, 11).getTime());
     	dataArgentina.setDeaths(0);
-    	dataArgentina.setInfected(12);
-    	dataArgentina.setCured(0);
+    	dataArgentina.setConfirmed(12);
+    	dataArgentina.setRecovered(0);
     	listDataArgentina.add(dataArgentina);
     	dataArgentina = new DataReport();
     	dataArgentina.setDate(new GregorianCalendar(2020, Calendar.JANUARY, 12).getTime());
     	dataArgentina.setDeaths(0);
-    	dataArgentina.setInfected(14);
-    	dataArgentina.setCured(0);
+    	dataArgentina.setConfirmed(14);
+    	dataArgentina.setRecovered(0); 	
     	listDataArgentina.add(dataArgentina);
     	
     	Country brasil = new Country();
@@ -55,14 +55,14 @@ public class ReportRestController {
     	DataReport dataBrasil = new DataReport();
     	dataBrasil.setDate(new GregorianCalendar(2020, Calendar.JANUARY, 1).getTime());
     	dataBrasil.setDeaths(1);
-    	dataBrasil.setInfected(40);
-    	dataBrasil.setCured(2);
+    	dataBrasil.setConfirmed(40);
+    	dataBrasil.setRecovered(2); 	
     	listDataBrasil.add(dataBrasil);
     	dataBrasil = new DataReport();
     	dataBrasil.setDate(new GregorianCalendar(2020, Calendar.JANUARY, 2).getTime());
     	dataBrasil.setDeaths(2);
-    	dataBrasil.setInfected(67);
-    	dataBrasil.setCured(2);
+    	dataBrasil.setConfirmed(67);
+    	dataBrasil.setRecovered(2); 	
     	listDataBrasil.add(dataBrasil);
     	
     	Country chile = new Country();
@@ -74,14 +74,14 @@ public class ReportRestController {
     	DataReport dataChile = new DataReport();
     	dataChile.setDate(new GregorianCalendar(2020, Calendar.JANUARY, 5).getTime());
     	dataChile.setDeaths(6);
-    	dataChile.setInfected(35);
-    	dataChile.setCured(1);
+    	dataChile.setConfirmed(35);
+    	dataChile.setRecovered(1); 	
     	listDataChile.add(dataChile);
     	dataChile = new DataReport();
     	dataChile.setDate(new GregorianCalendar(2020, Calendar.JANUARY, 6).getTime());
     	dataChile.setDeaths(6);
-    	dataChile.setInfected(40);
-    	dataChile.setCured(2);
+    	dataChile.setConfirmed(40);
+    	dataChile.setRecovered(2); 	
     	listDataChile.add(dataChile);
     	
     	argentina.setDataReport(listDataArgentina);
