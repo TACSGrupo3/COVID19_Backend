@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -160,9 +161,8 @@ public class RestApplication {
 		
 		RestApplication.data.put("CountriesTimeSeries", countriesTimeSeries);
 		
-		}catch(Exception e) {
+		}catch(UnknownHostException ex) {
 			System.out.println("-------------------------ERROR AL CONECTAR CON LA API COVID 19-------------------");
-			e.printStackTrace();
 			System.out.println("-------------------------VOLVIENDO A CONECTAR EN 10 SEGUNDOS-----------------------");
 			try {
 				TimeUnit.SECONDS.sleep(10);
@@ -171,6 +171,9 @@ public class RestApplication {
 			}
 			String[] args = new String[0]; 
 			RestApplication.main(args);
+		}catch(Exception e) {
+			System.out.println("Error al levantar la aplicación. Error: ");
+			e.printStackTrace();
 		}
 
     }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.tacs.rest.RestApplication;
 import com.tacs.rest.entity.Country;
+import com.tacs.rest.entity.DataReport;
 import com.tacs.rest.services.ReportService;
 
 @SuppressWarnings("unchecked")
@@ -26,19 +27,17 @@ public class ReportServiceImpl implements ReportService{
 				if(countryBd.getName().toLowerCase().equals(countries.get(i).toLowerCase())) {
 					Collections.sort(countryBd.getDataReport());
 					
+					Country country = new Country();
+					List<DataReport> dataToadd = new ArrayList<DataReport>();
 					if(Integer.valueOf(offset.get(i)) != 0) {
 						if(countryBd.getDataReport().size() > Integer.valueOf(offset.get(i))) {
-							countryBd.setDataReport(countryBd.getDataReport().
-									subList(Integer.valueOf(offset.get(i)), countryBd.getDataReport().size()-1));
-						}else {
-							countryBd.getDataReport().clear();
+							dataToadd = countryBd.getDataReport()
+									.subList(Integer.valueOf(offset.get(i)), countryBd.getDataReport().size());
 						}
-						
 					}
-					
-					countriesList.add(countryBd);
-					
-					
+					country.setName(countryBd.getName());
+					country.setDataReport(dataToadd);
+					countriesList.add(country);
 				}
 			}
 		}
