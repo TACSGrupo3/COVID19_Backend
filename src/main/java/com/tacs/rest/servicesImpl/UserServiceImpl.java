@@ -51,14 +51,22 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void registerUser(User user) {
+	public boolean registerUser(User user) {
 		// TODO Agregar llamada a la BD
 		
 		//MOCK
 		List<User> users = (List<User>) RestApplication.data.get("Users");
+		for(User userBd : users) {
+			if(userBd.getUsername().equals(user.getUsername())) {
+				return false;
+			}
+		}
+		
+		user.setId(users.size()+1);
 		users.add(user);
 		
 		RestApplication.data.put("Users",users);
+		return true;
 	}
 
 }

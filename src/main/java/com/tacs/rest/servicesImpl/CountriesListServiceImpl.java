@@ -3,7 +3,6 @@ package com.tacs.rest.servicesImpl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -68,28 +67,33 @@ public class CountriesListServiceImpl implements CountriesListService {
 
 		// Mock
 		List<CountriesList> result = this.findAll();
-
-		return result.stream().filter(item -> item.getCreationDate().getTime() > date.getTime())
-				.collect(Collectors.toList());
+		List<CountriesList> filteredList = new ArrayList<CountriesList>();
+		for(CountriesList item : result) {
+			if(item.getCreationDate().getTime() > date.getTime()) {
+				filteredList.add(item);
+			}
+		}
+		return filteredList;
 	}
 
 	@Override
-	public List<CountriesList> addListCountries(User user) {
+	public List<CountriesList> addListCountries(String userId, List<CountriesList> countriesListToAdd) {
 		// TODO:Agregar la lista de countries en la base de datos
 		
 		
 		// Mock
 		List<User> users = (List<User>) RestApplication.data.get("Users");
 		List<CountriesList> countriesList = (List<CountriesList>) RestApplication.data.get("CountriesList");
+		User user = new User(); 
 		for (User userbd : users) {
-			if (userbd.getUsername().equals(user.getUsername())) {
-				for (CountriesList listToPersist : user.getCountriesList()) {
+			if (userbd.getId() == Integer.valueOf(userId)) {
+				for (CountriesList listToPersist : countriesListToAdd) {
 					listToPersist.setId(countriesList.size() + 1);
 					listToPersist.setCreationDate(new Date());
 					userbd.getCountriesList().add(listToPersist);
 					countriesList.add(listToPersist);
 				}
-
+				user = userbd;
 				break;
 			}
 		}

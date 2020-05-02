@@ -22,16 +22,17 @@ public class UserRestController {
 	@PostMapping("/users")
 	public ResponseEntity<User> registration(@Validated @RequestBody User user) {
 
-		try {
-			if (UserValidator.registrationValidator(user)) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No ingreso todos los datos requeridos");
-			} else {
-				userService.registerUser(user);
+		if (UserValidator.registrationValidator(user)) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No ingreso todos los datos requeridos");
+		} else {
+			boolean registered = userService.registerUser(user);
+			if (registered) {
 				return new ResponseEntity<User>(user, HttpStatus.OK);
+			} else {
+				throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+						"Ya existe un usuario con el Username: " + user.getUsername());
 			}
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Ocurrió un error en el servidor.");
-		}
 
+		}
 	}
 }

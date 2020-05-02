@@ -9,14 +9,18 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import javax.xml.transform.Result;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -30,6 +34,7 @@ import com.tacs.rest.apiCovid.ConnectionApiCovid;
 import com.tacs.rest.apiCovid.Covid19_latestResponse;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
+import com.tacs.rest.entity.DataReport;
 import com.tacs.rest.entity.User;
 import com.tacs.rest.util.IsoUtil;
 import com.tacs.rest.util.ParseUtil;
@@ -100,40 +105,74 @@ public class RestApplication {
 		
 		IsoUtil iu = new IsoUtil();
 		iu.agregarPaises();
-
+		
+		JSONObject jsonObject = (JSONObject) obj;
+		Iterator <JSONObject> iterator;
+		
+		try {
 		latestResponse= gson.fromJson(apiCovid.connectionWithoutParams("latest"), collectionType);
 		
+		
 		int id = 1;
+		int idRegion = 1;
 		for(Covid19_latestResponse response : latestResponse) {
 			Country country = ParseUtil.latestResponseToCountry(response);
 			country.setId(id);
+			for(DataReport data : country.getDataReport()) {
+				data.setId(idRegion);
+				idRegion++;
+			}
 			listCountries.add(country);	
 			id++;
 		}
+		RestApplication.data.put("Countries", listCountries);
 		
-		JSONObject jsonObject = (JSONObject) obj;
 		
-		JSONArray usersList = (JSONArray) jsonObject.get("users");
-		List<User> listUsers = new ArrayList<User>();
-		Iterator <JSONObject>iterator = usersList.iterator();
-		while (iterator.hasNext()) {
-			listUsers.add(ParseUtil.parseJsonToUser(iterator.next()));
-		}
-				
 		JSONArray countriesList = (JSONArray) jsonObject.get("countriesList");
 		List<CountriesList> listCountriesList = new ArrayList<CountriesList>();
 		iterator = countriesList.iterator();
 		while (iterator.hasNext()) {
 			listCountriesList.add(ParseUtil.parseJsonToCountryList(iterator.next()));
 		}
-		
-		
-		//Persistencia de las Tablas en Memoria
-		RestApplication.data.put("Countries", listCountries);
-		RestApplication.data.put("Users", listUsers);
 		RestApplication.data.put("CountriesList", listCountriesList);
-
 		
+		JSONArray usersList = (JSONArray) jsonObject.get("users");
+		List<User> listUsers = new ArrayList<User>();
+		iterator = usersList.iterator();
+		while (iterator.hasNext()) {
+			listUsers.add(ParseUtil.parseJsonToUser(iterator.next()));
+		}
+				
+		RestApplication.data.put("Users", listUsers);
+		
+		String uri = "https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/timeseries";
+		
+		RestTemplate restTemplate = new RestTemplate();
+		String result = restTemplate.getForObject(uri, String.class);
+		
+		JSONArray json = (JSONArray) parser.parse(result);
+		
+		List<Country> countriesTimeSeries = new ArrayList<Country>();
+		for(int i = 0; i < json.size(); i++) {
+			JSONObject object = (JSONObject) json.get(i);
+			countriesTimeSeries.add(ParseUtil.parseJsonToCountryTimeSeries(object));
+		}
+		
+		RestApplication.data.put("CountriesTimeSeries", countriesTimeSeries);
+		
+		}catch(Exception e) {
+			System.out.println("-------------------------ERROR AL CONECTAR CON LA API COVID 19-------------------");
+			e.printStackTrace();
+			System.out.println("-------------------------VOLVIENDO A CONECTAR EN 10 SEGUNDOS-----------------------");
+			try {
+				TimeUnit.SECONDS.sleep(10);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+			String[] args = new String[0]; 
+			RestApplication.main(args);
+		}
+
     }
     
 }

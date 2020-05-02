@@ -1,9 +1,11 @@
 package com.tacs.rest.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -54,7 +56,8 @@ public class ParseUtil {
 		}
 		return user;
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	public static CountriesList parseJsonToCountryList(JSONObject json) {
 		CountriesList countriesList = new CountriesList();
 
@@ -63,10 +66,17 @@ public class ParseUtil {
 		countriesList.setCreationDate(new Date());
 
 		JSONArray jsonCountries = (JSONArray) json.get("countries");
-
+		List<Country> countriesOfDb = (List<Country>) RestApplication.data.get("Countries");
 		List<Country> listOfCountry = new ArrayList<Country>();
 		for (int i = 0; i < jsonCountries.size(); i++) {
-			listOfCountry.add(parseJsonToCountry((JSONObject) jsonCountries.get(i)));
+			Country country = parseJsonToCountry((JSONObject) jsonCountries.get(i));
+			for(int j = 0; j < countriesOfDb.size(); j++) {
+				if( countriesOfDb.get(j).getId() == country.getId()) {
+					country = countriesOfDb.get(j);
+					listOfCountry.add(country);
+					break;
+				}
+			}
 		}
 
 		countriesList.setCountries(listOfCountry);
@@ -99,8 +109,6 @@ public class ParseUtil {
 
 		IsoUtil iu = new IsoUtil();
 		Country country = new Country();
-		DataReport dataReport = new DataReport();
-		Date date = new Date();
 		country.setName(latestResponse.getCountryregion());
 		country.setConfirmed(latestResponse.getConfirmed());
 		country.setDeaths(latestResponse.getDeaths());
@@ -121,11 +129,6 @@ public class ParseUtil {
 		}
 
 		country.setLastupdate(latestResponse.getLastupdate());
-		dataReport.setConfirmed(latestResponse.getConfirmed());
-		dataReport.setDeaths(latestResponse.getDeaths());
-		dataReport.setRecovered(latestResponse.getRecovered());
-		dataReport.setDate(date);
-		country.addDataReport(dataReport);
 		return country;
 
 	}
@@ -136,6 +139,39 @@ public class ParseUtil {
 			palabraSinUltimaLetra = palabraSinUltimaLetra.concat(String.valueOf(palabra.charAt(i)));
 		}	
 		return palabraSinUltimaLetra;
+	}
+
+	public static Country parseJsonToCountryTimeSeries(JSONObject object) {
+
+		Country country = new Country();
+		country.setName(object.get("countryregion").toString());
+		JSONObject timeseries = (JSONObject) object.get("timeseries");
+		@SuppressWarnings("rawtypes")
+		Set setOfDates = timeseries.keySet();
+		
+		List<DataReport> dataReportOfCountry = new ArrayList<DataReport>();
+		for(Object obj : setOfDates) {
+			DataReport dataReport = new DataReport();
+			try {
+				dataReport.setDate(new SimpleDateFormat("dd/MM/yy").parse((String) obj));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			JSONObject data = (JSONObject) timeseries.get(obj);
+			Long recovered = (Long) data.get("recovered");
+			Long confirmed = (Long) data.get("confirmed");
+			Long deaths = (Long) data.get("deaths");
+			
+			dataReport.setRecovered(recovered.intValue());
+			dataReport.setConfirmed(confirmed != null ? confirmed.intValue() : 0);
+			dataReport.setDeaths(deaths != null ? deaths.intValue() : 0);
+			
+			dataReportOfCountry.add(dataReport);
+		}
+		
+		country.setDataReport(dataReportOfCountry);
+		
+		return country;
 	}
 	
 	

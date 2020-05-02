@@ -14,5 +14,5 @@ public interface UserService {
 	
 	public void deleteById(int id);
 	
-	public void registerUser(User user);
+	public boolean registerUser(User user);
 }

@@ -2,7 +2,7 @@ package com.tacs.rest.entity;
 
 import java.util.Date;
 
-public class DataReport {
+public class DataReport implements Comparable<DataReport>{
 	
 	private int id;
 	private Date date;
@@ -41,4 +41,9 @@ public class DataReport {
 		this.confirmed = confirmed;
 	}
 
+
+	@Override
+	public int compareTo(DataReport d) {
+		return this.getDate().compareTo(d.getDate());
+	}
 }

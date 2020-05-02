@@ -44,6 +44,7 @@ public class SessionRestController {
 		if(userAuthenticated == null) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "La combinación de Usuario y Contraseña es inválida");
 		}else{
+			userAuthenticated.setPassword(null);
 			userAuthenticated.setToken(generateNewToken());
 			return new ResponseEntity<User> (userAuthenticated,HttpStatus.OK);	
 		}
@@ -64,7 +65,7 @@ public class SessionRestController {
 	}
 	
 	@DeleteMapping("/session")
-	public ResponseEntity<?> logOut(@RequestBody User user){
+	public ResponseEntity<?> logOut(){
 		//TODO: Revocar EL token
 		return new ResponseEntity<Object>(HttpStatus.OK);
 	}

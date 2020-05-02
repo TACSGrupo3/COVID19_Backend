@@ -1,15 +1,10 @@
 package com.tacs.rest.servicesImpl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.springframework.cglib.core.Predicate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import com.tacs.rest.RestApplication;
 import com.tacs.rest.entity.Country;
@@ -19,6 +14,7 @@ import com.tacs.rest.services.CountryService;
 @SuppressWarnings("unchecked")
 public class CountryServiceImpl implements CountryService {
 
+	private final double RANGO_CERCANIA = 20; 
 //	@Autowired
 //	private DaoCountry daoCountry;
 
@@ -57,34 +53,25 @@ public class CountryServiceImpl implements CountryService {
 	}
 
 	@Override
-	public List<Country> findNearCountrys(String near) {
+	public List<Country> findNearCountrys(String latitud, String longitud, String maxCountries) {
 		// TODO Agregar la llamada a la base de datos : FILTRAR POR REGION Y SUBREGION
 
 		// MOCK
-		Set<Country> nearCountries = new HashSet<Country>();
+		List<Country> nearCountries = new ArrayList<Country>();
 		List<Country> listOfCountriesList = (List<Country>) RestApplication.data.get("Countries");
-		Country nearCountry = null;
 		for (Country country : listOfCountriesList) {
-			if (country.getName().equals(near)) {
-				nearCountry = country;
-				break;
+			if (country.getLocation().getLat() < (Double.valueOf(latitud) + RANGO_CERCANIA) && 
+					country.getLocation().getLat() > (Double.valueOf(latitud) - RANGO_CERCANIA) &&
+						country.getLocation().getLng() < (Double.valueOf(longitud) + RANGO_CERCANIA) && 
+							country.getLocation().getLng() > (Double.valueOf(longitud) - RANGO_CERCANIA)) {
+				nearCountries.add(country);
+				
+				if(nearCountries.size() == Integer.valueOf(maxCountries)) {
+					break;
+				}
 			}
 		}
 
-		// Busco los datos del pais del geolocalización
-		for (Country obj : listOfCountriesList) {
-			if (obj.getRegion().getSubRegion().equals(nearCountry.getRegion().getSubRegion())) {
-				nearCountries.add(obj);
-			}
-		}
-
-		for (Country obj : listOfCountriesList) {
-			if (obj.getRegion().getNameRegion().equals(nearCountry.getRegion().getNameRegion())) {
-				nearCountries.add(obj);
-			}
-		}
-		List<Country> result = new ArrayList<Country>();
-		result.addAll(nearCountries);
-		return result;
+		return nearCountries;
 	}
 }

@@ -20,7 +20,7 @@ public interface CountriesListService {
 	
 	public void deleteById(int id);
 
-	public List<CountriesList> addListCountries(User user);
-	
 	public CountriesList modifyListCountries(int countryListId, CountriesList list);
+
+	public List<CountriesList> addListCountries(String userId, List<CountriesList> countriesList);
 }
