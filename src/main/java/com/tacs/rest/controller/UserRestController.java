@@ -16,23 +16,23 @@ import com.tacs.rest.validator.UserValidator;
 @RestController
 public class UserRestController {
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@PostMapping("/users")
-	public ResponseEntity<User> registration(@Validated @RequestBody User user) {
+    @PostMapping("/users")
+    public ResponseEntity<User> registration(@Validated @RequestBody User user) {
 
-		if (UserValidator.registrationValidator(user)) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No ingreso todos los datos requeridos");
-		} else {
-			boolean registered = userService.registerUser(user);
-			if (registered) {
-				return new ResponseEntity<User>(user, HttpStatus.OK);
-			} else {
-				throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
-						"Ya existe un usuario con el Username: " + user.getUsername());
-			}
+        if (UserValidator.registrationValidator(user)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No ingreso todos los datos requeridos");
+        } else {
+            boolean registered = userService.registerUser(user);
+            if (registered) {
+                return new ResponseEntity<User>(user, HttpStatus.OK);
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                        "Ya existe un usuario con el Username: " + user.getUsername());
+            }
 
-		}
-	}
+        }
+    }
 }

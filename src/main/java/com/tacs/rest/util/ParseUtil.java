@@ -21,159 +21,158 @@ import com.tacs.rest.entity.User;
 
 public class ParseUtil {
 
-	public static Country parseJsonToCountry(JSONObject json) {
-		Country country = new Country();
-		country.setId(Integer.valueOf((String) json.get("id")));
-		country.setName((String) json.get("name"));
-		Region region = new Region();
-		JSONObject jsonRegion = (JSONObject) json.get("region");
+    public static Country parseJsonToCountry(JSONObject json) {
+        Country country = new Country();
+        country.setId(Integer.valueOf((String) json.get("id")));
+        country.setName((String) json.get("name"));
+        Region region = new Region();
+        JSONObject jsonRegion = (JSONObject) json.get("region");
 
-		region.setId(Integer.valueOf((String) jsonRegion.get("id")));
-		region.setNameRegion((String) jsonRegion.get("nameRegion"));
-		region.setSubRegion((String) jsonRegion.get("subRegion"));
+        region.setId(Integer.valueOf((String) jsonRegion.get("id")));
+        region.setNameRegion((String) jsonRegion.get("nameRegion"));
+        region.setSubRegion((String) jsonRegion.get("subRegion"));
 
-		country.setRegion(region);
+        country.setRegion(region);
 
-		return country;
-	}
+        return country;
+    }
 
-	public static User parseJsonToUser(JSONObject json) {
-		User user = new User();
-		user.setId(Integer.valueOf((String) json.get("id")));
-		user.setFirstName((String) json.get("firstName"));
-		user.setLastName((String) json.get("lastName"));
-		user.setUsername((String) json.get("username"));
-		user.setPassword((String) json.get("password"));
-		JSONArray jsonCountriesList = (JSONArray) json.get("countriesList");
+    public static User parseJsonToUser(JSONObject json) {
+        User user = new User();
+        user.setId(Integer.valueOf((String) json.get("id")));
+        user.setFirstName((String) json.get("firstName"));
+        user.setLastName((String) json.get("lastName"));
+        user.setUsername((String) json.get("username"));
+        user.setPassword((String) json.get("password"));
+        JSONArray jsonCountriesList = (JSONArray) json.get("countriesList");
 
-		if (jsonCountriesList != null) {
-			List<CountriesList> listOfCountriesList = new ArrayList<CountriesList>();
+        if (jsonCountriesList != null) {
+            List<CountriesList> listOfCountriesList = new ArrayList<CountriesList>();
 
-			for (int i = 0; i < jsonCountriesList.size(); i++) {
-				listOfCountriesList.add(parseJsonToCountryList((JSONObject) jsonCountriesList.get(i)));
-			}
-			user.setCountriesList(listOfCountriesList);
-		}
-		return user;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static CountriesList parseJsonToCountryList(JSONObject json) {
-		CountriesList countriesList = new CountriesList();
+            for (int i = 0; i < jsonCountriesList.size(); i++) {
+                listOfCountriesList.add(parseJsonToCountryList((JSONObject) jsonCountriesList.get(i)));
+            }
+            user.setCountriesList(listOfCountriesList);
+        }
+        return user;
+    }
 
-		countriesList.setId(Integer.valueOf((String) json.get("id")));
-		countriesList.setName((String) json.get("name"));
-		countriesList.setCreationDate(new Date());
+    @SuppressWarnings("unchecked")
+    public static CountriesList parseJsonToCountryList(JSONObject json) {
+        CountriesList countriesList = new CountriesList();
 
-		JSONArray jsonCountries = (JSONArray) json.get("countries");
-		List<Country> countriesOfDb = (List<Country>) RestApplication.data.get("Countries");
-		List<Country> listOfCountry = new ArrayList<Country>();
-		for (int i = 0; i < jsonCountries.size(); i++) {
-			Country country = parseJsonToCountry((JSONObject) jsonCountries.get(i));
-			for(int j = 0; j < countriesOfDb.size(); j++) {
-				if( countriesOfDb.get(j).getId() == country.getId()) {
-					country = countriesOfDb.get(j);
-					listOfCountry.add(country);
-					break;
-				}
-			}
-		}
+        countriesList.setId(Integer.valueOf((String) json.get("id")));
+        countriesList.setName((String) json.get("name"));
+        countriesList.setCreationDate(new Date());
 
-		countriesList.setCountries(listOfCountry);
-		return countriesList;
-	}
-	
-	public List<String> quitarComasQueryParams (String iso){
-		String pais = "";
-		List<String> paises = new ArrayList<String>();
-		
-		for(int i =0 ; i <iso.length(); i++) {
-		
-			if(iso.charAt(i)!=',') {
-				pais= pais.concat(String.valueOf(iso.charAt(i)));
-				if(i+1<iso.length()) {
-					if(iso.charAt(i+1)==',') { 
-						paises.add(pais);
-						pais ="";
-					}
-				}
-			}
+        JSONArray jsonCountries = (JSONArray) json.get("countries");
+        List<Country> countriesOfDb = (List<Country>) RestApplication.data.get("Countries");
+        List<Country> listOfCountry = new ArrayList<Country>();
+        for (int i = 0; i < jsonCountries.size(); i++) {
+            Country country = parseJsonToCountry((JSONObject) jsonCountries.get(i));
+            for (int j = 0; j < countriesOfDb.size(); j++) {
+                if (countriesOfDb.get(j).getId() == country.getId()) {
+                    country = countriesOfDb.get(j);
+                    listOfCountry.add(country);
+                    break;
+                }
+            }
+        }
 
-		}
-		paises.add(pais);
-		return paises;
-	
-	}
-	
-	public static Country latestResponseToCountry(Covid19_latestResponse latestResponse) throws NullPointerException {
+        countriesList.setCountries(listOfCountry);
+        return countriesList;
+    }
 
-		IsoUtil iu = new IsoUtil();
-		Country country = new Country();
-		country.setName(latestResponse.getCountryregion());
-		country.setConfirmed(latestResponse.getConfirmed());
-		country.setDeaths(latestResponse.getDeaths());
-		country.setRecovered(latestResponse.getRecovered());
-		country.setLocation(latestResponse.getLocation());
-		country.setCountryCode(latestResponse.getCountrycode());
-		
-		if(latestResponse.getCountrycode()==null) {
-			
-			Countrycode countryCode = new Countrycode();	
-			countryCode.setIso3(iu.getIso3(country.getName()));
-			countryCode.setIso2(iu.getIso2(country.getName()));
-			country.setCountryCode(countryCode);
-				
-		} else {
-			
-			country.setCountryCode(latestResponse.getCountrycode());
-		}
+    public List<String> quitarComasQueryParams(String iso) {
+        String pais = "";
+        List<String> paises = new ArrayList<String>();
 
-		country.setLastupdate(latestResponse.getLastupdate());
-		return country;
+        for (int i = 0; i < iso.length(); i++) {
 
-	}
-	
-	public String quitarUltimaLetra(String palabra) {
-		String palabraSinUltimaLetra="";
-		for(int i = 0; i<palabra.length()-1; i++) {
-			palabraSinUltimaLetra = palabraSinUltimaLetra.concat(String.valueOf(palabra.charAt(i)));
-		}	
-		return palabraSinUltimaLetra;
-	}
+            if (iso.charAt(i) != ',') {
+                pais = pais.concat(String.valueOf(iso.charAt(i)));
+                if (i + 1 < iso.length()) {
+                    if (iso.charAt(i + 1) == ',') {
+                        paises.add(pais);
+                        pais = "";
+                    }
+                }
+            }
 
-	public static Country parseJsonToCountryTimeSeries(JSONObject object) {
+        }
+        paises.add(pais);
+        return paises;
 
-		Country country = new Country();
-		country.setName(object.get("countryregion").toString());
-		JSONObject timeseries = (JSONObject) object.get("timeseries");
-		@SuppressWarnings("rawtypes")
-		Set setOfDates = timeseries.keySet();
-		
-		List<DataReport> dataReportOfCountry = new ArrayList<DataReport>();
-		for(Object obj : setOfDates) {
-			DataReport dataReport = new DataReport();
-			try {
-				dataReport.setDate(new SimpleDateFormat("dd/MM/yy").parse((String) obj));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			JSONObject data = (JSONObject) timeseries.get(obj);
-			Long recovered = (Long) data.get("recovered");
-			Long confirmed = (Long) data.get("confirmed");
-			Long deaths = (Long) data.get("deaths");
-			
-			dataReport.setRecovered(recovered.intValue());
-			dataReport.setConfirmed(confirmed != null ? confirmed.intValue() : 0);
-			dataReport.setDeaths(deaths != null ? deaths.intValue() : 0);
-			
-			dataReportOfCountry.add(dataReport);
-		}
-		
-		country.setDataReport(dataReportOfCountry);
-		
-		return country;
-	}
-	
-	
-	
+    }
+
+    public static Country latestResponseToCountry(Covid19_latestResponse latestResponse) throws NullPointerException {
+
+        IsoUtil iu = new IsoUtil();
+        Country country = new Country();
+        country.setName(latestResponse.getCountryregion());
+        country.setConfirmed(latestResponse.getConfirmed());
+        country.setDeaths(latestResponse.getDeaths());
+        country.setRecovered(latestResponse.getRecovered());
+        country.setLocation(latestResponse.getLocation());
+        country.setCountryCode(latestResponse.getCountrycode());
+
+        if (latestResponse.getCountrycode() == null) {
+
+            Countrycode countryCode = new Countrycode();
+            countryCode.setIso3(iu.getIso3(country.getName()));
+            countryCode.setIso2(iu.getIso2(country.getName()));
+            country.setCountryCode(countryCode);
+
+        } else {
+
+            country.setCountryCode(latestResponse.getCountrycode());
+        }
+
+        country.setLastupdate(latestResponse.getLastupdate());
+        return country;
+
+    }
+
+    public String quitarUltimaLetra(String palabra) {
+        String palabraSinUltimaLetra = "";
+        for (int i = 0; i < palabra.length() - 1; i++) {
+            palabraSinUltimaLetra = palabraSinUltimaLetra.concat(String.valueOf(palabra.charAt(i)));
+        }
+        return palabraSinUltimaLetra;
+    }
+
+    public static Country parseJsonToCountryTimeSeries(JSONObject object) {
+
+        Country country = new Country();
+        country.setName(object.get("countryregion").toString());
+        JSONObject timeseries = (JSONObject) object.get("timeseries");
+        @SuppressWarnings("rawtypes")
+        Set setOfDates = timeseries.keySet();
+
+        List<DataReport> dataReportOfCountry = new ArrayList<DataReport>();
+        for (Object obj : setOfDates) {
+            DataReport dataReport = new DataReport();
+            try {
+                dataReport.setDate(new SimpleDateFormat("dd/MM/yy").parse((String) obj));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            JSONObject data = (JSONObject) timeseries.get(obj);
+            Long recovered = (Long) data.get("recovered");
+            Long confirmed = (Long) data.get("confirmed");
+            Long deaths = (Long) data.get("deaths");
+
+            dataReport.setRecovered(recovered.intValue());
+            dataReport.setConfirmed(confirmed != null ? confirmed.intValue() : 0);
+            dataReport.setDeaths(deaths != null ? deaths.intValue() : 0);
+
+            dataReportOfCountry.add(dataReport);
+        }
+
+        country.setDataReport(dataReportOfCountry);
+
+        return country;
+    }
+
+
 }
