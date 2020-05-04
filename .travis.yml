@@ -16,11 +16,11 @@ before_install:
 jobs:
   include:
     - stage: test
-    script:
+      script:
       - ./mvnw clean install
-      - stage: build docker image
-    if: tag IS present
-    script:
+    - stage: build docker image
+      if: tag IS present
+      script:
       - docker build -t tacs-grupo3-back_end .
       - docker login -u $USERDOCKER -p $PASSWORDDOCKER
       - docker tag tacs-grupo3-back_end $USERDOCKER/tacs-grupo3-back_end:$TRAVIS_BUILD_NUMBER
