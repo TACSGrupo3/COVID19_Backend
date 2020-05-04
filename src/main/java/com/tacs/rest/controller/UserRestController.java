@@ -25,9 +25,11 @@ public class UserRestController {
 		if (UserValidator.registrationValidator(user)) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No ingreso todos los datos requeridos");
 		} else {
-			boolean registered = userService.registerUser(user);
-			if (registered) {
-				return new ResponseEntity<User>(user, HttpStatus.OK);
+			User newUser = userService.registerUser(user);
+			if (newUser != null) {
+				newUser.setPassword(null);
+				newUser.setToken(SessionRestController.generateNewToken());
+				return new ResponseEntity<User>(newUser, HttpStatus.OK);
 			} else {
 				throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
 						"Ya existe un usuario con el Username: " + user.getUsername());

@@ -1,5 +1,6 @@
 package com.tacs.rest.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,9 @@ public class User {
 	
 	private List<CountriesList> countriesList;
 	
-	public User() {}
+	public User() {
+		this.countriesList = new ArrayList<CountriesList>(); 
+	}
 	
 	public User(int id, String username, String firstName, String lastName, String password) {
 		super();
@@ -24,6 +27,7 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
+		this.countriesList = new ArrayList<CountriesList>(); 
 	}
 	
 	public void addList(CountriesList newList){
