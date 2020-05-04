@@ -3,14 +3,14 @@ package com.tacs.rest.telegram;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Telegram extends TelegramLongPollingBot {
+    static int contador = 0;
+
+    public void addContador() {
+        contador++;
+    }
 
     /**
      * This method is called when receiving updates via GetUpdates method
@@ -24,12 +24,29 @@ public class Telegram extends TelegramLongPollingBot {
             // Set variables
             String message_text = update.getMessage().getText();
             long chat_id = update.getMessage().getChatId();
+            SendMessage message = new SendMessage();
+            switch (contador) {
+                case 0:
+                    // Create a message object object
+                    message.setChatId(chat_id)
+                            .setText("Bienvenido al Bot del TP COVID19 - Grupo 3\nIngrese su usuario");
+                    contador++;
+                    break;
+                case 1:
+                    // Create a message object object
+                    message.setChatId(chat_id)
+                            .setText("Ingrese su password");
+                    break;
+                case 2:
+                    //
+                    break;
 
-            SendMessage message = new SendMessage() // Create a message object object
-                    .setChatId(chat_id)
-                    .setText(message_text);
+                default:
+                    message.setChatId(chat_id)
+                            .setText(message_text);
+            }
 
-            InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+/*            InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
             List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
             List<InlineKeyboardButton> rowInline = new ArrayList<>();
             rowInline.add(new InlineKeyboardButton().setText("1 - Consultar por lista o País ").setCallbackData("update_msg_text"));
@@ -40,7 +57,7 @@ public class Telegram extends TelegramLongPollingBot {
             rowsInline.add(rowInline);
             // Add it to the message
             markupInline.setKeyboard(rowsInline);
-            message.setReplyMarkup(markupInline);
+            message.setReplyMarkup(markupInline);*/
             try {
                 execute(message); // Sending our message object to user
             } catch (TelegramApiException e) {
@@ -60,6 +77,6 @@ public class Telegram extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         //No se envia Token hasta tratarlo correctamente
-        return "";
+        return "1060211355:AAEQSjYprvL5KlQ_YKdbHpyqPf_4NuTCCow";
     }
 }

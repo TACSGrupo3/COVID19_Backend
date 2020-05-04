@@ -11,7 +11,6 @@ import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.DataReport;
 import com.tacs.rest.entity.User;
 import com.tacs.rest.servicesImpl.TelegramServiceImpl;
-import com.tacs.rest.telegram.Telegram;
 import com.tacs.rest.util.IsoUtil;
 import com.tacs.rest.util.ParseUtil;
 import org.json.simple.JSONArray;
