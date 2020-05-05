@@ -16,7 +16,6 @@ import com.tacs.rest.apiCovid.Covid19_latestResponse;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.DataReport;
-import com.tacs.rest.entity.Region;
 import com.tacs.rest.entity.User;
 
 public class ParseUtil {
@@ -25,15 +24,6 @@ public class ParseUtil {
         Country country = new Country();
         country.setId(Integer.valueOf((String) json.get("id")));
         country.setName((String) json.get("name"));
-        Region region = new Region();
-        JSONObject jsonRegion = (JSONObject) json.get("region");
-
-        region.setId(Integer.valueOf((String) jsonRegion.get("id")));
-        region.setNameRegion((String) jsonRegion.get("nameRegion"));
-        region.setSubRegion((String) jsonRegion.get("subRegion"));
-
-        country.setRegion(region);
-
         return country;
     }
 

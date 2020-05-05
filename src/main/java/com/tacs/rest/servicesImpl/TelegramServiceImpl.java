@@ -3,7 +3,6 @@ package com.tacs.rest.servicesImpl;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.DataReport;
-import com.tacs.rest.entity.Region;
 import com.tacs.rest.services.TelegramService;
 import com.tacs.rest.telegram.Telegram;
 import org.springframework.stereotype.Service;
@@ -126,19 +125,13 @@ public class TelegramServiceImpl implements TelegramService {
         countries.setId(1);
         countries.setName("Lista1");
 
-        Region latinoamerica = new Region();
-        latinoamerica.setId(1);
-        latinoamerica.setNameRegion("LATINOAMERICA");
-
         Country argentina = new Country();
         argentina.setId(1);
         argentina.setName("Argentina");
-        argentina.setRegion(latinoamerica);
 
         Country brasil = new Country();
         brasil.setId(2);
         brasil.setName("Brasil");
-        brasil.setRegion(latinoamerica);
 
         countries.addCountry(argentina);
         countries.addCountry(brasil);

@@ -3,13 +3,26 @@ package com.tacs.rest.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table (name = "public.COUNTRIES_LIST")
 public class CountriesList {
 
     private int id;
     private String name;
     private Date creationDate;
     private List<Country> countries;
-
+    private User user;
+    
     public void addCountry(Country newCountry) {
         countries.add(newCountry);
     }
@@ -18,6 +31,9 @@ public class CountriesList {
         countries.remove(exCountrie);
     }
 
+    @Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -26,6 +42,7 @@ public class CountriesList {
         this.id = id;
     }
 
+    @Column(name = "name" , nullable = false)
     public String getName() {
         return name;
     }
@@ -34,6 +51,7 @@ public class CountriesList {
         this.name = name;
     }
 
+    @OneToMany(mappedBy="countriesList")
     public List<Country> getCountries() {
         return countries;
     }
@@ -42,6 +60,7 @@ public class CountriesList {
         this.countries = countries;
     }
 
+    @Column(name = "creation_date" , nullable = false)
     public Date getCreationDate() {
         return creationDate;
     }
@@ -50,5 +69,14 @@ public class CountriesList {
         this.creationDate = creationDate;
     }
 
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable=false)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 }

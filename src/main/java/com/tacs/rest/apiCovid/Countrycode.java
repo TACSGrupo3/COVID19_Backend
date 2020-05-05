@@ -3,6 +3,14 @@ package com.tacs.rest.apiCovid;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,16 +23,32 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "iso2",
         "iso3"
 })
+@Entity
+@Table (name = "public.COUNTRY_CODE")
 public class Countrycode {
 
+	private int id;
     @JsonProperty("iso2")
     private String iso2;
     @JsonProperty("iso3")
     private String iso3;
     @JsonIgnore
+    @Transient
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("iso2")
+    @Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	@JsonProperty("iso2")
+	@Column(name = "iso2" , nullable = false)
     public String getIso2() {
         return iso2;
     }
@@ -35,6 +59,7 @@ public class Countrycode {
     }
 
     @JsonProperty("iso3")
+    @Column(name = "iso3" , nullable = false)
     public String getIso3() {
         return iso3;
     }
@@ -45,6 +70,7 @@ public class Countrycode {
     }
 
     @JsonAnyGetter
+    @Transient
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
