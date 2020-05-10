@@ -30,6 +30,16 @@ public class User {
 		this.countriesList = new ArrayList<CountriesList>(); 
 	}
 	
+	public User(int id, String username, String firstName, String lastName, String password, List<CountriesList> countriesList) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.password = password;
+		this.countriesList = countriesList; 
+	}
+	
 	public void addList(CountriesList newList){
 		countriesList.add(newList);
 	}

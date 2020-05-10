@@ -22,7 +22,9 @@ public class SessionServiceImpl implements SessionService{
 		for(User userBd : users) {
 			if(userBd.getUsername().toLowerCase().equals(user.getUsername().toLowerCase()) && 
 					userBd.getPassword().toLowerCase().equals(user.getPassword().toLowerCase())) {
-				return userBd;
+				User response = new User(userBd.getId(), userBd.getUsername(), userBd.getFirstName(), 
+						userBd.getLastName(), null, userBd.getCountriesList());
+				return response;
 			}
 		}
 		return null;
