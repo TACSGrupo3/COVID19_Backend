@@ -18,6 +18,7 @@ import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.DataReport;
 import com.tacs.rest.entity.Region;
 import com.tacs.rest.entity.User;
+import com.tacs.rest.entity.UserRole;
 
 public class ParseUtil {
 
@@ -44,6 +45,14 @@ public class ParseUtil {
         user.setLastName((String) json.get("lastName"));
         user.setUsername((String) json.get("username"));
         user.setPassword((String) json.get("password"));
+        
+        UserRole userRole = new UserRole();
+        JSONObject jsonUserRole = (JSONObject) json.get("userRole");
+        userRole.setId(Integer.valueOf((String) jsonUserRole.get("id")));
+        String roleType = (String) jsonUserRole.get("roleType");
+        userRole.setRole(roleType);
+        user.setUserRole(userRole);
+        
         JSONArray jsonCountriesList = (JSONArray) json.get("countriesList");
 
         if (jsonCountriesList != null) {

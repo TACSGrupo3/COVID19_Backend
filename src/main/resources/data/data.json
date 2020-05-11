@@ -34,7 +34,11 @@
 			"username": "Admin",
 			"password": "Admin",
 			"firstName": "Administrador",
-			"lastName": ""
+			"lastName": "",
+			"userRole": {
+				"id": "1",
+				"roleType": "ADMIN"
+			}
 		},
 		{
 			"id": "2",
@@ -42,6 +46,10 @@
 			"password": "TEST",
 			"firstName": "TESTNAME",
 			"lastName": "TESTLASTNAME",
+			"userRole": {
+				"id": "2",
+				"roleType": "USER"
+			},
 			"countriesList": [
 				{
 					"id": "1",
@@ -76,6 +84,10 @@
 			"password": "Rufus",
 			"firstName": "Rufus",
 			"lastName": "Carmaicol",
+			"userRole": {
+				"id": "2",
+				"roleType": "USER"
+			},
 			"countriesList": [
 				{
 					"id": "2",

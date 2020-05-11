@@ -13,6 +13,7 @@ public class User {
 	private String password;
 	private String token;
 	private Date lastAccess;
+	private UserRole userRole;
 	
 	private List<CountriesList> countriesList;
 	
@@ -30,7 +31,8 @@ public class User {
 		this.countriesList = new ArrayList<CountriesList>(); 
 	}
 	
-	public User(int id, String username, String firstName, String lastName, String password, List<CountriesList> countriesList) {
+	public User(int id, String username, String firstName, String lastName, 
+			String password, List<CountriesList> countriesList, UserRole userRole) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -38,6 +40,7 @@ public class User {
 		this.lastName = lastName;
 		this.password = password;
 		this.countriesList = countriesList; 
+		this.userRole = userRole;
 	}
 	
 	public void addList(CountriesList newList){
@@ -106,6 +109,14 @@ public class User {
 
 	public void setLastAccess(Date lastAccess) {
 		this.lastAccess = lastAccess;
-	}	
+	}
 
+	public UserRole getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
+	}	
+	
 }
