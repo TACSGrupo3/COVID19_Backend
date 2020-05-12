@@ -1,14 +1,12 @@
 package com.tacs.rest.servicesImpl;
 
-import com.tacs.rest.entity.CountriesList;
-import com.tacs.rest.entity.Country;
-import com.tacs.rest.entity.DataReport;
-import com.tacs.rest.entity.Region;
+import com.tacs.rest.entity.*;
 import com.tacs.rest.services.TelegramService;
 import com.tacs.rest.telegram.Telegram;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
@@ -31,6 +29,10 @@ public class TelegramServiceImpl implements TelegramService {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<CountriesList> countriesList_list(User user) {
+        return user.getCountriesList();
     }
 
     public List<Country> countries_list(int list_id) {
