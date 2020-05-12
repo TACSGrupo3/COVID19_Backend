@@ -13,6 +13,7 @@ public class User {
     private String password;
     private String token;
     private Date lastAccess;
+    private UserRole userRole;
     private List<CountriesList> countriesList;
     private long telegram_chat_id;
     private String telephone_number;
@@ -28,7 +29,18 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
-        this.countriesList = new ArrayList<CountriesList>();
+        this.countriesList = new ArrayList<CountriesList>();}
+
+	public User(int id, String username, String firstName, String lastName,
+			String password, List<CountriesList> countriesList, UserRole userRole) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.password = password;
+		this.countriesList = countriesList;
+		this.userRole = userRole;
     }
 
 
@@ -101,9 +113,17 @@ public class User {
         return lastAccess;
     }
 
-    public void setLastAccess(Date lastAccess) {
-        this.lastAccess = lastAccess;
-    }
+	public void setLastAccess(Date lastAccess) {
+		this.lastAccess = lastAccess;
+	}
+
+	public UserRole getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
+	}
 
     public long getTelegram_chat_id() {
         return telegram_chat_id;

@@ -34,7 +34,11 @@
 			"username": "Admin",
 			"password": "Admin",
 			"firstName": "Administrador",
-			"lastName": ""
+			"lastName": "",
+			"userRole": {
+				"id": "1",
+				"roleType": "ADMIN"
+			}
 		},
 		{
 			"id": "2",
@@ -43,6 +47,10 @@
 			"firstName": "TESTNAME",
 			"lastName": "TESTLASTNAME",
 			"telegram_chat_id": "114523575",
+			"userRole": {
+				"id": "2",
+				"roleType": "USER"
+			},
 			"countriesList": [
 				{
 					"id": "1",
@@ -69,7 +77,7 @@
 						}
 					]
 				}
-			],
+			]
 		},
 		{
 			"id": "3",
@@ -77,6 +85,10 @@
 			"password": "Rufus",
 			"firstName": "Rufus",
 			"lastName": "Carmaicol",
+			"userRole": {
+				"id": "2",
+				"roleType": "USER"
+			},
 			"countriesList": [
 				{
 					"id": "2",

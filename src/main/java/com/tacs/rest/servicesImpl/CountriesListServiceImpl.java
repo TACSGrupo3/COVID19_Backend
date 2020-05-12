@@ -50,18 +50,6 @@ public class CountriesListServiceImpl implements CountriesListService {
 	}
 
 	@Override
-	public void save(CountriesList countriesList) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void deleteById(int id) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public List<CountriesList> findFilterByDate(Date date) {
 		// TODO: Agregar llamada a la BD
 
@@ -152,6 +140,36 @@ public class CountriesListServiceImpl implements CountriesListService {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void deleteListCountries(String countriesListId) {
+
+		boolean exists = false;
+		List<CountriesList> countriesListBd = (List<CountriesList>) RestApplication.data.get("CountriesList");
+		List<User> users = (List<User>) RestApplication.data.get("Users");
+		for(User user: users) {
+			if (user.getCountriesList() != null) {
+				for (int j = 0; j < user.getCountriesList().size(); j++) {
+					if (user.getCountriesList().get(j).getId() == Integer.valueOf(countriesListId)) {
+						user.getCountriesList().remove(j);
+						exists = true;
+						break;
+					}
+				}
+				
+				if(exists) break;
+			}
+		}
+		
+		for(int i = 0; i < countriesListBd.size(); i++) {
+			if(countriesListBd.get(i).getId() == Integer.valueOf(countriesListId)) {
+				countriesListBd.remove(i);
+				break;
+			}
+		}
+		
+		return;
 	}
 
 }

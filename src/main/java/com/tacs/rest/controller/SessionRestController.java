@@ -44,7 +44,6 @@ public class SessionRestController {
         if (userAuthenticated == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "La combinación de Usuario y Contraseña es inválida");
         } else {
-            userAuthenticated.setPassword(null);
             userAuthenticated.setToken(generateNewToken());
             return new ResponseEntity<User>(userAuthenticated, HttpStatus.OK);
         }
