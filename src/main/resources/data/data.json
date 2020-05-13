@@ -218,6 +218,31 @@
 					}
 				}
 			]
+		},
+		{
+			"id": "4",
+			"name": "ListadoSudamerica1",
+			"creationDate": "2020-01-11T03:00:00.000+0000",
+			"countries": [
+				{
+					"id": "32",
+					"name": "Chile",
+					"region": {
+						"id": "1",
+						"nameRegion": "America del Sur",
+						"subRegion": "Sur"
+					}
+				},
+				{
+					"id": "22",
+					"name": "Brasil",
+					"region": {
+						"id": "2",
+						"nameRegion": "America del Sur",
+						"subRegion": "Centro"
+					}
+				}
+			]
 		}
 	]
 }

@@ -1,12 +1,16 @@
 package com.tacs.rest.servicesImpl;
 
-import com.tacs.rest.entity.*;
+import com.tacs.rest.controller.CountryRestController;
+import com.tacs.rest.entity.CountriesList;
+import com.tacs.rest.entity.Country;
+import com.tacs.rest.entity.Region;
+import com.tacs.rest.entity.User;
 import com.tacs.rest.services.TelegramService;
 import com.tacs.rest.telegram.Telegram;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
@@ -16,6 +20,9 @@ import java.util.List;
 
 @Service
 public class TelegramServiceImpl implements TelegramService {
+
+    @Autowired
+    private CountryRestController countriesController;
 
     @Override
     public void initialization() {
@@ -35,10 +42,10 @@ public class TelegramServiceImpl implements TelegramService {
         return user.getCountriesList();
     }
 
-    public List<Country> countries_list(int list_id) {
+    public CountriesList countries_list(String user_id, int list_id) {
 
-        List<Country> countries = new ArrayList<Country>();
-
+        List<CountriesList> countries = countriesController.getCountriesListByUserId(user_id);
+        CountriesList countryData = countries.stream().filter(list_countries -> list_countries.getId() == list_id).findAny().orElse(null);
         /*URL url = new URL("http://127.0.0.1:8080/api/countries");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -70,7 +77,7 @@ public class TelegramServiceImpl implements TelegramService {
             countries.add(brasil);
         }
         conn.disconnect();*/
-        return countries;
+        return countryData;
 
     }
 
@@ -86,34 +93,9 @@ public class TelegramServiceImpl implements TelegramService {
 
     }
 
-    public List<DataReport> last_data(int list_id, int pais_id) {
-        List<DataReport> reportePaises = new ArrayList<>();
+    public CountriesList last_data(int list_id) {
+        CountriesList reportePaises = null;
 
-        if (list_id == 0 && pais_id > 0) {
-            DataReport reporte = new DataReport();
-            reporte.setId(1);
-            reporte.setDate(new GregorianCalendar(2020, Calendar.APRIL, 1).getTime());
-            reporte.setRecovered(100);
-            reporte.setDeaths(30);
-            reporte.setConfirmed(1000);
-            reportePaises.add(reporte);
-
-        } else if (list_id > 0 && pais_id == 0) {
-            DataReport reporte1 = new DataReport();
-            reporte1.setId(1);
-            reporte1.setDate(new GregorianCalendar(2020, Calendar.APRIL, 1).getTime());
-            reporte1.setRecovered(100);
-            reporte1.setDeaths(30);
-            reporte1.setConfirmed(1000);
-            reportePaises.add(reporte1);
-            DataReport reporte2 = new DataReport();
-            reporte2.setId(2);
-            reporte2.setDate(new GregorianCalendar(2020, Calendar.APRIL, 1).getTime());
-            reporte2.setRecovered(1200);
-            reporte2.setDeaths(20000);
-            reporte2.setConfirmed(43000);
-            reportePaises.add(reporte2);
-        }
         return reportePaises;
     }
 

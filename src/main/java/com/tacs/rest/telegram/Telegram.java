@@ -1,11 +1,16 @@
 package com.tacs.rest.telegram;
 
+import com.tacs.rest.controller.CountryRestController;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.User;
+import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.TelegramService;
+import com.tacs.rest.servicesImpl.CountriesListServiceImpl;
 import com.tacs.rest.servicesImpl.TelegramServiceImpl;
 import com.tacs.rest.servicesImpl.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -30,9 +35,8 @@ public class Telegram extends TelegramLongPollingBot {
     Stage stage;
     String actualState = String.valueOf(Stage.CHOOSE);
     UserServiceImpl userService = new UserServiceImpl();
-    TelegramService telegramService = new TelegramServiceImpl();
+    TelegramServiceImpl telegramService = new TelegramServiceImpl();
     SendMessage message = new SendMessage();
-
 
     /**
      * This method is called when receiving updates via GetUpdates method
@@ -75,20 +79,48 @@ public class Telegram extends TelegramLongPollingBot {
 
 
                 } else if (update.getMessage().getText().contains("/Mod")) {
-                    {
-                        switch (update.getMessage().getText()) {
-                            case "/ModLista1":
-                                stage = Stage.SAVE;
-                                actualState = "/ModLista1" + stage;
-                                message.setReplyMarkup(null);
-                                message.setText("Ingrese el país que desea agregar a la lista");
-                                break;
 
-                            default:
-                        }
+                    switch (update.getMessage().getText()) {
+                        case "/ModLista1":
+                            stage = Stage.SAVE;
+                            actualState = "/ModLista1" + stage;
+                            message.setReplyMarkup(null);
+                            message.setText("Ingrese el país que desea agregar a la lista");
+                            break;
+
+                        default:
                     }
-                    if (update.getMessage().getText().contains("/Compare")) {
+                } else if (update.getMessage().getText().contains("/Compare")) {
 
+                } else if (update.getMessage().getText().contains("/values")) {
+                    String lists = update.getMessage().getText().substring(7);
+                    CountriesList finalLists = checkedUser.getCountriesList().stream().filter(countries -> countries.getName().equals(lists)).findAny().orElse(null);
+                    if (finalLists != null) {
+
+
+                        message.setChatId(chat_id);//.setText(countriesMessage);
+                        message.setReplyMarkup(null);
+                        stage = Stage.CHOOSE;
+                        actualState = String.valueOf(Stage.CHOOSE);
+                        message.setParseMode("HTML");
+                        String htmlMessage;
+                        String testt = String.valueOf(checkedUser.getId());
+                        CountriesList countriesListData = telegramService.countries_list(String.valueOf(checkedUser.getId()),finalLists.getId());//      last_data(finalLists.getId());//  countriesController.getCountriesListByUserId(testt);
+
+                        //CountriesList countryData = countriesListData.stream().filter(list_countries -> list_countries.getId() == finalLists.getId()).findAny().orElse(null);
+                        Iterator countryDataIterator = countriesListData.getCountries().iterator();
+                        //.findAny().orElse(null);
+                        //filter(list_countries -> list_countries.getName()  ).findAny().orElse(null);//.getCountries().iterator();
+
+                        htmlMessage = "\\-------------------------------------------------------------\n" +
+                                "        Pais     Infectados     Curados     Muertos        \n" +
+                                "-------------------------------------------------------------\\\n";
+                        while (countryDataIterator.hasNext()) {
+                            Country country = (Country) countryDataIterator.next();
+                            htmlMessage += "        " + country.getName() + "     " + country.getConfirmed() + "     " + country.getRecovered() + "     " + country.getDeaths() + "        \n";
+                        }
+
+                        message.setText(htmlMessage);
                     }
                 }
 
@@ -176,6 +208,19 @@ public class Telegram extends TelegramLongPollingBot {
                     stage = Stage.WRITE_COMPARE;
                     break;
                 case "action3":
+                    messageString = "Seleccione la lista de países de la que desea consultar los ultimos valores:\n";
+                    while (iterator.hasNext()) {
+                        CountriesList listName = (CountriesList) iterator.next();
+                        messageString = messageString + listName.getName() + " /values" + listName.getName() + "\n";
+                    }
+                    message.setChatId(chat_id).setText(messageString);
+                    try {
+                        execute(new AnswerCallbackQuery().setCallbackQueryId(update.getCallbackQuery().getId()).setText("Opción 3").setCacheTime(4)); // Sending our message object to user
+                        execute(message);
+                    } catch (TelegramApiException e) {
+                        e.printStackTrace();
+                    }
+                    stage = Stage.WRITE;
                     break;
                 case "action4":
                     messageString = "Seleccione alguna de las siguientes listas de países:\n";
