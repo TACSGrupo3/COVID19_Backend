@@ -1,16 +1,12 @@
 package com.tacs.rest.telegram;
 
-import com.tacs.rest.controller.CountryRestController;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.User;
-import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.TelegramService;
-import com.tacs.rest.servicesImpl.CountriesListServiceImpl;
 import com.tacs.rest.servicesImpl.TelegramServiceImpl;
 import com.tacs.rest.servicesImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -35,7 +31,9 @@ public class Telegram extends TelegramLongPollingBot {
     Stage stage;
     String actualState = String.valueOf(Stage.CHOOSE);
     UserServiceImpl userService = new UserServiceImpl();
+
     TelegramServiceImpl telegramService = new TelegramServiceImpl();
+
     SendMessage message = new SendMessage();
 
     /**
@@ -64,7 +62,7 @@ public class Telegram extends TelegramLongPollingBot {
                         String countriesMessage;
                         countriesMessage = "Países:\n";
 
-                        Iterator countryIterator = finalList.getCountries().iterator();
+                        Iterator<Country> countryIterator = finalList.getCountries().iterator();
 
                         while (countryIterator.hasNext()) {
                             Country country = (Country) countryIterator.next();
@@ -105,7 +103,7 @@ public class Telegram extends TelegramLongPollingBot {
                         message.setParseMode("HTML");
                         String htmlMessage;
                         String testt = String.valueOf(checkedUser.getId());
-                        CountriesList countriesListData = telegramService.countries_list(String.valueOf(checkedUser.getId()),finalLists.getId());//      last_data(finalLists.getId());//  countriesController.getCountriesListByUserId(testt);
+                        CountriesList countriesListData = telegramService.countries_list(checkedUser.getId(), finalLists.getId());//      last_data(finalLists.getId());//  countriesController.getCountriesListByUserId(testt);
 
                         //CountriesList countryData = countriesListData.stream().filter(list_countries -> list_countries.getId() == finalLists.getId()).findAny().orElse(null);
                         Iterator countryDataIterator = countriesListData.getCountries().iterator();
@@ -253,6 +251,6 @@ public class Telegram extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         //No se envia Token hasta tratarlo correctamente
-        return "";
+        return "1060211355:AAE7NMaLC73_zu6gVjGKwCZkA4-DlWS2nOI";
     }
 }

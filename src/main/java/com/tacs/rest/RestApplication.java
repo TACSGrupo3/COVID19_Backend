@@ -6,10 +6,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.tacs.rest.apiCovid.ConnectionApiCovid;
 import com.tacs.rest.apiCovid.Covid19_latestResponse;
-import com.tacs.rest.entity.CountriesList;
-import com.tacs.rest.entity.Country;
-import com.tacs.rest.entity.DataReport;
-import com.tacs.rest.entity.User;
+import com.tacs.rest.entity.*;
 import com.tacs.rest.servicesImpl.TelegramServiceImpl;
 import com.tacs.rest.util.IsoUtil;
 import com.tacs.rest.util.ParseUtil;
@@ -40,7 +37,7 @@ public class RestApplication {
     public static void main(String[] args) throws JsonIOException, JsonSyntaxException, IOException, URISyntaxException {
         RestApplication.initData();
         SpringApplication.run(RestApplication.class, args);
-        TelegramServiceImpl telegram = new TelegramServiceImpl();
+        Telegram telegram = new Telegram();
         telegram.initialization();
     }
 
