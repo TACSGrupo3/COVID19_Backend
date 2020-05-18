@@ -3,6 +3,7 @@ package com.tacs.rest.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import com.tacs.rest.entity.UserRole;
 
 public class User {
 

@@ -18,7 +18,7 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
-
+    
     @PostMapping("/users")
     public ResponseEntity<User> registration(@Validated @RequestBody User user) {
 

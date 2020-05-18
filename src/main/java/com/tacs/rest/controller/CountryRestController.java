@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -47,7 +49,8 @@ public class CountryRestController {
     java.lang.reflect.Type collectionType = new TypeToken<Collection<Covid19_latestResponse>>() {
     }.getType();
     Collection<Covid19_latestResponse> latestResponse;
-
+    
+    
     @GetMapping("/countries")
     public List<Country> listPaises(@RequestParam(required = false) String latitude,
                                     @RequestParam(required = false) String longitude, @RequestParam(required = false) String maxCountries,

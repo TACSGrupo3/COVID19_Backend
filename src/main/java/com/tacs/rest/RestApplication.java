@@ -10,15 +10,25 @@ import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.DataReport;
 import com.tacs.rest.entity.User;
+import com.tacs.rest.security.JWTAuthorizationFilter;
 import com.tacs.rest.servicesImpl.TelegramServiceImpl;
 import com.tacs.rest.util.IsoUtil;
 import com.tacs.rest.util.ParseUtil;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -53,6 +63,28 @@ public class RestApplication {
             }
         };
     }
+    
+    //Esto de abajo hace que todas las consultas que hagamos requieran el token como authentication menos
+    //la del /session
+	@EnableWebSecurity
+	@Configuration
+	class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+		
+		@Autowired
+		AuthenticationEntryPoint jwtAuthenticationEntryPoint;
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			
+			http.csrf().disable()
+				.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+				.authorizeRequests()
+				.antMatchers(HttpMethod.POST, "/session").permitAll()
+				.anyRequest().authenticated().and().
+				exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		}
+	}
 
     @SuppressWarnings("unchecked")
     public static void initData() throws JsonIOException, JsonSyntaxException, IOException, URISyntaxException {
