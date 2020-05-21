@@ -46,6 +46,7 @@
 			"password": "TEST",
 			"firstName": "TESTNAME",
 			"lastName": "TESTLASTNAME",
+			"telegram_chat_id": "114523575",
 			"userRole": {
 				"id": "2",
 				"roleType": "USER"

@@ -15,4 +15,6 @@ public interface UserService {
 	public void deleteById(int id);
 	
 	public boolean registerUser(User user);
+
+	public User findByTelegramId(long telegram_id);
 }

@@ -50,8 +50,8 @@ public class RestApplication {
     public static void main(String[] args) throws JsonIOException, JsonSyntaxException, IOException, URISyntaxException {
         RestApplication.initData();
         SpringApplication.run(RestApplication.class, args);
-        //TelegramServiceImpl telegram = new TelegramServiceImpl();
-        //telegram.initialization();
+        TelegramServiceImpl telegram = new TelegramServiceImpl();
+        telegram.initialization();
     }
 
     @Bean
