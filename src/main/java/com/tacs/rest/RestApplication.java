@@ -64,12 +64,13 @@ public class RestApplication {
             }
         };
     }
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
     
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
     
+//    
     //Esto de abajo hace que todas las consultas que hagamos requieran el token como authentication menos
     //la del /session
 	@EnableWebSecurity
