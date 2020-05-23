@@ -2,6 +2,9 @@ package com.tacs.rest.servicesImpl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.tacs.rest.RestApplication;
@@ -50,10 +53,12 @@ public class UserServiceImpl implements UserService {
 //		daoUser.deleteById(id);
     }
 
-    @Override
+    @Autowired
+    PasswordEncoder passwordEncoder;
+	@Override
     public boolean registerUser(User user) {
         // TODO Agregar llamada a la BD
-
+    	
         //MOCK
         List<User> users = (List<User>) RestApplication.data.get("Users");
         for (User userBd : users) {
@@ -63,6 +68,9 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setId(users.size() + 1);
+                
+        String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+        user.setPassword(pw_hash);
         users.add(user);
 
         RestApplication.data.put("Users", users);
@@ -81,5 +89,6 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+    
 
 }

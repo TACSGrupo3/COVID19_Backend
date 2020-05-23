@@ -82,7 +82,7 @@
 		{
 			"id": "3",
 			"username": "Rufus",
-			"password": "Rufus",
+			"password": "$2a$04$2nUvvcskCSpDgFDtwDFLtuaqZTGUME0JG2ou6pP6mw/dC6Wo2QeRa",
 			"firstName": "Rufus",
 			"lastName": "Carmaicol",
 			"userRole": {
