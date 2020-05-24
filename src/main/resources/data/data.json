@@ -51,7 +51,7 @@
 		{
 			"id": "3",
 			"username": "Rufus",
-			"password": "Rufus",
+			"password": "$2a$04$eXiOu5epUEbriIPy6Nck/OCbXQKZO1PLUY6ATQQBlRPGP2SEXdijy",
 			"firstName": "Rufus",
 			"lastName": "Carmaicol",
 			"userRole": "USER",

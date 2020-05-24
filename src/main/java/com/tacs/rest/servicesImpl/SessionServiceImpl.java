@@ -2,6 +2,7 @@ package com.tacs.rest.servicesImpl;
 
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.tacs.rest.RestApplication;
@@ -21,10 +22,11 @@ public class SessionServiceImpl implements SessionService{
 		List<User> users = (List<User>) RestApplication.data.get("Users");
 		for(User userBd : users) {
 			if(userBd.getUsername().toLowerCase().equals(user.getUsername().toLowerCase()) && 
-					userBd.getPassword().toLowerCase().equals(user.getPassword().toLowerCase())) {
+					BCrypt.checkpw(user.getPassword(), userBd.getPassword())) {
 				return userBd;
 			}
 		}
+			
 		return null;
 	}
 
