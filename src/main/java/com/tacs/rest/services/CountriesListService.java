@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.tacs.rest.entity.CountriesList;
+import com.tacs.rest.entity.User;
 
 public interface CountriesListService {
 	
@@ -15,9 +16,11 @@ public interface CountriesListService {
 	
 	public CountriesList findById(int id);
 	
-	public CountriesList modifyListCountries(int countryListId, CountriesList list);
+	public CountriesList modifyListCountries(int countryListId, CountriesList list) throws Exception;
 
-	public List<CountriesList> addListCountries(String userId, List<CountriesList> countriesList);
+	public List<CountriesList> addListCountries(String userId, List<CountriesList> countriesList) throws Exception;
 
 	public void deleteListCountries(String countriesListId);
+
+	public List<User> getIntrested(int countryId);
 }

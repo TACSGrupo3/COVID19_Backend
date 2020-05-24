@@ -11,9 +11,7 @@ public class Country {
 
     private int id;
     private String name;
-    private Region region;
     private List<DataReport> dataReport = new ArrayList<>();
-    private int offset;
     private Integer deaths;
     private Integer confirmed;
     private Integer recovered;
@@ -35,22 +33,6 @@ public class Country {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Region getRegion() {
-        return region;
-    }
-
-    public void setRegion(Region region) {
-        this.region = region;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
     }
 
     public List<DataReport> getDataReport() {
@@ -113,4 +95,11 @@ public class Country {
         this.lastupdate = lastupdate;
     }
 
+    public double getDistance(final String latitude, String longitude) {
+        final double dx = this.getLocation().getLat() - Double.valueOf(latitude); 
+        final double dy = this.getLocation().getLng() - Double.valueOf(longitude); 
+        
+        return Math.sqrt(dx*dx + dy*dy);
+    }
+    
 }

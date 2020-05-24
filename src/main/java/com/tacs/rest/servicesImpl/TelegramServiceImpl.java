@@ -91,7 +91,6 @@ public class TelegramServiceImpl implements TelegramService {
 
         if (list_id == 0 && pais_id > 0) {
             DataReport reporte = new DataReport();
-            reporte.setId(1);
             reporte.setDate(new GregorianCalendar(2020, Calendar.APRIL, 1).getTime());
             reporte.setRecovered(100);
             reporte.setDeaths(30);
@@ -100,14 +99,12 @@ public class TelegramServiceImpl implements TelegramService {
 
         } else if (list_id > 0 && pais_id == 0) {
             DataReport reporte1 = new DataReport();
-            reporte1.setId(1);
             reporte1.setDate(new GregorianCalendar(2020, Calendar.APRIL, 1).getTime());
             reporte1.setRecovered(100);
             reporte1.setDeaths(30);
             reporte1.setConfirmed(1000);
             reportePaises.add(reporte1);
             DataReport reporte2 = new DataReport();
-            reporte2.setId(2);
             reporte2.setDate(new GregorianCalendar(2020, Calendar.APRIL, 1).getTime());
             reporte2.setRecovered(1200);
             reporte2.setDeaths(20000);
@@ -128,19 +125,13 @@ public class TelegramServiceImpl implements TelegramService {
         countries.setId(1);
         countries.setName("Lista1");
 
-        Region latinoamerica = new Region();
-        latinoamerica.setId(1);
-        latinoamerica.setNameRegion("LATINOAMERICA");
-
         Country argentina = new Country();
         argentina.setId(1);
         argentina.setName("Argentina");
-        argentina.setRegion(latinoamerica);
 
         Country brasil = new Country();
         brasil.setId(2);
         brasil.setName("Brasil");
-        brasil.setRegion(latinoamerica);
 
         countries.addCountry(argentina);
         countries.addCountry(brasil);

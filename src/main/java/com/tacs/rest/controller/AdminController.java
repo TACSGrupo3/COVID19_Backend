@@ -1,6 +1,5 @@
 package com.tacs.rest.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tacs.rest.entity.CountriesList;
-import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.User;
 import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.UserService;
@@ -81,42 +79,7 @@ public class AdminController {
      */
     @GetMapping("/countries/{countryId}/users")
     public List<User> getInteresados(@PathVariable int countryId) {
-        List<User> users = new ArrayList<User>();
-        User user1 = new User();
-        user1.setId(1);
-        user1.setFirstName("Name1");
-        user1.setLastName("LastName1");
-
-        User user2 = new User();
-        user2.setId(2);
-        user2.setFirstName("Name2");
-        user2.setLastName("LastName2");
-
-        Country country = new Country();
-        country.setId(countryId);
-        country.setName("Argentina");
-
-        List<CountriesList> countriesList = new ArrayList<CountriesList>();
-        CountriesList list = new CountriesList();
-        list.setName("Lista1");
-        List<Country> listOfCountries = new ArrayList<Country>();
-        listOfCountries.add(country);
-        list.setCountries(listOfCountries);
-        countriesList.add(list);
-        user1.setCountriesList(countriesList);
-
-        List<CountriesList> countriesList2 = new ArrayList<CountriesList>();
-        CountriesList list2 = new CountriesList();
-        list2.setName("Lista2");
-        List<Country> listOfCountries2 = new ArrayList<Country>();
-        listOfCountries2.add(country);
-        list2.setCountries(listOfCountries2);
-        countriesList2.add(list2);
-        user2.setCountriesList(countriesList2);
-
-        users.add(user1);
-        users.add(user2);
-        return users;
+    	return countriesListService.getIntrested(countryId);
     }
 
 }
