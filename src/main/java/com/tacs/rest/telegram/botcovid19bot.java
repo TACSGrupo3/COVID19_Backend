@@ -3,10 +3,10 @@ package com.tacs.rest.telegram;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.User;
-import com.tacs.rest.services.TelegramService;
 import com.tacs.rest.servicesImpl.TelegramServiceImpl;
 import com.tacs.rest.servicesImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -18,8 +18,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-public class Telegram extends TelegramLongPollingBot {
+@Component
+public class botcovid19bot extends TelegramLongPollingBot {
 
     enum Stage {
         CHOOSE,
@@ -31,10 +34,10 @@ public class Telegram extends TelegramLongPollingBot {
     Stage stage;
     String actualState = String.valueOf(Stage.CHOOSE);
     UserServiceImpl userService = new UserServiceImpl();
+    @Autowired
+    TelegramServiceImpl telegramService;
 
-    TelegramServiceImpl telegramService = new TelegramServiceImpl();
-
-    SendMessage message = new SendMessage();
+    private SendMessage message = new SendMessage();
 
     /**
      * This method is called when receiving updates via GetUpdates method
@@ -56,28 +59,29 @@ public class Telegram extends TelegramLongPollingBot {
 
             if (update.getMessage().getText().contains("/") && !update.getMessage().getText().equals("/start")) {
                 if (update.getMessage().getText().contains("/view")) {
+                    // View countries list
+                    // Get string ahead from position 5
                     String list = update.getMessage().getText().substring(5);
+                    // Get countries list from list of lists
                     CountriesList finalList = checkedUser.getCountriesList().stream().filter(countries -> countries.getName().equals(list)).findAny().orElse(null);
                     if (finalList != null) {
-                        String countriesMessage;
-                        countriesMessage = "Países:\n";
-
+                        String countriesMessage = "Países:\n";
                         Iterator<Country> countryIterator = finalList.getCountries().iterator();
-
+                        // Set String to show on Telegram chat
                         while (countryIterator.hasNext()) {
                             Country country = (Country) countryIterator.next();
                             countriesMessage = countriesMessage + country.getName() + "\n";
                         }
-
+                        // Set chat id and String to send
                         message.setChatId(chat_id).setText(countriesMessage);
+                        // Clear buttons
                         message.setReplyMarkup(null);
+                        // Set next step
                         stage = Stage.CHOOSE;
                         actualState = String.valueOf(Stage.CHOOSE);
                     }
-
-
                 } else if (update.getMessage().getText().contains("/Mod")) {
-
+                    // Add new country to list
                     switch (update.getMessage().getText()) {
                         case "/ModLista1":
                             stage = Stage.SAVE;
@@ -89,33 +93,37 @@ public class Telegram extends TelegramLongPollingBot {
                         default:
                     }
                 } else if (update.getMessage().getText().contains("/Compare")) {
-
+                    // Show compare table of list of countries
                 } else if (update.getMessage().getText().contains("/values")) {
+                    // Show lasts values of COVID-19 belong to the countries of the list
+                    // Get string ahead from position 7
                     String lists = update.getMessage().getText().substring(7);
+                    // Get countries list from list of lists
                     CountriesList finalLists = checkedUser.getCountriesList().stream().filter(countries -> countries.getName().equals(lists)).findAny().orElse(null);
                     if (finalLists != null) {
-
-
-                        message.setChatId(chat_id);//.setText(countriesMessage);
+                        message.setChatId(chat_id);
                         message.setReplyMarkup(null);
+                        // Set next step
                         stage = Stage.CHOOSE;
                         actualState = String.valueOf(Stage.CHOOSE);
+                        // Set HTML message to show on telegram chat
                         message.setParseMode("HTML");
-                        String htmlMessage;
-                        String testt = String.valueOf(checkedUser.getId());
-                        CountriesList countriesListData = telegramService.countries_list(checkedUser.getId(), finalLists.getId());//      last_data(finalLists.getId());//  countriesController.getCountriesListByUserId(testt);
-
-                        //CountriesList countryData = countriesListData.stream().filter(list_countries -> list_countries.getId() == finalLists.getId()).findAny().orElse(null);
+                        // Get COVID-19 information
+                        CountriesList countriesListData = telegramService.countries_list(checkedUser.getId(), finalLists.getId());
                         Iterator countryDataIterator = countriesListData.getCountries().iterator();
-                        //.findAny().orElse(null);
-                        //filter(list_countries -> list_countries.getName()  ).findAny().orElse(null);//.getCountries().iterator();
 
-                        htmlMessage = "\\-------------------------------------------------------------\n" +
-                                "        Pais     Infectados     Curados     Muertos        \n" +
-                                "-------------------------------------------------------------\\\n";
+                        String htmlMessage = "\\------------------------------------------------\n" +
+                                "Pais               Infectados   Curados   Muertos\n" +
+                                "------------------------------------------------\\\n";
                         while (countryDataIterator.hasNext()) {
                             Country country = (Country) countryDataIterator.next();
-                            htmlMessage += "        " + country.getName() + "     " + country.getConfirmed() + "     " + country.getRecovered() + "     " + country.getDeaths() + "        \n";
+                            int offset = 19 - country.getName().length();
+                            int offset2 = 13 - country.getConfirmed().toString().length();
+                            int offset3 = 10 - country.getRecovered().toString().length();
+                            htmlMessage += country.getName() + (IntStream.range(0, offset).mapToObj(i -> " ").collect(Collectors.joining(""))) +
+                                    country.getConfirmed() + (IntStream.range(0, offset2).mapToObj(i -> " ").collect(Collectors.joining(""))) +
+                                    country.getRecovered() + (IntStream.range(0, offset3).mapToObj(i -> " ").collect(Collectors.joining(""))) +
+                                    country.getDeaths() + " \n";
                         }
 
                         message.setText(htmlMessage);
@@ -123,25 +131,24 @@ public class Telegram extends TelegramLongPollingBot {
                 }
 
             } else {
-
                 switch (actualState) {
                     case "/ModLista1SAVE":
-
-
                         message.setReplyMarkup(null);
                         message.setText("Se ha agregado el pais a la lista");
                         stage = Stage.CHOOSE;
                         actualState = String.valueOf(Stage.CHOOSE);
                         break;
                     case "CHOOSE":
-                        // Create a message object object
+                        // Welcome message
                         message.setChatId(chat_id)
                                 .setText("Bienvenido al Bot del TP COVID19 - Grupo 3\n");
 
                         if (checkedUser == null) {
+                            // No Telegram ID for user on app
                             message.setChatId(chat_id)
                                     .setText("No posee usuario de Telegram configurado en la aplicacion TACS-Grupo3  ");
                         } else {
+                            // User found, show options
                             rowInline1.add(new InlineKeyboardButton().setText("Agregar un pais a lista").setCallbackData("action1"));
                             rowsInline.add(rowInline1);
                             rowInline2.add(new InlineKeyboardButton().setText("Consultar tabla de comparacion").setCallbackData("action2"));
@@ -153,21 +160,16 @@ public class Telegram extends TelegramLongPollingBot {
                             // Add it to the message
                             markupInline.setKeyboard(rowsInline);
                             message.setReplyMarkup(markupInline);
-
                         }
                         break;
                     default:
                 }
             }
 
-            try {
-                execute(message); // Sending our message object to user
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+            send_to_telegram(update, "", false, 0);
+
         } else if (update.getCallbackQuery() != null) {
-            String messageString;
-            int commandNumber = 0;
+            // Get buttons replies
             message.setReplyMarkup(null);
             long chat_id = update.getCallbackQuery().getFrom().getId();
             User checkedUser = userService.findByTelegramId(chat_id);
@@ -175,73 +177,29 @@ public class Telegram extends TelegramLongPollingBot {
             Iterator iterator = countryList.iterator();
             switch (update.getCallbackQuery().getData()) {
                 case "action1":
-                    messageString = "Listas de países:\n";
-                    while (iterator.hasNext()) {
-                        commandNumber++;
-                        CountriesList listName = (CountriesList) iterator.next();
-                        messageString = messageString + " " + listName.getName() + " /ModLista" + String.valueOf(commandNumber) + "\n";
-                    }
-                    message.setChatId(chat_id).setText(messageString);
-                    try {
-                        execute(new AnswerCallbackQuery().setCallbackQueryId(update.getCallbackQuery().getId()).setText("Opción 1").setCacheTime(4)); // Sending our message object to user
-                        execute(message);
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
+                    set_message_listCountries(update, " /ModLista", "Listas de países:\n");
+                    send_to_telegram(update, "Opción 1", true, 4);
                     stage = Stage.WRITE;
                     break;
                 case "action2":
-                    messageString = "Seleccione la lista de países que desea comparar:\n";
-                    while (iterator.hasNext()) {
-                        CountriesList listName = (CountriesList) iterator.next();
-                        messageString = messageString + listName.getName() + " /Compare" + listName.getName() + "\n";
-                    }
-                    message.setChatId(chat_id).setText(messageString);
-                    try {
-                        execute(new AnswerCallbackQuery().setCallbackQueryId(update.getCallbackQuery().getId()).setText("Opción 2").setCacheTime(4)); // Sending our message object to user
-                        execute(message);
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
+                    set_message_listCountries(update, " /Compare", "Seleccione la lista de países que desea comparar:\n");
+                    send_to_telegram(update, "Opción 2", true, 4);
                     stage = Stage.WRITE_COMPARE;
                     break;
                 case "action3":
-                    messageString = "Seleccione la lista de países de la que desea consultar los ultimos valores:\n";
-                    while (iterator.hasNext()) {
-                        CountriesList listName = (CountriesList) iterator.next();
-                        messageString = messageString + listName.getName() + " /values" + listName.getName() + "\n";
-                    }
-                    message.setChatId(chat_id).setText(messageString);
-                    try {
-                        execute(new AnswerCallbackQuery().setCallbackQueryId(update.getCallbackQuery().getId()).setText("Opción 3").setCacheTime(4)); // Sending our message object to user
-                        execute(message);
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
+                    set_message_listCountries(update, " /values", "Seleccione la lista de países de la que desea consultar los ultimos valores:\n");
+                    send_to_telegram(update, "Opción 3", true, 4);
                     stage = Stage.WRITE;
                     break;
                 case "action4":
-                    messageString = "Seleccione alguna de las siguientes listas de países:\n";
-                    while (iterator.hasNext()) {
-                        CountriesList listName = (CountriesList) iterator.next();
-                        messageString = messageString + listName.getName() + " /view" + listName.getName() + "\n";
-                    }
-                    message.setChatId(chat_id).setText(messageString);
-                    try {
-                        execute(new AnswerCallbackQuery().setCallbackQueryId(update.getCallbackQuery().getId()).setText("Opción 4").setCacheTime(4)); // Sending our message object to user
-                        execute(message);
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
+                    set_message_listCountries(update, " /view", "Seleccione alguna de las siguientes listas de países:\n");
+                    send_to_telegram(update, "Opción 4", true, 4);
                     stage = Stage.WRITE;
                     break;
-
                 default:
             }
-
         }
     }
-
 
     @Override
     public String getBotUsername() {
@@ -253,4 +211,27 @@ public class Telegram extends TelegramLongPollingBot {
         //No se envia Token hasta tratarlo correctamente
         return "";
     }
+
+    private void set_message_listCountries(Update update, String action, String messageString) {
+        // Show user's lists of countries
+        long chat_id = update.getCallbackQuery().getFrom().getId();
+        Iterator iterator = userService.findByTelegramId(chat_id).getCountriesList().iterator();
+        while (iterator.hasNext()) {
+            CountriesList listName = (CountriesList) iterator.next();
+            messageString = messageString + listName.getName() + action + listName.getName() + "\n";
+        }
+        message.setChatId(chat_id).setText(messageString);
+    }
+
+    private void send_to_telegram(Update update, String action_text, boolean alert, int cacheTime) {
+        try {
+            if (alert)
+                execute(new AnswerCallbackQuery().setCallbackQueryId(update.getCallbackQuery().getId()).setText(action_text).setCacheTime(cacheTime)); // Sending our message object to user
+            execute(message);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

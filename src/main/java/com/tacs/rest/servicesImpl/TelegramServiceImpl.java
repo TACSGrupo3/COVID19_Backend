@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class TelegramServiceImpl implements TelegramService {
 
     @Autowired
-    public CountriesListService countriesListService;
+    private CountriesListService countriesListService;
 
     @Override
     public CountriesList countries_list(int user_id, int list_id) {

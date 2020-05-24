@@ -45,14 +45,16 @@ public class ParseUtil {
         user.setLastName((String) json.get("lastName"));
         user.setUsername((String) json.get("username"));
         user.setPassword((String) json.get("password"));
-        
+        if (((String) json.get("telegram_chat_id")) != null) {
+            user.setTelegram_chat_id(Long.parseLong((String) json.get("telegram_chat_id")));
+        }
         UserRole userRole = new UserRole();
         JSONObject jsonUserRole = (JSONObject) json.get("userRole");
         userRole.setId(Integer.valueOf((String) jsonUserRole.get("id")));
         String roleType = (String) jsonUserRole.get("roleType");
         userRole.setRole(roleType);
         user.setUserRole(userRole);
-        
+
         JSONArray jsonCountriesList = (JSONArray) json.get("countriesList");
 
         if (jsonCountriesList != null) {
