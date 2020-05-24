@@ -1,26 +1,15 @@
 package com.tacs.rest;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.tacs.rest.apiCovid.ConnectionApiCovid;
 import com.tacs.rest.apiCovid.Covid19_latestResponse;
-import com.tacs.rest.entity.*;
+import com.tacs.rest.entity.CountriesList;
+import com.tacs.rest.entity.Country;
+import com.tacs.rest.entity.User;
 import com.tacs.rest.security.JWTAuthorizationFilter;
-import com.tacs.rest.servicesImpl.TelegramServiceImpl;
 import com.tacs.rest.util.IsoUtil;
 import com.tacs.rest.util.ParseUtil;
 import org.json.simple.JSONArray;
@@ -43,19 +32,13 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.telegram.telegrambots.ApiContextInitializer;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-import com.tacs.rest.apiCovid.ConnectionApiCovid;
-import com.tacs.rest.apiCovid.Covid19_latestResponse;
-import com.tacs.rest.entity.CountriesList;
-import com.tacs.rest.entity.Country;
-import com.tacs.rest.entity.User;
-import com.tacs.rest.security.JWTAuthorizationFilter;
-import com.tacs.rest.servicesImpl.TelegramServiceImpl;
-import com.tacs.rest.util.IsoUtil;
-import com.tacs.rest.util.ParseUtil;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.UnknownHostException;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 public class RestApplication {
