@@ -1,11 +1,14 @@
 package com.tacs.rest.controller;
 
-import java.security.SecureRandom;
-import java.util.Base64;
+import java.util.List;
+import java.util.Date;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,36 +18,51 @@ import org.springframework.web.server.ResponseStatusException;
 import com.tacs.rest.entity.User;
 import com.tacs.rest.services.SessionService;
 import com.tacs.rest.validator.UserValidator;
-
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 @RestController
 
 public class SessionRestController {
+	static final long TOKEN_DURATION = 600000;
 
     @Autowired
     private SessionService sessionService;
 
-    private static final SecureRandom secureRandom = new SecureRandom(); //threadsafe
-    private static final Base64.Encoder base64Encoder = Base64.getUrlEncoder(); //threadsafe
+    private String generateNewToken(String username) {
+		String secretKey = "mySecretKey";
+		List<GrantedAuthority> grantedAuthorities = AuthorityUtils
+				.commaSeparatedStringToAuthorityList("ROLE_USER");
+		
+		String token = Jwts
+				.builder()
+				.setId("softtekJWT")
+				.setSubject(username)
+				.claim("authorities",
+						grantedAuthorities.stream()
+								.map(GrantedAuthority::getAuthority)
+								.collect(Collectors.toList()))
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + 600000))
+				.signWith(SignatureAlgorithm.HS512,
+						secretKey.getBytes()).compact();
 
-    public static String generateNewToken() {
-        byte[] randomBytes = new byte[24];
-        secureRandom.nextBytes(randomBytes);
-        return base64Encoder.encodeToString(randomBytes);
-    }
+		return "Bearer " + token;
+	}
 
+    
     @PostMapping("/session")
     public ResponseEntity<User> logIn(@RequestBody User user) {
 
         if (UserValidator.logInValidator(user)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No ingreso el usuario o la contrasena");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No ingreso el Usuario o la Contraseña");
         }
 
         User userAuthenticated = sessionService.login(user);
         if (userAuthenticated == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "La combinación de Usuario y Contraseña es inválida");
         } else {
-            userAuthenticated.setToken(generateNewToken());
+            userAuthenticated.setToken(generateNewToken(user.getUsername()));
             return new ResponseEntity<User>(userAuthenticated, HttpStatus.OK);
         }
     }
@@ -57,7 +75,7 @@ public class SessionRestController {
         } else {
             User userAuthenticated = sessionService.loginWithSocial(user);
             //Agregar autenticacion en la BD
-            userAuthenticated.setToken(generateNewToken());
+            userAuthenticated.setToken(generateNewToken(user.getUsername()));
             return new ResponseEntity<User>(userAuthenticated, HttpStatus.OK);
         }
     }
