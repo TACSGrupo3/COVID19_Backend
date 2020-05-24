@@ -11,9 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -82,8 +82,8 @@ public class CountryRestController {
     }
 
     @PostMapping("/users/{userId}/countriesList")
-    public List<CountriesList> addListCountries(@RequestBody List<CountriesList> countriesList, @PathVariable String userId) {
-        return countriesListService.addListCountries(userId, countriesList);
+    public List<CountriesList> addListCountries(@RequestBody List<CountriesList> countriesList, @PathVariable String userId) throws Exception {
+    	return countriesListService.addListCountries(userId, countriesList);
     }
 
     @DeleteMapping("/countriesList/{countriesListId}")
@@ -92,9 +92,9 @@ public class CountryRestController {
         return;
     }
     
-    @PatchMapping("/countriesList/{countriesListId}")
+    @PutMapping("/countriesList/{countriesListId}")
     public CountriesList modifyListCountries(@PathVariable(required = true) Integer countriesListId,
-                                             @RequestBody CountriesList list) {
+                                             @RequestBody CountriesList list) throws Exception {
         CountriesList modifiedList = countriesListService.modifyListCountries(countriesListId, list);
 
         if (modifiedList == null)

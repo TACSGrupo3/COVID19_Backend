@@ -2,30 +2,15 @@
 	"countries": [
 		{
 			"id": "7",
-			"name": "Argentina",
-			"region": {
-				"id": "1",
-				"nameRegion": "America del Sur",
-				"subRegion": "Sur"
-			}
+			"name": "Argentina"
 		},
 		{
 			"id": "22",
-			"name": "Brasil",
-			"region": {
-				"id": "2",
-				"nameRegion": "America del Sur",
-				"subRegion": "Centro"
-			}
+			"name": "Brasil"
 		},
 		{
 			"id": "32",
-			"name": "Chile",
-			"region": {
-				"id": "1",
-				"nameRegion": "America del Sur",
-				"subRegion": "Sur"
-			}
+			"name": "Chile"
 		}
 	],
 	"users": [
@@ -35,10 +20,7 @@
 			"password": "Admin",
 			"firstName": "Administrador",
 			"lastName": "",
-			"userRole": {
-				"id": "1",
-				"roleType": "ADMIN"
-			}
+			"userRole": "ADMIN"
 		},
 		{
 			"id": "2",
@@ -47,10 +29,7 @@
 			"firstName": "TESTNAME",
 			"lastName": "TESTLASTNAME",
 			"telegram_chat_id": "114523575",
-			"userRole": {
-				"id": "2",
-				"roleType": "USER"
-			},
+			"userRole": "USER",
 			"countriesList": [
 				{
 					"id": "1",
@@ -59,21 +38,11 @@
 					"countries": [
 						{
 							"id": "7",
-							"name": "Argentina",
-							"region": {
-								"id": "1",
-								"nameRegion": "America del Sur",
-								"subRegion": "Sur"
-							}
+							"name": "Argentina"
 						},
 						{
 							"id": "22",
-							"name": "Brasil",
-							"region": {
-								"id": "2",
-								"nameRegion": "America del Sur",
-								"subRegion": "Centro"
-							}
+							"name": "Brasil"
 						}
 					]
 				}
@@ -85,10 +54,7 @@
 			"password": "Rufus",
 			"firstName": "Rufus",
 			"lastName": "Carmaicol",
-			"userRole": {
-				"id": "2",
-				"roleType": "USER"
-			},
+			"userRole": "USER",
 			"countriesList": [
 				{
 					"id": "2",
@@ -97,21 +63,11 @@
 					"countries": [
 						{
 							"id": "7",
-							"name": "Argentina",
-							"region": {
-								"id": "1",
-								"nameRegion": "America del Sur",
-								"subRegion": "Sur"
-							}
+							"name": "Argentina"
 						},
 						{
 							"id": "32",
-							"name": "Chile",
-							"region": {
-								"id": "1",
-								"nameRegion": "America del Sur",
-								"subRegion": "Sur"
-							}
+							"name": "Chile"
 						}
 					]
 				},
@@ -122,21 +78,11 @@
 					"countries": [
 						{
 							"id": "32",
-							"name": "Chile",
-							"region": {
-								"id": "1",
-								"nameRegion": "America del Sur",
-								"subRegion": "Sur"
-							}
+							"name": "Chile"
 						},
 						{
 							"id": "22",
-							"name": "Brasil",
-							"region": {
-								"id": "2",
-								"nameRegion": "America del Sur",
-								"subRegion": "Centro"
-							}
+							"name": "Brasil"
 						}
 					]
 				}
@@ -151,21 +97,11 @@
 				{
 					"id": "7",
 					"name": "Argentina",
-					"creationDate": "2020-01-11T03:00:00.000+0000",
-					"region": {
-						"id": "1",
-						"nameRegion": "America del Sur",
-						"subRegion": "Sur"
-					}
+					"creationDate": "2020-01-11T03:00:00.000+0000"
 				},
 				{
 					"id": "22",
-					"name": "Brasil",
-					"region": {
-						"id": "2",
-						"nameRegion": "America del Sur",
-						"subRegion": "Centro"
-					}
+					"name": "Brasil"
 				}
 			]
 		},
@@ -176,21 +112,11 @@
 			"countries": [
 				{
 					"id": "7",
-					"name": "Argentina",
-					"region": {
-						"id": "1",
-						"nameRegion": "America del Sur",
-						"subRegion": "Sur"
-					}
+					"name": "Argentina"
 				},
 				{
 					"id": "32",
-					"name": "Chile",
-					"region": {
-						"id": "1",
-						"nameRegion": "America del Sur",
-						"subRegion": "Sur"
-					}
+					"name": "Chile"
 				}
 			]
 		},
@@ -201,21 +127,11 @@
 			"countries": [
 				{
 					"id": "32",
-					"name": "Chile",
-					"region": {
-						"id": "1",
-						"nameRegion": "America del Sur",
-						"subRegion": "Sur"
-					}
+					"name": "Chile"
 				},
 				{
 					"id": "22",
-					"name": "Brasil",
-					"region": {
-						"id": "2",
-						"nameRegion": "America del Sur",
-						"subRegion": "Centro"
-					}
+					"name": "Brasil"
 				}
 			]
 		},

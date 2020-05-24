@@ -21,8 +21,8 @@ public class ReportRestController {
     //EJ: http://localhost:8080/api/report?country=ARGENTINA&offset=1&country=Brasil&offset=2
     @GetMapping("/report")
     // add produces = MediaType.APPLICATION_JSON_VALUE when done
-    public List<Country> getReport(@RequestParam(value = "country") List<String> countries,
-                                   @RequestParam(value = "offset") List<String> offsets) {
+    public List<Country> getReport(@RequestParam(value = "country") List<Integer> countries,
+                                   @RequestParam(value = "offset") List<String> offsets) throws Exception {
         if (countries.size() == offsets.size()) {
             //		MOCK
             return reportService.reportData(countries, offsets);

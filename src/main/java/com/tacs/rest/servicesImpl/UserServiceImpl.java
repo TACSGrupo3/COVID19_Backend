@@ -62,8 +62,9 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        user.setId(users.size() + 1);
-        users.add(user);
+        User userToRegister = new User(users.size() + 1, user.getUsername(), user.getFirstName(),
+        		user.getLastName(), user.getPassword(), user.getUserRole());
+        users.add(userToRegister);
 
         RestApplication.data.put("Users", users);
         return true;
