@@ -1,5 +1,6 @@
 package com.tacs.rest.telegram;
 
+import com.neovisionaries.i18n.CountryCode;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.User;
@@ -27,6 +28,7 @@ public class botcovid19bot extends TelegramLongPollingBot {
     enum Stage {
         CHOOSE,
         WRITE,
+        WRITE_COUNTRY,
         WRITE_COMPARE,
         SAVE,
     }
@@ -53,6 +55,7 @@ public class botcovid19bot extends TelegramLongPollingBot {
             List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
             List<InlineKeyboardButton> rowInline3 = new ArrayList<>();
             List<InlineKeyboardButton> rowInline4 = new ArrayList<>();
+            List<InlineKeyboardButton> rowInline5 = new ArrayList<>();
             long chat_id = update.getMessage().getChatId();
             // Check user info
             User checkedUser = userService.findByTelegramId(chat_id);
@@ -61,7 +64,7 @@ public class botcovid19bot extends TelegramLongPollingBot {
                 if (update.getMessage().getText().contains("/view")) {
                     // View countries list
                     // Get string ahead from position 5
-                    String list = update.getMessage().getText().substring(5);
+                    String list = update.getMessage().getText().substring(5).replaceAll("_", " ");
                     // Get countries list from list of lists
                     CountriesList finalList = checkedUser.getCountriesList().stream().filter(countries -> countries.getName().equals(list)).findAny().orElse(null);
                     if (finalList != null) {
@@ -97,7 +100,7 @@ public class botcovid19bot extends TelegramLongPollingBot {
                 } else if (update.getMessage().getText().contains("/values")) {
                     // Show lasts values of COVID-19 belong to the countries of the list
                     // Get string ahead from position 7
-                    String lists = update.getMessage().getText().substring(7);
+                    String lists = update.getMessage().getText().substring(7).replaceAll("_", " ");;
                     // Get countries list from list of lists
                     CountriesList finalLists = checkedUser.getCountriesList().stream().filter(countries -> countries.getName().equals(lists)).findAny().orElse(null);
                     if (finalLists != null) {
@@ -153,13 +156,46 @@ public class botcovid19bot extends TelegramLongPollingBot {
                             rowsInline.add(rowInline1);
                             rowInline2.add(new InlineKeyboardButton().setText("Consultar tabla de comparacion").setCallbackData("action2"));
                             rowsInline.add(rowInline2);
-                            rowInline3.add(new InlineKeyboardButton().setText("Consultar ultimos valores por lista o pais").setCallbackData("action3"));
+                            rowInline3.add(new InlineKeyboardButton().setText("Consultar ultimos valores por lista").setCallbackData("action3"));
                             rowsInline.add(rowInline3);
-                            rowInline4.add(new InlineKeyboardButton().setText("Revisar los paises de una lista").setCallbackData("action4"));
+                            rowInline4.add(new InlineKeyboardButton().setText("Consultar ultimos valores por pais").setCallbackData("action4"));
                             rowsInline.add(rowInline4);
+                            rowInline5.add(new InlineKeyboardButton().setText("Revisar los paises de una lista").setCallbackData("action5"));
+                            rowsInline.add(rowInline5);
                             // Add it to the message
                             markupInline.setKeyboard(rowsInline);
                             message.setReplyMarkup(markupInline);
+                        }
+                        break;
+                    case "WRITE_COUNTRY":
+                        // Set next step
+                        stage = Stage.CHOOSE;
+                        actualState = String.valueOf(Stage.CHOOSE);
+                        String country = update.getMessage().getText();
+                        country.toUpperCase();
+                        List<CountryCode> isoInformation = CountryCode.findByName(country);
+                        if(!isoInformation.isEmpty()) {
+                            Country pais = telegramService.get_country_information(isoInformation.get(0).getAlpha2());
+                            message.setChatId(chat_id);
+                            message.setReplyMarkup(null);
+
+                            // Set HTML message to show on telegram chat
+                            message.setParseMode("HTML");
+                            // Get COVID-19 information
+                            String htmlMessage = "\\-------------------------------------------\n" +
+                                    "Pais               Infectados   Curados   Muertos\n" +
+                                    "-------------------------------------------\\\n";
+                            int offset = 19 - pais.getName().length();
+                            int offset2 = 13 - pais.getConfirmed().toString().length();
+                            int offset3 = 10 - pais.getRecovered().toString().length();
+                            htmlMessage += pais.getName() + (IntStream.range(0, offset).mapToObj(i -> " ").collect(Collectors.joining(""))) +
+                                    pais.getConfirmed() + (IntStream.range(0, offset2).mapToObj(i -> " ").collect(Collectors.joining(""))) +
+                                    pais.getRecovered() + (IntStream.range(0, offset3).mapToObj(i -> " ").collect(Collectors.joining(""))) +
+                                    pais.getDeaths() + " \n";
+
+                            message.setText(htmlMessage);
+                        }else{
+                            message.setText("No se ha encontrado el pais");
                         }
                         break;
                     default:
@@ -192,8 +228,14 @@ public class botcovid19bot extends TelegramLongPollingBot {
                     stage = Stage.WRITE;
                     break;
                 case "action4":
-                    set_message_listCountries(update, " /view", "Seleccione alguna de las siguientes listas de países:\n");
+                    message.setChatId(chat_id).setText("Ingrese el país del que desea consultar los ultimos valores:\n");
                     send_to_telegram(update, "Opción 4", true, 4);
+                    stage = Stage.WRITE_COUNTRY;
+                    actualState = String.valueOf(Stage.WRITE_COUNTRY);
+                    break;
+                case "action5":
+                    set_message_listCountries(update, " /view", "Seleccione alguna de las siguientes listas de países:\n");
+                    send_to_telegram(update, "Opción 5", true, 4);
                     stage = Stage.WRITE;
                     break;
                 default:
@@ -209,7 +251,7 @@ public class botcovid19bot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         //No se envia Token hasta tratarlo correctamente
-        return "";
+        return "1060211355:AAEBLH94irwgO_vwoVFz4oAy_WkxJQp9ShI";
     }
 
     private void set_message_listCountries(Update update, String action, String messageString) {
@@ -218,7 +260,7 @@ public class botcovid19bot extends TelegramLongPollingBot {
         Iterator iterator = userService.findByTelegramId(chat_id).getCountriesList().iterator();
         while (iterator.hasNext()) {
             CountriesList listName = (CountriesList) iterator.next();
-            messageString = messageString + listName.getName() + action + listName.getName() + "\n";
+            messageString = messageString + listName.getName() + action + listName.getName().replaceAll("\\s+","_") + "\n";
         }
         message.setChatId(chat_id).setText(messageString);
     }
