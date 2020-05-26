@@ -24,7 +24,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @RestController
 
 public class SessionRestController {
-	static final long TOKEN_DURATION = 600000;
+	static final long TOKEN_DURATION = 6000000;
 
     @Autowired
     private SessionService sessionService;

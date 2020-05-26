@@ -1,5 +1,6 @@
 package com.tacs.rest.servicesImpl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -23,6 +24,7 @@ public class SessionServiceImpl implements SessionService{
 		for(User userBd : users) {
 			if(userBd.getUsername().toLowerCase().equals(user.getUsername().toLowerCase()) && 
 					BCrypt.checkpw(user.getPassword(), userBd.getPassword())) {
+				userBd.setLastAccess(new Date());
 				return userBd;
 			}
 		}
