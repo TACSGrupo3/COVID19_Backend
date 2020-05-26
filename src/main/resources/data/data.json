@@ -17,7 +17,7 @@
 		{
 			"id": "1",
 			"username": "Admin",
-			"password": "Admin",
+			"password": "$2a$10$ntKH1TkIA0kLeMT.wdRdxO8NE8SMek9H0566wPlUcJ8oXS.9nhJV.",
 			"firstName": "Administrador",
 			"lastName": "",
 			"userRole": "ADMIN"
@@ -34,7 +34,7 @@
 				{
 					"id": "1",
 					"name": "Listado TEST",
-					"creationDate": "2020-01-11T03:00:00.000+0000",
+					"creationDate": "2020-05-25",
 					"countries": [
 						{
 							"id": "7",
@@ -51,7 +51,7 @@
 		{
 			"id": "3",
 			"username": "Rufus",
-			"password": "Rufus",
+			"password": "$2a$04$eXiOu5epUEbriIPy6Nck/OCbXQKZO1PLUY6ATQQBlRPGP2SEXdijy",
 			"firstName": "Rufus",
 			"lastName": "Carmaicol",
 			"userRole": "USER",
@@ -59,7 +59,7 @@
 				{
 					"id": "2",
 					"name": "Listado 1 de Rufus",
-					"creationDate": "2020-01-11T03:00:00.000+0000",
+					"creationDate": "2020-01-11",
 					"countries": [
 						{
 							"id": "7",
@@ -74,7 +74,7 @@
 				{
 					"id": "3",
 					"name": "Listado 2 de Rufus",
-					"creationDate": "2020-01-11T03:00:00.000+0000",
+					"creationDate": "2020-05-19",
 					"countries": [
 						{
 							"id": "32",
@@ -97,7 +97,7 @@
 				{
 					"id": "7",
 					"name": "Argentina",
-					"creationDate": "2020-01-11T03:00:00.000+0000"
+					"creationDate": "2020-05-25"
 				},
 				{
 					"id": "22",
@@ -108,7 +108,7 @@
 		{
 			"id": "2",
 			"name": "Listado 1 de Rufus",
-			"creationDate": "2020-01-11T03:00:00.000+0000",
+			"creationDate": "2020-01-11",
 			"countries": [
 				{
 					"id": "7",
@@ -123,7 +123,7 @@
 		{
 			"id": "3",
 			"name": "Listado 2 de Rufus",
-			"creationDate": "2020-01-11T03:00:00.000+0000",
+			"creationDate": "2020-05-19",
 			"countries": [
 				{
 					"id": "32",

@@ -5,7 +5,7 @@ import com.tacs.rest.entity.User;
 public class UserValidator {
 
     public static boolean logInValidator(User user) {
-        return user.getPassword() == null || user.getUsername() == null;
+        return user.getPassword() == null || user.getUsername() == null|| user.getPassword().isEmpty()|| user.getUsername().isEmpty();
     }
 
     public static boolean registrationValidator(User user) {
@@ -15,6 +15,7 @@ public class UserValidator {
     public static boolean logInGoogleValidator(User user) {
         return user == null || user.getUsername() == null;
     }
+
 }
 
 

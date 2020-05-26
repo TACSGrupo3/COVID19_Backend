@@ -72,8 +72,13 @@ public class CountryRestController {
     }
 
     @GetMapping("/countriesList")
-    public List<CountriesList> getCountriesList(@RequestParam(required = false) String iso) throws JsonIOException, JsonSyntaxException, URISyntaxException, IOException {
+    public List<CountriesList> getCountriesList() throws JsonIOException, JsonSyntaxException, URISyntaxException, IOException {
         return countriesListService.findAll();
+    }
+    
+    @GetMapping("/countriesList/{listId}")
+    public CountriesList getCountriesListById(@PathVariable(required = true) String listId) throws JsonIOException, JsonSyntaxException, URISyntaxException, IOException {
+        return countriesListService.findById(Integer.valueOf(listId));
     }
 
     @GetMapping("/users/{userId}/countriesList")

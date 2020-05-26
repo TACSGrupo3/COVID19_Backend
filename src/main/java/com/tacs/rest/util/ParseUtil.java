@@ -59,7 +59,13 @@ public class ParseUtil {
 
         countriesList.setId(Integer.valueOf((String) json.get("id")));
         countriesList.setName((String) json.get("name"));
-        countriesList.setCreationDate(new Date());
+        SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd");  
+        try {
+			countriesList.setCreationDate(json.get("creationDate") != null ? 
+					formatter.parse((String) json.get("creationDate")) : null);
+		} catch (ParseException e) {
+			countriesList.setCreationDate(null);
+		}
 
         JSONArray jsonCountries = (JSONArray) json.get("countries");
         List<Country> countriesOfDb = (List<Country>) RestApplication.data.get("Countries");

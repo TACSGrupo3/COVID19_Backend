@@ -25,6 +25,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
@@ -62,7 +63,13 @@ public class RestApplication {
             }
         };
     }
-
+    
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+    
+//    
     //Esto de abajo hace que todas las consultas que hagamos requieran el token como authentication menos
     //la del /session
 	@EnableWebSecurity
@@ -103,6 +110,7 @@ public class RestApplication {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
 
 
         ConnectionApiCovid apiCovid = new ConnectionApiCovid();

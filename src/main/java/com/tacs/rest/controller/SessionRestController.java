@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @RestController
 
 public class SessionRestController {
-	static final long TOKEN_DURATION = 600000;
+	static final long TOKEN_DURATION = 6000000;
 
     @Autowired
     private SessionService sessionService;
@@ -81,8 +83,8 @@ public class SessionRestController {
     }
 
     @DeleteMapping("/session")
-    public ResponseEntity<?> logOut() {
-        //TODO: Revocar EL token
+    public ResponseEntity<?> logOut(User user) {
+        user.setToken(null);
         return new ResponseEntity<Object>(HttpStatus.OK);
     }
 }
