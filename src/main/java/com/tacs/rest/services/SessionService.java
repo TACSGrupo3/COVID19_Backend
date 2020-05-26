@@ -1,6 +1,5 @@
 package com.tacs.rest.services;
 
-
 import com.tacs.rest.entity.User;
 
 public interface SessionService {

@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.User;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface CountriesListService {
 	
 	public List<CountriesList> findAll();

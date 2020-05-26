@@ -47,8 +47,7 @@ public class CountryRestController {
     java.lang.reflect.Type collectionType = new TypeToken<Collection<Covid19_latestResponse>>() {
     }.getType();
     Collection<Covid19_latestResponse> latestResponse;
-    
-    
+
     @GetMapping("/countries")
     public List<Country> listPaises(@RequestParam(required = false) String latitude,
                                     @RequestParam(required = false) String longitude, @RequestParam(required = false) String maxCountries,
