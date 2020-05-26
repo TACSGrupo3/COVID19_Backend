@@ -251,7 +251,7 @@ public class botcovid19bot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         //No se envia Token hasta tratarlo correctamente
-        return "1060211355:AAEBLH94irwgO_vwoVFz4oAy_WkxJQp9ShI";
+        return "";
     }
 
     private void set_message_listCountries(Update update, String action, String messageString) {
