@@ -48,9 +48,9 @@ public class RestApplication {
 
 
     public static void main(String[] args) throws JsonIOException, JsonSyntaxException, IOException, URISyntaxException {
-        RestApplication.initData();
         /** Telegram BOT API init */
         ApiContextInitializer.init();
+        RestApplication.initData();
         SpringApplication.run(RestApplication.class, args);
     }
 
@@ -63,35 +63,36 @@ public class RestApplication {
             }
         };
     }
-    
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-    
-//    
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    //
     //Esto de abajo hace que todas las consultas que hagamos requieran el token como authentication menos
     //la del /session
-	@EnableWebSecurity
-	@Configuration
-	class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    @EnableWebSecurity
+    @Configuration
+    class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-		@Autowired
-		AuthenticationEntryPoint jwtAuthenticationEntryPoint;
-		@Override
-		protected void configure(HttpSecurity http) throws Exception {
+        @Autowired
+        AuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-			http.csrf().disable()
-				.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-				.authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/session").permitAll()
-				.antMatchers(HttpMethod.POST, "/users").permitAll()
-				.anyRequest().authenticated().and().
-				exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		}
-	}
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+
+            http.csrf().disable()
+                    .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                    .authorizeRequests()
+                    .antMatchers(HttpMethod.POST, "/session").permitAll()
+                    .antMatchers(HttpMethod.POST, "/users").permitAll()
+                    .anyRequest().authenticated().and().
+                    exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        }
+    }
 
     @SuppressWarnings("unchecked")
     public static void initData() throws JsonIOException, JsonSyntaxException, IOException, URISyntaxException {
@@ -110,7 +111,6 @@ public class RestApplication {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
 
 
         ConnectionApiCovid apiCovid = new ConnectionApiCovid();

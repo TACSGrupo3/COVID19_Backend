@@ -100,7 +100,8 @@ public class botcovid19bot extends TelegramLongPollingBot {
                 } else if (update.getMessage().getText().contains("/values")) {
                     // Show lasts values of COVID-19 belong to the countries of the list
                     // Get string ahead from position 7
-                    String lists = update.getMessage().getText().substring(7).replaceAll("_", " ");;
+                    String lists = update.getMessage().getText().substring(7).replaceAll("_", " ");
+                    ;
                     // Get countries list from list of lists
                     CountriesList finalLists = checkedUser.getCountriesList().stream().filter(countries -> countries.getName().equals(lists)).findAny().orElse(null);
                     if (finalLists != null) {
@@ -174,7 +175,7 @@ public class botcovid19bot extends TelegramLongPollingBot {
                         String country = update.getMessage().getText();
                         country.toUpperCase();
                         List<CountryCode> isoInformation = CountryCode.findByName(country);
-                        if(!isoInformation.isEmpty()) {
+                        if (!isoInformation.isEmpty()) {
                             Country pais = telegramService.get_country_information(isoInformation.get(0).getAlpha2());
                             message.setChatId(chat_id);
                             message.setReplyMarkup(null);
@@ -194,7 +195,7 @@ public class botcovid19bot extends TelegramLongPollingBot {
                                     pais.getDeaths() + " \n";
 
                             message.setText(htmlMessage);
-                        }else{
+                        } else {
                             message.setText("No se ha encontrado el pais");
                         }
                         break;
@@ -251,7 +252,7 @@ public class botcovid19bot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         //No se envia Token hasta tratarlo correctamente
-        return "1060211355:AAGjbxeh3dK5udYI5ls9Kc-s24QWWt2LINw";
+        return "1060211355:AAExzAkhAdeFBsdvqWxAMVNYvzbqjUp7biQ";
     }
 
     private void set_message_listCountries(Update update, String action, String messageString) {
@@ -260,7 +261,7 @@ public class botcovid19bot extends TelegramLongPollingBot {
         Iterator iterator = userService.findByTelegramId(chat_id).getCountriesList().iterator();
         while (iterator.hasNext()) {
             CountriesList listName = (CountriesList) iterator.next();
-            messageString = messageString + listName.getName() + action + listName.getName().replaceAll("\\s+","_") + "\n";
+            messageString = messageString + listName.getName() + action + listName.getName().replaceAll("\\s+", "_") + "\n";
         }
         message.setChatId(chat_id).setText(messageString);
     }
