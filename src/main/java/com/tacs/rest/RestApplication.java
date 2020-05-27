@@ -31,7 +31,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.telegram.telegrambots.ApiContextInitializer;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -48,8 +47,6 @@ public class RestApplication {
 
 
     public static void main(String[] args) throws JsonIOException, JsonSyntaxException, IOException, URISyntaxException {
-        /** Telegram BOT API init */
-        ApiContextInitializer.init();
         RestApplication.initData();
         SpringApplication.run(RestApplication.class, args);
     }

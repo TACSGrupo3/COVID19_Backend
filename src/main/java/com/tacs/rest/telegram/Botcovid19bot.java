@@ -8,6 +8,7 @@ import com.tacs.rest.servicesImpl.TelegramServiceImpl;
 import com.tacs.rest.servicesImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Component
-public class botcovid19bot extends TelegramLongPollingBot {
+public class Botcovid19bot extends TelegramLongPollingBot {
 
     enum Stage {
         CHOOSE,
@@ -40,6 +41,11 @@ public class botcovid19bot extends TelegramLongPollingBot {
     TelegramServiceImpl telegramService;
 
     private SendMessage message = new SendMessage();
+
+    static {
+        /** Telegram BOT API init */
+        ApiContextInitializer.init();
+    }
 
     /**
      * This method is called when receiving updates via GetUpdates method
