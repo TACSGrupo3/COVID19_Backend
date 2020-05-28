@@ -3,6 +3,14 @@ package com.tacs.rest.apiCovid;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,16 +23,32 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "lat",
         "lng"
 })
+@Entity
+@Table (name = "public.LOCATION")
 public class Location {
 
+	private int id;
     @JsonProperty("lat")
     private Double lat;
     @JsonProperty("lng")
     private Double lng;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    @Transient
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("lat")
+    @Id
+   	@Column(name = "id")
+   	@GeneratedValue(strategy = GenerationType.AUTO)
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	@JsonProperty("lat")
+	@Column(name = "latitude" , nullable = false)
     public Double getLat() {
         return lat;
     }
@@ -35,6 +59,7 @@ public class Location {
     }
 
     @JsonProperty("lng")
+    @Column(name = "longitude" , nullable = false)
     public Double getLng() {
         return lng;
     }
@@ -45,6 +70,7 @@ public class Location {
     }
 
     @JsonAnyGetter
+    @Transient
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

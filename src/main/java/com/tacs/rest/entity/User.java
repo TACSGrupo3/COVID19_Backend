@@ -4,6 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table (name = "public.USERS")
 public class User {
 
 	private int id;
@@ -76,6 +86,10 @@ public class User {
 		countriesList.remove(exList);
 	}
 
+
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public int getId() {
 		return id;
 	}
@@ -84,6 +98,8 @@ public class User {
 		this.id = id;
 	}
 
+
+	@Column(name = "username" , nullable = false)
 	public String getUsername() {
 		return username;
 	}
@@ -92,6 +108,8 @@ public class User {
 		this.username = username;
 	}
 
+
+	@Column(name = "firstName" , nullable = false)
 	public String getFirstName() {
 		return firstName;
 	}
@@ -100,6 +118,8 @@ public class User {
 		this.firstName = firstName;
 	}
 
+
+	@Column(name = "lastName" , nullable = false)
 	public String getLastName() {
 		return lastName;
 	}
@@ -108,6 +128,8 @@ public class User {
 		this.lastName = lastName;
 	}
 
+
+	@Column(name = "password" , nullable = false)
 	public String getPassword() {
 		return password;
 	}
@@ -116,6 +138,8 @@ public class User {
 		this.password = password;
 	}
 
+
+	@OneToMany(mappedBy="user")
 	public List<CountriesList> getCountriesList() {
 		return countriesList;
 	}
@@ -132,6 +156,8 @@ public class User {
 		this.token = token;
 	}
 
+
+	@Column(name = "lastAccess" , nullable = false)
 	public Date getLastAccess() {
 		return lastAccess;
 	}

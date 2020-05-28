@@ -28,7 +28,7 @@ class RestApplicationTests {
 
     @Test
     public void endpoint_availability_brief()
-            throws ClientProtocolException, IOException {
+            throws IOException {
 
         // Given
         HttpUriRequest request = new HttpGet("https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/brief");
@@ -42,7 +42,7 @@ class RestApplicationTests {
 
     @Test
     public void endpoint_responseJSON_brief()
-            throws ClientProtocolException, IOException {
+            throws IOException {
         // Given
         String jsonMimeType = "application/json";
         HttpUriRequest request = new HttpGet("https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/brief");
@@ -76,7 +76,7 @@ class RestApplicationTests {
     @Test
     public void
     endpoint_JSONisCorrect_latest_Argentina_code()
-            throws ClientProtocolException, IOException {
+            throws IOException {
 
         // Given
         HttpUriRequest request = new HttpGet("https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/latest?iso2=AR");
