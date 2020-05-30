@@ -53,15 +53,11 @@ public class CountryRestController {
                                     @RequestParam(required = false) String longitude, @RequestParam(required = false) String maxCountries,
                                     @RequestParam(required = false) String iso) {
         if (latitude != null && longitude != null && maxCountries != null) {
-//			retornará la lista de paises cercanos por region
-////			
-//			String uri = "http://api.geonames.org/countryCodeJSON?lat=" + latitud + "&lng=" + longitud + "&username=tacsg3";
-//
-//			RestTemplate restTemplate = new RestTemplate();
-//			HashMap result = restTemplate.getForObject(uri, HashMap.class);
-
-//			String country = (String) result.get("countryName");
-            return countriesService.findNearCountrys(latitude, longitude, maxCountries);
+        	if(Integer.valueOf(maxCountries) < 0) {
+        		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El valor máximo de paises cercanos debe ser mayor que 0");
+        	}else {
+        		return countriesService.findNearCountrys(latitude, longitude, maxCountries);
+        	}
 
         } else if (iso != null) {
             return countriesService.findByIso(iso);
