@@ -3,23 +3,13 @@ package com.tacs.rest.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.tacs.rest.apiCovid.Countrycode;
 import com.tacs.rest.apiCovid.Location;
 
 @Entity
-@Table (name = "public.COUNTRY")
+@Table(name = "public.COUNTRY")
 public class Country {
 
     private int id;
@@ -34,8 +24,8 @@ public class Country {
     private CountriesList countriesList;
 
     @Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -44,7 +34,7 @@ public class Country {
         this.id = id;
     }
 
-    @Column(name = "name" , nullable = false)
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
@@ -52,7 +42,8 @@ public class Country {
     public void setName(String name) {
         this.name = name;
     }
-
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="date")
     public List<DataReport> getDataReport() {
         return dataReport;
     }
@@ -65,7 +56,7 @@ public class Country {
         dataReport.add(dataR);
     }
 
-    @Column(name = "confirmed" , nullable = false)
+    @Column(name = "confirmed", nullable = false)
     public Integer getConfirmed() {
         return confirmed;
     }
@@ -74,7 +65,7 @@ public class Country {
         this.confirmed = confirmed;
     }
 
-    @Column(name = "deaths" , nullable = false)
+    @Column(name = "deaths", nullable = false)
     public Integer getDeaths() {
         return deaths;
     }
@@ -83,7 +74,7 @@ public class Country {
         this.deaths = deaths;
     }
 
-    @Column(name = "recovered" , nullable = false)
+    @Column(name = "recovered", nullable = false)
     public Integer getRecovered() {
         return recovered;
     }
@@ -112,7 +103,7 @@ public class Country {
         this.countryCode = countryCode;
     }
 
-    @Column(name = "last_update" , nullable = false)
+    @Column(name = "last_update", nullable = false)
     public String getLastupdate() {
         return lastupdate;
     }
@@ -122,21 +113,21 @@ public class Country {
     }
 
     @ManyToOne
-    @JoinColumn(name="countries_list_id", nullable=false)
-	public CountriesList getCountriesList() {
-		return countriesList;
-	}
+    @JoinColumn(name = "countries_list_id", nullable = false)
+    public CountriesList getCountriesList() {
+        return countriesList;
+    }
 
     public double getDistance(final String latitude, String longitude) {
         final double dx = this.getLocation().getLat() - Double.valueOf(latitude);
         final double dy = this.getLocation().getLng() - Double.valueOf(longitude);
 
-        return Math.sqrt(dx*dx + dy*dy);
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
-	public void setCountriesList(CountriesList countriesList) {
-		this.countriesList = countriesList;
-	}
+    public void setCountriesList(CountriesList countriesList) {
+        this.countriesList = countriesList;
+    }
 
 
 }

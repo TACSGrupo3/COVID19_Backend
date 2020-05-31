@@ -5,17 +5,18 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
-@Table (name = "public.DATA_REPORT")
+@Table(name = "public.DATAREPORT")
 public class DataReport implements Comparable<DataReport> {
 
+    @Id
+    @Column(name = "date")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Date date;
     private Integer deaths;
     private Integer confirmed;
     private Integer recovered;
 
 
-    @Column(name = "date" , nullable = false)
-    @PrimaryKeyJoinColumn
     public Date getDate() {
         return date;
     }
@@ -24,7 +25,6 @@ public class DataReport implements Comparable<DataReport> {
         this.date = date;
     }
 
-    @Column(name = "deaths" , nullable = false)
     public long getDeaths() {
         return deaths;
     }
@@ -33,7 +33,7 @@ public class DataReport implements Comparable<DataReport> {
         this.deaths = deaths;
     }
 
-    @Column(name = "recovered" , nullable = false)
+
     public Integer getRecovered() {
         return recovered;
     }
@@ -42,7 +42,7 @@ public class DataReport implements Comparable<DataReport> {
         this.recovered = recovered;
     }
 
-    @Column(name = "confirmed" , nullable = false)
+
     public Integer getConfirmed() {
         return confirmed;
     }

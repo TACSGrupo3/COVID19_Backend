@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Table (name = "public.LOCATION")
 public class Location {
 
-	private int id;
+    private int id;
     @JsonProperty("lat")
     private Double lat;
     @JsonProperty("lng")
@@ -37,18 +37,18 @@ public class Location {
     private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @Id
-   	@Column(name = "id")
-   	@GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
-		return id;
-	}
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	@JsonProperty("lat")
-	@Column(name = "latitude" , nullable = false)
+    @JsonProperty("lat")
+    @Column(name = "latitude" , nullable = false)
     public Double getLat() {
         return lat;
     }

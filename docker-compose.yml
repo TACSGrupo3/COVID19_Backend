@@ -1,0 +1,49 @@
+version: '3.7'
+services:
+        db:
+          image: postgres:12.2-alpine
+          restart: always
+          container_name: db
+          ports:
+            - "5432:5432"
+          environment:
+            - POSTGRES_DB=tacs_grupo3
+            - POSTGRES_USER=tacs_grupo3
+            - POSTGRES_PASSWORD=tacs_grupo3
+          networks:
+            - mynetwork
+
+        covid19_backend:
+          build: ./COVID19_Backend
+          container_name: covid19_backend
+          environment:
+              - DB_SERVER=tacs_grupo3
+          expose:
+             - "8080"  
+          ports:
+            - "8080:8080"
+          depends_on:
+            - db
+          links:  
+            - db
+          networks:
+            - mynetwork
+
+        covid19_frontend:
+          build: ./COVID19_Frontend
+          container_name: covid19_frontend
+          expose:
+            - "4200"
+          ports:
+            - "4200:4200"
+          depends_on:
+            - db  
+          links:  
+          - covid19_backend
+          networks:
+            - mynetwork
+              
+networks:
+  mynetwork:
+volumes:
+  data-volume:

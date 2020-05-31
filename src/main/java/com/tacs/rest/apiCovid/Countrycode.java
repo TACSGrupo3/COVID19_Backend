@@ -23,11 +23,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "iso2",
         "iso3"
 })
+
 @Entity
-@Table (name = "public.COUNTRY_CODE")
+@Table(name = "public.COUNTRYCODE")
 public class Countrycode {
 
-	private int id;
+    private int id;
     @JsonProperty("iso2")
     private String iso2;
     @JsonProperty("iso3")
@@ -37,18 +38,18 @@ public class Countrycode {
     private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
-		return id;
-	}
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	@JsonProperty("iso2")
-	@Column(name = "iso2" , nullable = false)
+    @JsonProperty("iso2")
+    @Column(name = "iso2", nullable = false)
     public String getIso2() {
         return iso2;
     }
@@ -59,7 +60,7 @@ public class Countrycode {
     }
 
     @JsonProperty("iso3")
-    @Column(name = "iso3" , nullable = false)
+    @Column(name = "iso3", nullable = false)
     public String getIso3() {
         return iso3;
     }

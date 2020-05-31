@@ -3,36 +3,25 @@ package com.tacs.rest.entity;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table (name = "public.COUNTRIES_LIST")
+@Table(name = "public.COUNTRIESLIST")
 public class CountriesList {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "creation_date", nullable = false)
     private Date creationDate;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
     private List<Country> countries;
 
-    public void addCountry(Country newCountry) {
-        countries.add(newCountry);
-    }
 
-    public void removeCountrie(Country exCountrie) {
-        countries.remove(exCountrie);
-    }
-
-    @Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -41,7 +30,7 @@ public class CountriesList {
         this.id = id;
     }
 
-    @Column(name = "name" , nullable = false)
+
     public String getName() {
         return name;
     }
@@ -50,7 +39,6 @@ public class CountriesList {
         this.name = name;
     }
 
-    @OneToMany(mappedBy="countriesList")
     public List<Country> getCountries() {
         return countries;
     }
@@ -59,7 +47,7 @@ public class CountriesList {
         this.countries = countries;
     }
 
-    @Column(name = "creation_date" , nullable = false)
+
     public Date getCreationDate() {
         return creationDate;
     }
@@ -68,5 +56,11 @@ public class CountriesList {
         this.creationDate = creationDate;
     }
 
+    public void addCountry(Country newCountry) {
+        countries.add(newCountry);
+    }
 
+    public void removeCountry(Country exCountry) {
+        countries.remove(exCountry);
+    }
 }
