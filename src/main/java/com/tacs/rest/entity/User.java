@@ -11,10 +11,10 @@ import javax.persistence.*;
 @Table(name = "public.USER")
 public class User {
 
-    @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Id
     @Column(name = "userName", nullable = false)
     private String username;
     @Column(name = "firstName", nullable = false)

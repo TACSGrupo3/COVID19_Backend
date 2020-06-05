@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.tacs.rest.RestApplication;
+import com.tacs.rest.dao.UserDAO;
 import com.tacs.rest.entity.User;
 import com.tacs.rest.services.UserService;
 
@@ -15,8 +16,8 @@ import com.tacs.rest.services.UserService;
 @SuppressWarnings("unchecked")
 public class UserServiceImpl implements UserService {
 
-//	@Autowired
-//	private DaoUser daoUser;
+	@Autowired
+	private UserDAO daoUser;
 
     @Override
     public List<User> findAll() {
@@ -44,8 +45,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(User user) {
-//		daoUser.save(user);
+    public boolean save(User user) {
+        String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+        user.setPassword(pw_hash);
+        
+        if(daoUser.existsById(user.getUsername())) {
+        	return false;
+        }
+		daoUser.save(user);
+		return true;
     }
 
     @Override
