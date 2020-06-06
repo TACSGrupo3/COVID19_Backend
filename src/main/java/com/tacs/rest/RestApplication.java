@@ -6,10 +6,14 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.tacs.rest.apiCovid.ConnectionApiCovid;
 import com.tacs.rest.apiCovid.Covid19_latestResponse;
+import com.tacs.rest.dao.CountryCodeDAO;
+import com.tacs.rest.dao.CountryDAO;
+import com.tacs.rest.dao.LocationDAO;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.User;
 import com.tacs.rest.security.JWTAuthorizationFilter;
+import com.tacs.rest.services.CountryService;
 import com.tacs.rest.util.IsoUtil;
 import com.tacs.rest.util.ParseUtil;
 import org.json.simple.JSONArray;
@@ -85,11 +89,20 @@ public class RestApplication {
                     .authorizeRequests()
                     .antMatchers(HttpMethod.POST, "/session").permitAll()
                     .antMatchers(HttpMethod.POST, "/users").permitAll()
+                    .antMatchers(HttpMethod.POST, "/countriesList/prueba").permitAll()
                     .anyRequest().authenticated().and().
                     exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         }
     }
+    
+    @Autowired
+	static
+    CountryService countryService;
+    @Autowired
+    static CountryCodeDAO countryCodeDAO;
+    @Autowired
+    static LocationDAO locationDAO;
 
     @SuppressWarnings("unchecked")
     public static void initData() throws JsonIOException, JsonSyntaxException, IOException, URISyntaxException {
@@ -123,20 +136,31 @@ public class RestApplication {
 
         JSONObject jsonObject = (JSONObject) obj;
         Iterator<JSONObject> iterator;
-
+        
+        
+        
         try {
             latestResponse = gson.fromJson(apiCovid.connectionWithoutParams("latest"), collectionType);
 
 
-            int id = 1;
+            int id =  1;
             for (Covid19_latestResponse response : latestResponse) {
                 Country country = ParseUtil.latestResponseToCountry(response);
                 country.setId(id);
                 listCountries.add(country);
+                
+                locationDAO.save(country.getLocation());
+                countryCodeDAO.save(country.getCountryCode());
+                countryService.save(country);
+               // System.out.print("ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
+                
+              // System.out.print(country.getName());
                 id++;
             }
+            
+            
             RestApplication.data.put("Countries", listCountries);
-
+         
 
             JSONArray countriesList = (JSONArray) jsonObject.get("countriesList");
             List<CountriesList> listCountriesList = new ArrayList<CountriesList>();

@@ -28,6 +28,7 @@ import com.tacs.rest.apiCovid.Covid19_briefResponse;
 import com.tacs.rest.apiCovid.Covid19_latestResponse;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
+import com.tacs.rest.entity.User;
 import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.CountryService;
 
@@ -106,6 +107,16 @@ public class CountryRestController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No existe la lista a modificar");
 
         return modifiedList;
+    }
+    @Autowired
+    CountryService cs;
+    @PostMapping("/countriesList/prueba")
+    public ResponseEntity<Country>  hacerPrueba (Country country) {
+    	
+    	cs.save(country);
+    	
+    	return new ResponseEntity<Country>(country, HttpStatus.OK);
+    	
     }
 
 

@@ -49,7 +49,7 @@ public class Countrycode {
     }
 
     @JsonProperty("iso2")
-    @Column(name = "iso2", nullable = false)
+    @Column(name = "iso2")
     public String getIso2() {
         return iso2;
     }
@@ -60,7 +60,7 @@ public class Countrycode {
     }
 
     @JsonProperty("iso3")
-    @Column(name = "iso3", nullable = false)
+    @Column(name = "iso3")
     public String getIso3() {
         return iso3;
     }

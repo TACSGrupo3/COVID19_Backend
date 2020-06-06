@@ -6,9 +6,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tacs.rest.RestApplication;
+import com.tacs.rest.dao.CountryDAO;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.services.CountryService;
 
@@ -17,8 +19,8 @@ import com.tacs.rest.services.CountryService;
 public class CountryServiceImpl implements CountryService {
 
 	private final double RANGO_CERCANIA = 35;
-//	@Autowired
-//	private DaoCountry daoCountry;
+	@Autowired
+	private CountryDAO daoCountry;
 
 	@Override
 	public List<Country> findAll() {
@@ -44,7 +46,7 @@ public class CountryServiceImpl implements CountryService {
 
 	@Override
 	public void save(Country country) {
-		// TODO Auto-generated method stub
+		daoCountry.save(country);
 
 	}
 

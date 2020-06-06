@@ -103,7 +103,7 @@ public class Country {
         this.countryCode = countryCode;
     }
 
-    @Column(name = "last_update", nullable = false)
+    @Column(name = "last_update")
     public String getLastupdate() {
         return lastupdate;
     }
@@ -113,7 +113,7 @@ public class Country {
     }
 
     @ManyToOne
-    @JoinColumn(name = "countries_list_id", nullable = false)
+    @JoinColumn(name = "countries_list_id")
     public CountriesList getCountriesList() {
         return countriesList;
     }
