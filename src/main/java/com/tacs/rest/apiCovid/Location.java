@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,8 +24,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "lat",
         "lng"
 })
-@Entity
-@Table (name = "public.LOCATION")
+/*@Entity
+@Table (name = "public.LOCATION")*/
+@Embeddable
 public class Location {
 
     private int id;
@@ -35,10 +37,7 @@ public class Location {
     @JsonIgnore
     @Transient
     private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
-
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    
     public int getId() {
         return id;
     }
@@ -48,7 +47,6 @@ public class Location {
     }
 
     @JsonProperty("lat")
-    @Column(name = "latitude" , nullable = false)
     public Double getLat() {
         return lat;
     }
@@ -59,7 +57,6 @@ public class Location {
     }
 
     @JsonProperty("lng")
-    @Column(name = "longitude" , nullable = false)
     public Double getLng() {
         return lng;
     }

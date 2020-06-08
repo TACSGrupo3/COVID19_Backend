@@ -3,12 +3,7 @@ package com.tacs.rest.apiCovid;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -24,10 +19,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "iso3"
 })
 
-@Entity
-@Table(name = "public.COUNTRYCODE")
+
+@Embeddable
 public class Countrycode {
 
+	@Transient
     private int id;
     @JsonProperty("iso2")
     private String iso2;
@@ -37,9 +33,8 @@ public class Countrycode {
     @Transient
     private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
+    
     public int getId() {
         return id;
     }
@@ -49,7 +44,6 @@ public class Countrycode {
     }
 
     @JsonProperty("iso2")
-    @Column(name = "iso2")
     public String getIso2() {
         return iso2;
     }
@@ -60,7 +54,6 @@ public class Countrycode {
     }
 
     @JsonProperty("iso3")
-    @Column(name = "iso3")
     public String getIso3() {
         return iso3;
     }

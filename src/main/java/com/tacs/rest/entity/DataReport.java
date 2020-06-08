@@ -12,10 +12,17 @@ public class DataReport implements Comparable<DataReport> {
     @Column(name = "date")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Date date;
+    @Column(name= "deaths")
     private Integer deaths;
+    @Column(name= "confirmed")
     private Integer confirmed;
+    @Column(name= "recovered")
     private Integer recovered;
-
+    
+    
+    @ManyToOne
+    @JoinColumn(name = "id_Country",nullable = true)
+    Country country;
 
     public Date getDate() {
         return date;

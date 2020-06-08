@@ -10,15 +10,25 @@ import javax.persistence.*;
 public class CountriesList {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id_CountriesList")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "creation_date", nullable = false)
     private Date creationDate;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    
+    @ManyToOne
+    @JoinColumn(name = "id_User",nullable = false)
+    User user;
+    
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "CountriesList_Country", 
+        joinColumns = { @JoinColumn(name = "id_CountriesList") }, 
+        inverseJoinColumns = { @JoinColumn(name = "id_Country") }
+    )
     private List<Country> countries;
 
 

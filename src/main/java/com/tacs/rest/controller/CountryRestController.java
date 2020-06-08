@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,9 +27,9 @@ import com.google.gson.reflect.TypeToken;
 import com.tacs.rest.apiCovid.ConnectionApiCovid;
 import com.tacs.rest.apiCovid.Covid19_briefResponse;
 import com.tacs.rest.apiCovid.Covid19_latestResponse;
+
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
-import com.tacs.rest.entity.User;
 import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.CountryService;
 
@@ -110,13 +111,11 @@ public class CountryRestController {
     }
     @Autowired
     CountryService cs;
+
     @PostMapping("/countriesList/prueba")
-    public ResponseEntity<Country>  hacerPrueba (Country country) {
-    	
+    public ResponseEntity<Country>  hacerPrueba (@Validated @RequestBody Country country) {
     	cs.save(country);
-    	
     	return new ResponseEntity<Country>(country, HttpStatus.OK);
-    	
     }
 
 

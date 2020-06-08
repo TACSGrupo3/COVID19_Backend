@@ -12,20 +12,48 @@ import com.tacs.rest.apiCovid.Location;
 @Table(name = "public.COUNTRY")
 public class Country {
 
-    private int id;
-    private String name;
-    private List<DataReport> dataReport = new ArrayList<>();
-    private Integer deaths;
-    private Integer confirmed;
-    private Integer recovered;
-    private Location location;
-    private Countrycode countryCode;
-    private String lastupdate;
-    private CountriesList countriesList;
-
     @Id
-    @Column(name = "id")
+    @Column(name = "id_Country")
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    @Column(name = "name", nullable = false)
+    private String name;
+    
+    @OneToMany(mappedBy = "country", fetch = FetchType.EAGER)
+    private List<DataReport> dataReport = new ArrayList<>();
+    
+    @Column(name = "deaths", nullable = false)
+    private Integer deaths;
+    @Column(name = "confirmed", nullable = false)
+    private Integer confirmed;
+    @Column(name = "recovered", nullable = false)
+    private Integer recovered;
+    
+
+    @Embedded
+    @AttributeOverrides({
+    	  @AttributeOverride( name = "lat", column = @Column(name = "lat")),
+    	  @AttributeOverride( name = "lng", column = @Column(name = "lng"))
+    	})
+    private Location location;
+    
+
+    @Embedded
+    @AttributeOverrides({
+  	  @AttributeOverride( name = "iso2", column = @Column(name = "iso2")),
+  	  @AttributeOverride( name = "iso3", column = @Column(name = "iso3"))
+  	})
+    private Countrycode countryCode;
+    
+    @Column(name = "last_update", nullable = true)
+    private String lastupdate;
+    
+    
+    public Country() {  	
+    	
+    }
+
+
     public int getId() {
         return id;
     }
@@ -34,7 +62,6 @@ public class Country {
         this.id = id;
     }
 
-    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
@@ -42,8 +69,6 @@ public class Country {
     public void setName(String name) {
         this.name = name;
     }
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="date")
     public List<DataReport> getDataReport() {
         return dataReport;
     }
@@ -56,7 +81,6 @@ public class Country {
         dataReport.add(dataR);
     }
 
-    @Column(name = "confirmed", nullable = false)
     public Integer getConfirmed() {
         return confirmed;
     }
@@ -65,7 +89,6 @@ public class Country {
         this.confirmed = confirmed;
     }
 
-    @Column(name = "deaths", nullable = false)
     public Integer getDeaths() {
         return deaths;
     }
@@ -74,7 +97,6 @@ public class Country {
         this.deaths = deaths;
     }
 
-    @Column(name = "recovered", nullable = false)
     public Integer getRecovered() {
         return recovered;
     }
@@ -83,8 +105,6 @@ public class Country {
         this.recovered = recovered;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
     public Location getLocation() {
         return location;
     }
@@ -93,8 +113,6 @@ public class Country {
         this.location = location;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_code_id")
     public Countrycode getCountryCode() {
         return countryCode;
     }
@@ -103,7 +121,6 @@ public class Country {
         this.countryCode = countryCode;
     }
 
-    @Column(name = "last_update")
     public String getLastupdate() {
         return lastupdate;
     }
@@ -112,22 +129,11 @@ public class Country {
         this.lastupdate = lastupdate;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "countries_list_id")
-    public CountriesList getCountriesList() {
-        return countriesList;
-    }
-
     public double getDistance(final String latitude, String longitude) {
         final double dx = this.getLocation().getLat() - Double.valueOf(latitude);
         final double dy = this.getLocation().getLng() - Double.valueOf(longitude);
 
         return Math.sqrt(dx * dx + dy * dy);
     }
-
-    public void setCountriesList(CountriesList countriesList) {
-        this.countriesList = countriesList;
-    }
-
 
 }

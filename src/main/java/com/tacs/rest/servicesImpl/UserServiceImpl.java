@@ -1,6 +1,8 @@
 package com.tacs.rest.servicesImpl;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -48,12 +50,23 @@ public class UserServiceImpl implements UserService {
     public boolean save(User user) {
         String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         user.setPassword(pw_hash);
+        long cantUsers = 0;
         
-        if(daoUser.existsById(user.getUsername())) {
-        	return false;
-        }
-		daoUser.save(user);
+
+        	 cantUsers = daoUser.count();
+             for(int i = 0; i <(int)cantUsers; i ++) {
+             	
+             	Optional<User> userTabla = daoUser.findById(i+1);
+             	
+             	if(userTabla.get().getUsername().equals(user.getUsername())) {
+             		return false;
+             	}
+             }
+
+    	   daoUser.save(user);
+
 		return true;
+        
     }
 
     @Override

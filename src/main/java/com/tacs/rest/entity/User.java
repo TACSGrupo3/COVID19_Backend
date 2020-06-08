@@ -1,7 +1,6 @@
 package com.tacs.rest.entity;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +10,11 @@ import javax.persistence.*;
 @Table(name = "public.USER")
 public class User {
 
-    @Column(name = "id")
+    @Id
+    @Column(name = "id_User")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Id
+    
     @Column(name = "userName", nullable = false)
     private String username;
     @Column(name = "firstName", nullable = false)
@@ -28,8 +28,10 @@ public class User {
     private Date lastAccess;
     @Column(name = "userRole", nullable = true)
     private String userRole;
-    @OneToMany(mappedBy = "id", fetch = FetchType.EAGER, targetEntity = CountriesList.class)
+    
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<CountriesList> countriesList;
+    
     @Column(name = "telegram_chat_id", nullable = true)
     private long telegram_chat_id;
     @Column(name = "telephone", nullable = true)
