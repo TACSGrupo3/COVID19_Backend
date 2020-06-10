@@ -3,13 +3,7 @@ package com.tacs.rest.apiCovid;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -24,12 +18,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "lat",
         "lng"
 })
-/*@Entity
-@Table (name = "public.LOCATION")*/
+
 @Embeddable
 public class Location {
 
-    private int id;
+    private int id_Location;
     @JsonProperty("lat")
     private Double lat;
     @JsonProperty("lng")
@@ -39,11 +32,11 @@ public class Location {
     private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
     
     public int getId() {
-        return id;
+        return id_Location;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id_Location = id;
     }
 
     @JsonProperty("lat")

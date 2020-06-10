@@ -10,7 +10,7 @@ public class DataReport implements Comparable<DataReport> {
 
     @Id
     @Column(name = "date")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Date date;
     @Column(name= "deaths")
     private Integer deaths;

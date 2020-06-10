@@ -12,8 +12,8 @@ public class User {
 
     @Id
     @Column(name = "id_User")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_user;
     
     @Column(name = "userName", nullable = false)
     private String username;
@@ -43,7 +43,7 @@ public class User {
 
     public User(int id, String username, String firstName, String lastName, String userRole) {
         super();
-        this.id = id;
+        this.id_user = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -54,7 +54,7 @@ public class User {
 
     public User(int id, String username, String firstName, String lastName, String password, String userRole) {
         super();
-        this.id = id;
+        this.id_user = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -66,7 +66,7 @@ public class User {
     public User(int id, String username, String firstName, String lastName, String password,
                 List<CountriesList> countriesList, String userRole) {
         super();
-        this.id = id;
+        this.id_user = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -78,7 +78,7 @@ public class User {
     public User(int id, String username, String firstName, String lastName, List<CountriesList> countriesList,
                 String userRole) {
         super();
-        this.id = id;
+        this.id_user = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -97,11 +97,11 @@ public class User {
 
 
     public int getId() {
-        return id;
+        return id_user;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id_user = id;
     }
 
 

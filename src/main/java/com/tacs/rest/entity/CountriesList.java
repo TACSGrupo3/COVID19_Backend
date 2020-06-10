@@ -11,8 +11,8 @@ public class CountriesList {
 
     @Id
     @Column(name = "id_CountriesList")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_CountriesList;
     
     @Column(name = "name", nullable = false)
     private String name;
@@ -33,11 +33,11 @@ public class CountriesList {
 
 
     public int getId() {
-        return id;
+        return id_CountriesList;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id_CountriesList = id;
     }
 
 

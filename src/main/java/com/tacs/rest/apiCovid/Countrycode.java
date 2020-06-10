@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Countrycode {
 
 	@Transient
-    private int id;
+    private int id_Countrycode;
     @JsonProperty("iso2")
     private String iso2;
     @JsonProperty("iso3")
@@ -36,11 +36,11 @@ public class Countrycode {
 
     
     public int getId() {
-        return id;
+        return id_Countrycode;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id_Countrycode = id;
     }
 
     @JsonProperty("iso2")

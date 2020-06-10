@@ -10,11 +10,13 @@ public interface UserService {
 	
 	User findById(int id);
 	
+	User findByUsername(String username);
+	
 	boolean save(User user);
 	
 	void deleteById(int id);
 	
-	boolean registerUser(User user);
-
+	User checkUser (User user);
+	
 	User findByTelegramId(long telegram_id);
 }

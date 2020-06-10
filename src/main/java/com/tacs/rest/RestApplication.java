@@ -52,18 +52,14 @@ public class RestApplication {
 
     //
     //Esto de abajo hace que todas las consultas que hagamos requieran el token como authentication menos
-    //la del /session
+    //la del /sessios y la de /users
     @EnableWebSecurity
     @Configuration
     class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-
         @Autowired
         AuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-
             http.csrf().disable()
                     .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                     .authorizeRequests()
