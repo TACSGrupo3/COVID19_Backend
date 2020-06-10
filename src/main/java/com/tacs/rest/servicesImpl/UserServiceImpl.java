@@ -8,11 +8,11 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.tacs.rest.dao.UserDAO;
+import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.User;
 import com.tacs.rest.services.UserService;
 
 @Service
-@SuppressWarnings("unchecked")
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -85,6 +85,13 @@ public class UserServiceImpl implements UserService {
     		return userBD;
     	}
     	return null;
+    }
+    
+    @Override
+	public boolean sameNameList(String nameList, int id) {
+    	User user  = this.findById(id);
+    	List<CountriesList> cl = user.getCountriesList();
+    	return cl.stream().anyMatch(n -> n.getName().equals(nameList));
     }
     
 

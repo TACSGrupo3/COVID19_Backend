@@ -19,4 +19,6 @@ public interface UserService {
 	User checkUser (User user);
 	
 	User findByTelegramId(long telegram_id);
+	
+	boolean sameNameList(String nameList, int id);
 }

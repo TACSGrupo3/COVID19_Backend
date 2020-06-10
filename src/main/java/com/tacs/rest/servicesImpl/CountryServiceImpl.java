@@ -13,10 +13,8 @@ import com.tacs.rest.entity.Country;
 import com.tacs.rest.services.CountryService;
 
 @Service
-@SuppressWarnings("unchecked")
 public class CountryServiceImpl implements CountryService {
 
-	private final double RANGO_CERCANIA = 35;
 	@Autowired
 	private CountryDAO daoCountry;
 
@@ -85,4 +83,43 @@ public class CountryServiceImpl implements CountryService {
 		}
 		return nearCountries;
 	}
+	
+	@Override
+	public boolean existsCountries (List<Country> countries) {
+		
+		int cantCountries = countries.size();
+		
+		for (int i = 0; i < (int)cantCountries; i ++) {
+			if (this.findById(countries.get(i).getId())==null) {
+				return false;
+			}
+		}
+		return true;
+		
+	}
+	@Override
+	public boolean addSameCountries(List<Country> countries) {
+		int cantCountries = countries.size();
+        for (int i = 0; i < cantCountries; i++) {
+            for (int j = i+1; j <cantCountries ; j++) {
+                if(countries.get(i).getId()==countries.get(j).getId()){
+                    return true;
+                }
+            }
+        }
+        return false;		
+	}
+	@Override
+	public List<Country> searchCountries(List<Country> countries){
+		List<Country> countriesChequeados = new ArrayList<Country>();
+		for(int i = 0; i < countries.size(); i ++) {
+			Country country = daoCountry.findById(countries.get(i).getId()).get();
+			countriesChequeados.add(country);
+			
+		}
+		return countriesChequeados;
+		
+	}
+	
+	
 }

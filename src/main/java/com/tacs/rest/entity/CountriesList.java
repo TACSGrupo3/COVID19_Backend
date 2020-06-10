@@ -19,11 +19,11 @@ public class CountriesList {
     @Column(name = "creation_date", nullable = false)
     private Date creationDate;
     
-    @ManyToOne
-    @JoinColumn(name = "id_User",nullable = false)
+    @ManyToOne(fetch= FetchType.LAZY)
+    @JoinColumn(name = "id_user", nullable = false)
     User user;
-    
-    @ManyToMany(cascade = { CascadeType.ALL })
+       
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "CountriesList_Country", 
         joinColumns = { @JoinColumn(name = "id_CountriesList") }, 
@@ -31,7 +31,10 @@ public class CountriesList {
     )
     private List<Country> countries;
 
-
+    
+    public void setUser(User user) {
+    	this.user = user;
+    }
     public int getId() {
         return id_CountriesList;
     }

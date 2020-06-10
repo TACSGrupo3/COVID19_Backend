@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tacs.rest.RestApplication;
+import com.tacs.rest.dao.CountriesListDAO;
+
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.User;
@@ -15,121 +18,84 @@ import com.tacs.rest.services.CountriesListService;
 @Service
 @SuppressWarnings("unchecked")
 public class CountriesListServiceImpl implements CountriesListService {
-
+	
+	@Autowired
+	CountriesListDAO countriesListDAO;
+	@Autowired
+	UserServiceImpl userServ;
+	@Autowired
+	CountryServiceImpl countryServ;
+	
 	@Override
 	public List<CountriesList> findAll() {
-		// TODO: Agregar llamada a la BD
-
-		// Mock
-		List<User> users = (List<User>) RestApplication.data.get("Users");
-
-		List<CountriesList> countriesList = new ArrayList<CountriesList>();
-		for (User user : users) {
-			if (user.getCountriesList() != null && !user.getCountriesList().isEmpty()) {
-				countriesList.addAll(user.getCountriesList());
-			}
-		}
-		return countriesList;
+		return (List<CountriesList>) countriesListDAO.findAll();
 	}
 
 	@Override
 	public CountriesList findById(int id) {
-		// TODO: Agregar llamada a la BD
 
-		// Mock
-		List<User> users = (List<User>) RestApplication.data.get("Users");
-
-		for (User user : users) {
-			if (user.getCountriesList() != null && !user.getCountriesList().isEmpty()) {
-				for (CountriesList list : user.getCountriesList()) {
-					if (list.getId() == id)
-						return list;
-				}
-			}
-		}
-		return null;
+		return countriesListDAO.findById(id).orElse(null);	
 	}
 
 	@Override
 	public List<CountriesList> findFilterByDate(Date date) {
-		// TODO: Agregar llamada a la BD
-
-		// Mock
-		List<CountriesList> result = this.findAll();
-		List<CountriesList> filteredList = new ArrayList<CountriesList>();
-		for (CountriesList item : result) {
-			if (item.getCreationDate().getTime() > date.getTime()) {
-				filteredList.add(item);
+		List<CountriesList> filterByDate = new ArrayList<CountriesList>();
+		long cantCountriesList = countriesListDAO.count();
+		for (int i = 0; i < (int)cantCountriesList; i ++) {
+			CountriesList elem = this.findById(i+1);
+			if(elem.getCreationDate().getTime()>date.getTime()) {
+				filterByDate.add(elem);
 			}
 		}
-		return filteredList;
+		return filterByDate;
 	}
+
 
 	@Override
-	public List<CountriesList> addListCountries(String userId, List<CountriesList> countriesListToAdd)
-			throws Exception {
-		// TODO:Agregar la lista de countries en la base de datos
+	public List<CountriesList> addListCountries(String userId, List<CountriesList> countriesListToAdd)throws Exception {
 
-		// Mock
-		List<User> users = (List<User>) RestApplication.data.get("Users");
-		List<Country> countries = (List<Country>) RestApplication.data.get("Countries");
-		List<CountriesList> countriesList = (List<CountriesList>) RestApplication.data.get("CountriesList");
-		User user = new User();
-		for (User userbd : users) {
-			if (userbd.getId() == Integer.valueOf(userId)) {
-
-				for (CountriesList listToAdd : countriesListToAdd) {
-
-					if (listToAdd.getName() == null || listToAdd.getName().equals("")) {
-						throw new Exception("El nombre de la lista no puede estar vacío.");
-					}
-					CountriesList listToPersist = new CountriesList();
-					List<Country> countriesToPersist = new ArrayList<Country>();
-
-					listToPersist.setId(countriesList.size() + 1);
-					listToPersist.setCreationDate(new Date());
-					listToPersist.setName(listToAdd.getName());
-
-					Integer index = 0;
-					for (Country country : listToAdd.getCountries()) {
-
-						// Valido si ingresó 2 veces el mismo pais
-						for (Country countryToPersist : countriesToPersist) {
-							if (countryToPersist.getId() == country.getId()) {
-								throw new Exception("Ingresó el mismo pais 2 veces en la misma lista");
-							}
-						}
-
-						// Valido que ingresó un país válido
-						Boolean countryExists = false;
-						for (Country countryBd : countries) {
-							if (country.getId() == countryBd.getId()) {
-								countriesToPersist.add(countryBd);
-								countryExists = true;
-								break;
-							}
-						}
-
-						if (!countryExists) {
-							throw new Exception("Ingresó un país Inválido");
-						}
-						index++;
-					}
-
-					listToPersist.setCountries(countriesToPersist);
-					userbd.getCountriesList().add(listToPersist);
-					countriesList.add(listToPersist);
-				}
-				user = userbd;
-				break;
+		User user = userServ.findById(Integer.valueOf(userId));
+		
+		for (CountriesList listToAdd : countriesListToAdd) {
+			
+			if (userServ.sameNameList(listToAdd.getName(),Integer.valueOf(userId))) {
+				throw new Exception ("Este usuario ya posee una lista con igual nombre");
 			}
+			if (listToAdd.getName() == null || listToAdd.getName().equals("")) {
+				throw new Exception("El nombre de la lista no puede estar vacío.");
+			}
+			CountriesList listToPersist = new CountriesList();
+			
+			listToPersist.setCreationDate(new Date());
+			listToPersist.setName(listToAdd.getName());
+
+			List <Country> countriesDelRequest = listToAdd.getCountries();
+			
+			
+			if (countryServ.existsCountries(countriesDelRequest)==false) {
+				throw new Exception("Ingresó un país Inválido");
+			}
+			if (countryServ.addSameCountries(countriesDelRequest)==true) {
+				throw new Exception("Ingresó el mismo pais 2 veces en la misma lista");
+			}
+			List<Country> countries2 = countryServ.searchCountries(countriesDelRequest);
+			
+			for(int i = 0; i <countries2.size(); i ++) {
+				//countries2.get(i).addCountriesList(listToPersist);
+				countryServ.save(countries2.get(i));
+			}
+			
+			listToPersist.setCountries(countries2);			
+			listToPersist.setUser(user);
+			user.addList(listToPersist);
+			countriesListDAO.save(listToPersist);
+			userServ.save(user);
+			
+		
 		}
-
-		RestApplication.data.put("CountriesList", countriesList);
-		RestApplication.data.put("Users", users);
-
 		return user.getCountriesList();
-	}
+
+}		
 
 	@Override
 	public CountriesList modifyListCountries(int countryListId, CountriesList list) throws Exception {

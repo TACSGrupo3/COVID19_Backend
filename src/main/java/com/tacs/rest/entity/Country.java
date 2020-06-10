@@ -22,6 +22,9 @@ public class Country {
     @OneToMany(mappedBy = "country", fetch = FetchType.EAGER)
     private List<DataReport> dataReport = new ArrayList<>();
     
+    @ManyToMany(mappedBy = "countries")
+    List<CountriesList> countriesList;
+    
     @Column(name = "deaths", nullable = false)
     private Integer deaths;
     @Column(name = "confirmed", nullable = false)
@@ -29,31 +32,26 @@ public class Country {
     @Column(name = "recovered", nullable = false)
     private Integer recovered;
     
-
     @Embedded
     @AttributeOverrides({
     	  @AttributeOverride( name = "lat", column = @Column(name = "lat")),
-    	  @AttributeOverride( name = "lng", column = @Column(name = "lng"))
-    	})
+    	  @AttributeOverride( name = "lng", column = @Column(name = "lng"))})
     private Location location;
     
 
     @Embedded
     @AttributeOverrides({
   	  @AttributeOverride( name = "iso2", column = @Column(name = "iso2")),
-  	  @AttributeOverride( name = "iso3", column = @Column(name = "iso3"))
-  	})
+  	  @AttributeOverride( name = "iso3", column = @Column(name = "iso3"))})
     private Countrycode countryCode;
     
     @Column(name = "last_update", nullable = true)
     private String lastupdate;
     
-    
-    public Country() {  	
-    	
-    }
-
-
+    public void addCountriesList(CountriesList cl) {
+    	this.countriesList.add(cl);
+    }   
+ 
     public int getId() {
         return id_country;
     }

@@ -17,4 +17,11 @@ public interface CountryService {
 	List<Country> findNearCountries(String latitud, String longitud, String maxCountries);
 
 	List<Country> findByIso(String iso);
+	
+	boolean existsCountries (List<Country> countries);
+	
+	boolean addSameCountries(List<Country> countries);
+	
+	public List<Country> searchCountries(List<Country> countries);
+	
 }

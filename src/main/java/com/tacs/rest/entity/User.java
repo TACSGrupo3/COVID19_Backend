@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class User {
 
     @Id
-    @Column(name = "id_User")
+    @Column(name = "id_user")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_user;
     
@@ -29,7 +29,7 @@ public class User {
     @Column(name = "userRole", nullable = true)
     private String userRole;
     
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<CountriesList> countriesList;
     
     @Column(name = "telegram_chat_id", nullable = true)
