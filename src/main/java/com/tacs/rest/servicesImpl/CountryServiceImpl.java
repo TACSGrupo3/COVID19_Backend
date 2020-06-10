@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tacs.rest.RestApplication;
 import com.tacs.rest.dao.CountryDAO;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.services.CountryService;
@@ -24,24 +22,34 @@ public class CountryServiceImpl implements CountryService {
 
 	@Override
 	public List<Country> findAll() {
-		// TODO Agregar la llamada a la bd
-
-		// MOCK
-		List<Country> listOfCountriesList = (List<Country>) RestApplication.data.get("Countries");
-		return listOfCountriesList;
+		return (List<Country>) daoCountry.findAll();
 
 	}
 
 	@Override
 	public Country findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+    	return daoCountry.findById(id).orElse(null);
 	}
 
 	public List<Country> findByIso(String iso) {
-		List<Country> listOfCountriesList = (List<Country>) RestApplication.data.get("Countries");
-		return listOfCountriesList.stream().filter(country -> (country.getCountryCode().getIso2().equals(iso)
-				|| country.getCountryCode().getIso3().equals(iso))).collect(Collectors.toList());
+
+    	long cantCountries = 0;
+    	cantCountries = daoCountry.count();
+    	for (int i = 0 ; i <(int) cantCountries; i ++) {
+    		Country countryTabla = this.findById(i+1);
+         	if(countryTabla.getCountryCode().getIso2().equals(iso) || countryTabla.getCountryCode().getIso3().equals(iso)) {
+         		return this.agregarAListCountry(countryTabla);
+         	}
+    	}
+    	return null;	
+	}
+
+	public List<Country> agregarAListCountry(Country country){
+				
+		List<Country> countries = new ArrayList<Country>() ;
+		countries.add(country);
+		return countries;
+		
 	}
 
 	@Override
@@ -56,12 +64,10 @@ public class CountryServiceImpl implements CountryService {
 	}
 
 	@Override
-	public List<Country> findNearCountrys(String latitud, String longitud, String maxCountries) {
-		// TODO Agregar la llamada a la base de datos : FILTRAR POR REGION Y SUBREGION
-
-		// MOCK
+	public List<Country> findNearCountries(String latitud, String longitud, String maxCountries) {
+		
 		List<Country> nearCountries = new ArrayList<Country>();
-		List<Country> listOfCountriesList = (List<Country>) RestApplication.data.get("Countries");
+		List<Country> listOfCountriesList = this.findAll();
 
 		Collections.sort(listOfCountriesList, new Comparator<Country>() {
 			@Override

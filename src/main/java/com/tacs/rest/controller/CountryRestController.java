@@ -30,6 +30,7 @@ import com.tacs.rest.apiCovid.Covid19_latestResponse;
 
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
+import com.tacs.rest.entity.User;
 import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.CountryService;
 
@@ -51,25 +52,16 @@ public class CountryRestController {
     Collection<Covid19_latestResponse> latestResponse;
 
     @GetMapping("/countries")
-    public List<Country> listPaises(@RequestParam(required = false) String latitude,
+    public ResponseEntity<List<Country>> listPaises(@RequestParam(required = false) String latitude,
                                     @RequestParam(required = false) String longitude, @RequestParam(required = false) String maxCountries,
                                     @RequestParam(required = false) String iso) {
         if (latitude != null && longitude != null && maxCountries != null) {
-//			retornará la lista de paises cercanos por region
-////			
-//			String uri = "http://api.geonames.org/countryCodeJSON?lat=" + latitud + "&lng=" + longitud + "&username=tacsg3";
-//
-//			RestTemplate restTemplate = new RestTemplate();
-//			HashMap result = restTemplate.getForObject(uri, HashMap.class);
-
-//			String country = (String) result.get("countryName");
-            return countriesService.findNearCountrys(latitude, longitude, maxCountries);
+        	return new ResponseEntity<List<Country>>(countriesService.findNearCountries(latitude, longitude, maxCountries), HttpStatus.OK);
 
         } else if (iso != null) {
-            return countriesService.findByIso(iso);
+        	return new ResponseEntity<List<Country>>(countriesService.findByIso(iso), HttpStatus.OK);
         } else {
-            // retornará todos los paises
-            return countriesService.findAll();
+        	return new ResponseEntity<List<Country>>(countriesService.findAll(), HttpStatus.OK);
         }
     }
 

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import com.tacs.rest.RestApplication;
 import com.tacs.rest.dao.UserDAO;
 import com.tacs.rest.entity.User;
 import com.tacs.rest.services.UserService;
@@ -21,12 +20,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        //TODO: LLamar a la BD
-//		List<User> listUsers= daoUser.findAll();
+    	return (List<User>) daoUser.findAll();
 
-        //MOCK
-        List<User> users = (List<User>) RestApplication.data.get("Users");
-        return users;
     }
 
     @Override

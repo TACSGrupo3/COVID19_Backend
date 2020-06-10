@@ -14,7 +14,7 @@ public interface CountryService {
 	
 	void deleteById(int id);
 
-	List<Country> findNearCountrys(String latitud, String longitud, String maxCountries);
+	List<Country> findNearCountries(String latitud, String longitud, String maxCountries);
 
 	List<Country> findByIso(String iso);
 }

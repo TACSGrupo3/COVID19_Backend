@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "iso3"
 })
 
-
 @Embeddable
 public class Countrycode {
 

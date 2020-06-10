@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Embeddable
 public class Location {
 
+	@Transient
     private int id_Location;
     @JsonProperty("lat")
     private Double lat;
