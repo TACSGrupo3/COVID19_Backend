@@ -202,4 +202,11 @@ public class User {
     public void setTelephone_number(String telephone_number) {
         this.telephone_number = telephone_number;
     }
+    
+    public boolean hasCountry (int id_Country) {
+    	return this.countriesList.stream()
+    			.anyMatch(list -> list.hasCountry(id_Country));
+    }
+    
+    
 }

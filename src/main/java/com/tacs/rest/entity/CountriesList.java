@@ -81,4 +81,8 @@ public class CountriesList {
     public void removeCountry(Country exCountry) {
         countries.remove(exCountry);
     }
+    
+    public boolean hasCountry (int id_Country) {
+    	return this.countries.stream().anyMatch(c->c.getId()==id_Country);
+    }
 }

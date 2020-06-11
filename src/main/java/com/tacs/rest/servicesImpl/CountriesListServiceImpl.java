@@ -154,29 +154,12 @@ public class CountriesListServiceImpl implements CountriesListService {
 	}
 
 	@Override
-	public List<User> getIntrested(int countryId) {
-		// TODO PASAR A BD
-
-		List<User> users = (List<User>) RestApplication.data.get("Users");
-
-		List<User> usersIntrested = new ArrayList<User>();
-
-		for (User user : users) {
-			if (user.getCountriesList() != null) {
-				for (CountriesList countriesList : user.getCountriesList()) {
-					if (countriesList.getCountries() != null) {
-						for (Country country : countriesList.getCountries()) {
-							if (country.getId() == countryId) {
-								User userToAdd = new User(user.getId(), user.getUsername(), user.getFirstName(),
-										user.getLastName(), user.getUserRole());
-								usersIntrested.add(userToAdd);
-							}
-						}
-					}
-				}
-			}
+	public List<User> getIntrested(int idCountry) throws Exception {
+		
+		if(countryServ.findById(idCountry)==null) {
+			throw new Exception("El countries id es inexistente"); 
 		}
-		return usersIntrested;
+		return userServ.userInterestedOnCountry(idCountry);
 	}
 
 }

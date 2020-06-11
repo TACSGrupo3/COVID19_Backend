@@ -2,6 +2,7 @@ package com.tacs.rest.servicesImpl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -112,8 +113,11 @@ public class UserServiceImpl implements UserService {
 		}
 		return null;
 	}
+	@Override
+	public List<User> userInterestedOnCountry(int idCountry){
+		List<User>  usersDB = this.findAll();
+		return usersDB.stream().filter(u -> u.hasCountry(idCountry)).collect(Collectors.toList());	
+		
+	}
 	
-	
-	
-
 }

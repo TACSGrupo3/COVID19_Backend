@@ -25,4 +25,6 @@ public interface UserService {
 	public int cantUsers();
 	
 	public User userWithCountriesList (int countriesListId);
+	
+	public List<User> userInterestedOnCountry(int idCountry);
 }

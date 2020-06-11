@@ -24,5 +24,5 @@ public interface CountriesListService {
 
 	List<CountriesList> deleteListCountries(String countriesListId) throws Exception;
 
-	List<User> getIntrested(int countryId);
+	List<User> getIntrested(int countryId) throws Exception;
 }
