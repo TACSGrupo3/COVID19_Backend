@@ -110,16 +110,17 @@ public class CountryServiceImpl implements CountryService {
         return false;		
 	}
 	@Override
-	public List<Country> searchCountries(List<Country> countries){
+	public List<Country> searchAndSaveCountries(List<Country> countries){
 		List<Country> countriesChequeados = new ArrayList<Country>();
 		for(int i = 0; i < countries.size(); i ++) {
 			Country country = daoCountry.findById(countries.get(i).getId()).get();
 			countriesChequeados.add(country);
-			
+			this.save(countriesChequeados.get(i));
+
 		}
 		return countriesChequeados;
-		
+
 	}
-	
+
 	
 }

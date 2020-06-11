@@ -21,4 +21,8 @@ public interface UserService {
 	User findByTelegramId(long telegram_id);
 	
 	boolean sameNameList(String nameList, int id);
+	
+	public int cantUsers();
+	
+	public User userWithCountriesList (int countriesListId);
 }

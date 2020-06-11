@@ -9,7 +9,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +29,6 @@ import com.tacs.rest.apiCovid.Covid19_latestResponse;
 
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
-import com.tacs.rest.entity.User;
 import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.CountryService;
 
@@ -97,23 +95,14 @@ public class CountryRestController {
     }
     
     @PutMapping("/countriesList/{countriesListId}")
-    public CountriesList modifyListCountries(@PathVariable(required = true) Integer countriesListId,
+    public ResponseEntity<CountriesList> modifyListCountries(@PathVariable(required = true) Integer countriesListId,
                                              @RequestBody CountriesList list) throws Exception {
         CountriesList modifiedList = countriesListService.modifyListCountries(countriesListId, list);
         if (modifiedList == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No existe la lista a modificar");
 
-        return modifiedList;
+        return new ResponseEntity<CountriesList>(modifiedList, HttpStatus.OK);       
     }
-    @Autowired
-    CountryService cs;
-
-    @PostMapping("/countriesList/prueba")
-    public ResponseEntity<Country>  hacerPrueba (@Validated @RequestBody Country country) {
-    	cs.save(country);
-    	return new ResponseEntity<Country>(country, HttpStatus.OK);
-    }
-
 
     @GetMapping("/countries/brief")
     public ResponseEntity<Covid19_briefResponse> cantidadMuertosTotales() throws JsonSyntaxException, JsonIOException, IOException, URISyntaxException {

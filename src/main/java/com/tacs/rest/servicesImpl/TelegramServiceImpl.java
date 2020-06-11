@@ -1,6 +1,5 @@
 package com.tacs.rest.servicesImpl;
 
-import com.neovisionaries.i18n.CountryCode;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.services.CountriesListService;
@@ -8,8 +7,6 @@ import com.tacs.rest.services.CountryService;
 import com.tacs.rest.services.TelegramService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TelegramServiceImpl implements TelegramService {

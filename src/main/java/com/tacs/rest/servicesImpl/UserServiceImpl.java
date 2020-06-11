@@ -94,5 +94,26 @@ public class UserServiceImpl implements UserService {
     	return cl.stream().anyMatch(n -> n.getName().equals(nameList));
     }
     
+	@Override
+	public int cantUsers() {
+		return (int)daoUser.count();
+	}
+	@Override
+	public User userWithCountriesList (int countriesListId) {
+		
+		List<User> users = this.findAll();
+		for(int i = 0 ; i < this.cantUsers() ; i++) {
+			users.get(i);
+
+			if (users.get(i).getCountriesList().stream().anyMatch(n -> n.getId()==countriesListId)) {
+				return users.get(i);
+			}
+			
+		}
+		return null;
+	}
+	
+	
+	
 
 }

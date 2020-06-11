@@ -94,7 +94,16 @@ public class User {
     public void removeList(CountriesList exList) {
         countriesList.remove(exList);
     }
-
+    
+    public void modifyList(CountriesList list) {
+    	for(int i = 0; i <countriesList.size(); i++) {
+    		
+    		if(countriesList.get(i).getId()==list.getId()) {
+    			countriesList.get(i).setCountries(list.getCountries());
+    			countriesList.get(i).setName(list.getName());
+    		}
+    	}    	
+    }
 
     public int getId() {
         return id_user;

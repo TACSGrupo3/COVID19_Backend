@@ -22,6 +22,6 @@ public interface CountryService {
 	
 	boolean addSameCountries(List<Country> countries);
 	
-	public List<Country> searchCountries(List<Country> countries);
+	public List<Country> searchAndSaveCountries(List<Country> countries);
 	
 }
