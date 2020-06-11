@@ -38,14 +38,16 @@ public class SessionServiceImpl implements SessionService{
 		//TODO: Llamar a la BD
 		
 		//MOCK
-		List<User> users = (List<User>) RestApplication.data.get("Users");
-		for(User userBd : users) {
-			if(userBd.getUsername().equals(user.getUsername()) && userBd.getPassword().equals(user.getPassword())) {
-				return userBd;
-			}
-		}
+		User userRegistered = null;
+		userRegistered = this.login(user);
+		
+		if(userRegistered != null) return userRegistered;
 		
 		//Si llegó acá es porque no existe -> Agrego el usuario a la BD
+		List<User> users = (List<User>) RestApplication.data.get("Users");
+		user.setId(users.size() + 1);
+		String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+	    user.setPassword(pw_hash);
 		users.add(user);
 		RestApplication.data.put("Users",users);
 		

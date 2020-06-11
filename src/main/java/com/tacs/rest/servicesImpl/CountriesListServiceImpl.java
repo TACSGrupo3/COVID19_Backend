@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.tacs.rest.RestApplication;
 import com.tacs.rest.entity.CountriesList;
@@ -81,7 +83,17 @@ public class CountriesListServiceImpl implements CountriesListService {
 				for (CountriesList listToAdd : countriesListToAdd) {
 
 					if (listToAdd.getName() == null || listToAdd.getName().equals("")) {
-						throw new Exception("El nombre de la lista no puede estar vacío.");
+						throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+								"El nombre de la lista no puede estar vacío.");
+					}
+					
+					if(userbd.getCountriesList() != null) {
+						for(CountriesList listOfUser : userbd.getCountriesList()) {
+							if(listOfUser.getName().toLowerCase().equals(listToAdd.getName().toLowerCase())) {
+								throw new ResponseStatusException(HttpStatus.BAD_REQUEST, 
+										"Usted ya tiene una lista con ese mismo nombre. Por favor, elija otro.");
+							}
+						};
 					}
 					CountriesList listToPersist = new CountriesList();
 					List<Country> countriesToPersist = new ArrayList<Country>();
@@ -96,7 +108,7 @@ public class CountriesListServiceImpl implements CountriesListService {
 						// Valido si ingresó 2 veces el mismo pais
 						for (Country countryToPersist : countriesToPersist) {
 							if (countryToPersist.getId() == country.getId()) {
-								throw new Exception("Ingresó el mismo pais 2 veces en la misma lista");
+								throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Ingresó el mismo pais 2 veces en la misma lista");
 							}
 						}
 
@@ -111,7 +123,7 @@ public class CountriesListServiceImpl implements CountriesListService {
 						}
 
 						if (!countryExists) {
-							throw new Exception("Ingresó un país Inválido");
+							throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Ingresó un país Inválido");
 						}
 						index++;
 					}
@@ -137,7 +149,7 @@ public class CountriesListServiceImpl implements CountriesListService {
 
 		// Mock
 		if (list.getName() == null || list.getName().equals("")) {
-			throw new Exception("El nombre de la lista no puede estar vacío.");
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El nombre de la lista no puede estar vacío.");
 		}
 
 		boolean exists = false;
@@ -163,7 +175,7 @@ public class CountriesListServiceImpl implements CountriesListService {
 							}
 
 							if (!countryExists) {
-								throw new Exception("Ingresó un país Inválido");
+								throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Ingresó un país Inválido");
 							}
 						}
 
