@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.tacs.rest.RestApplication;
 import com.tacs.rest.dao.CountriesListDAO;
-
+import com.tacs.rest.dao.UserDAO;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.User;
@@ -50,11 +50,13 @@ public class CountriesListServiceImpl implements CountriesListService {
 		return filterByDate;
 	}
 
-
 	@Override
 	public List<CountriesList> addListCountries(String userId, List<CountriesList> countriesListToAdd)throws Exception {
 
 		User user = userServ.findById(Integer.valueOf(userId));
+		if(userServ.findById(Integer.valueOf(userId)) == null) {
+			throw new Exception ("Este user id es inexistente");
+		}
 		
 		for (CountriesList listToAdd : countriesListToAdd) {
 			
@@ -161,49 +163,27 @@ public class CountriesListServiceImpl implements CountriesListService {
 	}
 
 	@Override
-	public List<CountriesList> findByUserId(int id) {
-		// TODO: Llamar a la BD
-//		User user = daoUser.findById(id);
-
-		// MOCK
-		List<User> users = (List<User>) RestApplication.data.get("Users");
-		for (User user : users) {
-			if (user.getId() == id) {
-				return user.getCountriesList();
-			}
+	public List<CountriesList> findByUserId(int idUser) {		
+		User user = userServ.findById(idUser);
+		if(user == null) {
+			return null;
 		}
-		return null;
+		return user.getCountriesList();
 	}
 
 	@Override
-	public void deleteListCountries(String countriesListId) {
-
-		boolean exists = false;
-		List<CountriesList> countriesListBd = (List<CountriesList>) RestApplication.data.get("CountriesList");
-		List<User> users = (List<User>) RestApplication.data.get("Users");
-		for (User user : users) {
-			if (user.getCountriesList() != null) {
-				for (int j = 0; j < user.getCountriesList().size(); j++) {
-					if (user.getCountriesList().get(j).getId() == Integer.valueOf(countriesListId)) {
-						user.getCountriesList().remove(j);
-						exists = true;
-						break;
-					}
-				}
-
-				if (exists)
-					break;
-			}
+	public List<CountriesList> deleteListCountries(String countriesListId) throws Exception {
+		
+		CountriesList cl = countriesListDAO.findById(Integer.valueOf(countriesListId)).orElse(null);
+		if(cl == null) {
+			throw new Exception("El countries list id es inexistente");
 		}
-
-		for (int i = 0; i < countriesListBd.size(); i++) {
-			if (countriesListBd.get(i).getId() == Integer.valueOf(countriesListId)) {
-				countriesListBd.remove(i);
-				break;
-			}
-		}
-
-		return;
+		User user = cl.getUser();
+		user.removeList(cl);
+		userServ.save(user);
+		countriesListDAO.delete(cl);	
+		return user.getCountriesList();
+		
 	}
 
 	@Override

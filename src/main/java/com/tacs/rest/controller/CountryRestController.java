@@ -72,30 +72,34 @@ public class CountryRestController {
     
     @GetMapping("/countriesList/{listId}")
     public ResponseEntity<CountriesList> getCountriesListById(@PathVariable(required = true) String listId) throws JsonIOException, JsonSyntaxException, URISyntaxException, IOException {
-    	return new ResponseEntity<CountriesList>(countriesListService.findById(Integer.valueOf(listId)), HttpStatus.OK);
+       	if(countriesListService.findById(Integer.valueOf(listId))==null)
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dicho id de list es inexistente");
+    	else  	
+    		return new ResponseEntity<CountriesList>(countriesListService.findById(Integer.valueOf(listId)), HttpStatus.OK);
     }
 
     @GetMapping("/users/{userId}/countriesList")
-    public List<CountriesList> getCountriesListByUserId(@PathVariable String userId) {
-        return countriesListService.findByUserId(Integer.valueOf(userId));
+    public ResponseEntity<List<CountriesList>> getCountriesListByUserId(@PathVariable String userId) throws NumberFormatException, Exception {
+    	if (countriesListService.findByUserId(Integer.valueOf(userId))!= null)	
+    		return new ResponseEntity<List<CountriesList>>(countriesListService.findByUserId(Integer.valueOf(userId)), HttpStatus.OK);      
+    	else
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dicho user id es inexistente");
     }
 
     @PostMapping("/users/{userId}/countriesList")
-    public List<CountriesList> addListCountries(@RequestBody List<CountriesList> countriesList, @PathVariable String userId) throws Exception {
-    	return countriesListService.addListCountries(userId, countriesList);
+    public ResponseEntity<List<CountriesList>> addListCountries(@RequestBody List<CountriesList> countriesList, @PathVariable String userId) throws Exception {
+    		return new ResponseEntity<List<CountriesList>>(countriesListService.addListCountries(userId, countriesList), HttpStatus.OK);
     }
 
     @DeleteMapping("/countriesList/{countriesListId}")
-    public void deleteListCountries(@PathVariable String countriesListId) {
-        countriesListService.deleteListCountries(countriesListId);
-        return;
+    public ResponseEntity<List<CountriesList>> deleteListCountries(@PathVariable String countriesListId) throws Exception {
+        return new ResponseEntity<List<CountriesList>>(countriesListService.deleteListCountries(countriesListId), HttpStatus.OK);       
     }
     
     @PutMapping("/countriesList/{countriesListId}")
     public CountriesList modifyListCountries(@PathVariable(required = true) Integer countriesListId,
                                              @RequestBody CountriesList list) throws Exception {
         CountriesList modifiedList = countriesListService.modifyListCountries(countriesListId, list);
-
         if (modifiedList == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No existe la lista a modificar");
 

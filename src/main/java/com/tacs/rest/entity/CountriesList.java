@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "public.COUNTRIESLIST")
 public class CountriesList {
@@ -31,7 +33,10 @@ public class CountriesList {
     )
     private List<Country> countries;
 
-    
+    @JsonIgnore
+    public User getUser() {
+    	return this.user;
+    }
     public void setUser(User user) {
     	this.user = user;
     }

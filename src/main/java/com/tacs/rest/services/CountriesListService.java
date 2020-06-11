@@ -22,7 +22,7 @@ public interface CountriesListService {
 
 	List<CountriesList> addListCountries(String userId, List<CountriesList> countriesList) throws Exception;
 
-	void deleteListCountries(String countriesListId);
+	List<CountriesList> deleteListCountries(String countriesListId) throws Exception;
 
 	List<User> getIntrested(int countryId);
 }
