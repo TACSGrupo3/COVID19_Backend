@@ -10,19 +10,19 @@ import org.springframework.stereotype.Service;
 @Service
 public interface CountriesListService {
 	
-	public List<CountriesList> findAll();
+	List<CountriesList> findAll();
 	
-	public List<CountriesList> findFilterByDate(Date date);
+	List<CountriesList> findFilterByDate(Date date);
 	
-	public List<CountriesList> findByUserId(int userId);
+	List<CountriesList> findByUserId(int userId);
 	
-	public CountriesList findById(int id);
+	CountriesList findById(int id);
 	
-	public CountriesList modifyListCountries(int countryListId, CountriesList list) throws Exception;
+	CountriesList modifyListCountries(int countryListId, CountriesList list) throws Exception;
 
-	public List<CountriesList> addListCountries(String userId, List<CountriesList> countriesList) throws Exception;
+	List<CountriesList> addListCountries(String userId, List<CountriesList> countriesList) throws Exception;
 
-	public void deleteListCountries(String countriesListId);
+	List<CountriesList> deleteListCountries(String countriesListId) throws Exception;
 
-	public List<User> getIntrested(int countryId);
+	List<User> getIntrested(int countryId) throws Exception;
 }

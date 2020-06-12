@@ -4,48 +4,55 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tacs.rest.RestApplication;
+import com.tacs.rest.dao.CountryDAO;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.services.CountryService;
 
 @Service
-@SuppressWarnings("unchecked")
 public class CountryServiceImpl implements CountryService {
 
-	private final double RANGO_CERCANIA = 35;
-//	@Autowired
-//	private DaoCountry daoCountry;
+	@Autowired
+	private CountryDAO daoCountry;
 
 	@Override
 	public List<Country> findAll() {
-		// TODO Agregar la llamada a la bd
-
-		// MOCK
-		List<Country> listOfCountriesList = (List<Country>) RestApplication.data.get("Countries");
-		return listOfCountriesList;
+		return (List<Country>) daoCountry.findAll();
 
 	}
 
 	@Override
 	public Country findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+    	return daoCountry.findById(id).orElse(null);
 	}
 
 	public List<Country> findByIso(String iso) {
-		List<Country> listOfCountriesList = (List<Country>) RestApplication.data.get("Countries");
-		return listOfCountriesList.stream().filter(country -> (country.getCountryCode().getIso2().equals(iso)
-				|| country.getCountryCode().getIso3().equals(iso))).collect(Collectors.toList());
+
+    	long cantCountries = 0;
+    	cantCountries = daoCountry.count();
+    	for (int i = 0 ; i <(int) cantCountries; i ++) {
+    		Country countryTabla = this.findById(i+1);
+         	if(countryTabla.getCountryCode().getIso2().equals(iso) || countryTabla.getCountryCode().getIso3().equals(iso)) {
+         		return this.agregarAListCountry(countryTabla);
+         	}
+    	}
+    	return null;	
+	}
+
+	public List<Country> agregarAListCountry(Country country){
+				
+		List<Country> countries = new ArrayList<Country>() ;
+		countries.add(country);
+		return countries;
+		
 	}
 
 	@Override
 	public void save(Country country) {
-		// TODO Auto-generated method stub
-
+		daoCountry.save(country);
 	}
 
 	@Override
@@ -55,12 +62,10 @@ public class CountryServiceImpl implements CountryService {
 	}
 
 	@Override
-	public List<Country> findNearCountrys(String latitud, String longitud, String maxCountries) {
-		// TODO Agregar la llamada a la base de datos : FILTRAR POR REGION Y SUBREGION
-
-		// MOCK
+	public List<Country> findNearCountries(String latitud, String longitud, String maxCountries) {
+		
 		List<Country> nearCountries = new ArrayList<Country>();
-		List<Country> listOfCountriesList = (List<Country>) RestApplication.data.get("Countries");
+		List<Country> listOfCountriesList = this.findAll();
 
 		Collections.sort(listOfCountriesList, new Comparator<Country>() {
 			@Override
@@ -78,4 +83,45 @@ public class CountryServiceImpl implements CountryService {
 		}
 		return nearCountries;
 	}
+	
+	@Override
+	public boolean existsCountries (List<Country> countries) {
+		
+		int cantCountries = countries.size();
+		
+		for (int i = 0; i < (int)cantCountries; i ++) {
+			if (this.findById(countries.get(i).getId())==null) {
+				return false;
+			}
+		}
+		return true;
+		
+	}
+	
+	@Override
+	public boolean addSameCountries(List<Country> countries) {
+		int cantCountries = countries.size();
+        for (int i = 0; i < cantCountries; i++) {
+            for (int j = i+1; j <cantCountries ; j++) {
+                if(countries.get(i).getId()==countries.get(j).getId()){
+                    return true;
+                }
+            }
+        }
+        return false;		
+	}
+	@Override
+	public List<Country> searchAndSaveCountries(List<Country> countries){
+		List<Country> countriesChequeados = new ArrayList<Country>();
+		for(int i = 0; i < countries.size(); i ++) {
+			Country country = daoCountry.findById(countries.get(i).getId()).get();
+			countriesChequeados.add(country);
+			this.save(countriesChequeados.get(i));
+
+		}
+		return countriesChequeados;
+
+	}
+
+	
 }

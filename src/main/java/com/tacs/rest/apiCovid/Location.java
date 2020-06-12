@@ -3,6 +3,9 @@ package com.tacs.rest.apiCovid;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,14 +18,27 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "lat",
         "lng"
 })
+
+@Embeddable
 public class Location {
 
+	@Transient
+    private int id_Location;
     @JsonProperty("lat")
     private Double lat;
     @JsonProperty("lng")
     private Double lng;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    @Transient
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    
+    public int getId() {
+        return id_Location;
+    }
+
+    public void setId(int id) {
+        this.id_Location = id;
+    }
 
     @JsonProperty("lat")
     public Double getLat() {
@@ -45,6 +61,7 @@ public class Location {
     }
 
     @JsonAnyGetter
+    @Transient
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

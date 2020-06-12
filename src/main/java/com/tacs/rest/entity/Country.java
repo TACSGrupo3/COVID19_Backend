@@ -3,28 +3,61 @@ package com.tacs.rest.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.*;
 
 import com.tacs.rest.apiCovid.Countrycode;
 import com.tacs.rest.apiCovid.Location;
 
+@Entity
+@Table(name = "public.COUNTRY")
 public class Country {
 
-    private int id;
+    @Id
+    @Column(name = "id_Country")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_country;
+    @Column(name = "name", nullable = false)
     private String name;
+    
+    @OneToMany(mappedBy = "country", fetch = FetchType.EAGER)
     private List<DataReport> dataReport = new ArrayList<>();
+    
+    @ManyToMany(mappedBy = "countries")
+    List<CountriesList> countriesList;
+    
+    @Column(name = "deaths", nullable = false)
     private Integer deaths;
+    @Column(name = "confirmed", nullable = false)
     private Integer confirmed;
+    @Column(name = "recovered", nullable = false)
     private Integer recovered;
+    
+    @Embedded
+    @AttributeOverrides({
+    	  @AttributeOverride( name = "lat", column = @Column(name = "lat")),
+    	  @AttributeOverride( name = "lng", column = @Column(name = "lng"))})
     private Location location;
-    private Countrycode countryCode;
-    private String lastupdate;
+    
 
+    @Embedded
+    @AttributeOverrides({
+  	  @AttributeOverride( name = "iso2", column = @Column(name = "iso2")),
+  	  @AttributeOverride( name = "iso3", column = @Column(name = "iso3"))})
+    private Countrycode countryCode;
+    
+    @Column(name = "last_update", nullable = true)
+    private String lastupdate;
+    
+    public void addCountriesList(CountriesList cl) {
+    	this.countriesList.add(cl);
+    }   
+ 
     public int getId() {
-        return id;
+        return id_country;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id_country = id;
     }
 
     public String getName() {
@@ -34,7 +67,6 @@ public class Country {
     public void setName(String name) {
         this.name = name;
     }
-
     public List<DataReport> getDataReport() {
         return dataReport;
     }
@@ -71,20 +103,20 @@ public class Country {
         this.recovered = recovered;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
     public Location getLocation() {
         return location;
     }
 
-    public void setCountryCode(Countrycode countryCode) {
-        this.countryCode = countryCode;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public Countrycode getCountryCode() {
         return countryCode;
+    }
+
+    public void setCountryCode(Countrycode countryCode) {
+        this.countryCode = countryCode;
     }
 
     public String getLastupdate() {
@@ -96,10 +128,10 @@ public class Country {
     }
 
     public double getDistance(final String latitude, String longitude) {
-        final double dx = this.getLocation().getLat() - Double.valueOf(latitude); 
-        final double dy = this.getLocation().getLng() - Double.valueOf(longitude); 
-        
-        return Math.sqrt(dx*dx + dy*dy);
+        final double dx = this.getLocation().getLat() - Double.valueOf(latitude);
+        final double dy = this.getLocation().getLng() - Double.valueOf(longitude);
+
+        return Math.sqrt(dx * dx + dy * dy);
     }
-    
+
 }

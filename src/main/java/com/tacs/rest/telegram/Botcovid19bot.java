@@ -40,7 +40,7 @@ public class Botcovid19bot extends TelegramLongPollingBot {
     @Autowired
     TelegramServiceImpl telegramService;
 
-    private SendMessage message = new SendMessage();
+    private final SendMessage message = new SendMessage();
 
     static {
         /** Telegram BOT API init */
@@ -78,7 +78,7 @@ public class Botcovid19bot extends TelegramLongPollingBot {
                         Iterator<Country> countryIterator = finalList.getCountries().iterator();
                         // Set String to show on Telegram chat
                         while (countryIterator.hasNext()) {
-                            Country country = (Country) countryIterator.next();
+                            Country country = countryIterator.next();
                             countriesMessage = countriesMessage + country.getName() + "\n";
                         }
                         // Set chat id and String to send
@@ -107,7 +107,6 @@ public class Botcovid19bot extends TelegramLongPollingBot {
                     // Show lasts values of COVID-19 belong to the countries of the list
                     // Get string ahead from position 7
                     String lists = update.getMessage().getText().substring(7).replaceAll("_", " ");
-                    ;
                     // Get countries list from list of lists
                     CountriesList finalLists = checkedUser.getCountriesList().stream().filter(countries -> countries.getName().equals(lists)).findAny().orElse(null);
                     if (finalLists != null) {

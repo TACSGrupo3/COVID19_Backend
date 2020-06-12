@@ -25,7 +25,7 @@ public class Covid19_briefResponse {
     @JsonProperty("recovered")
     private Integer recovered;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("confirmed")
     public Integer getConfirmed() {

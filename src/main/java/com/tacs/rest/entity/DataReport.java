@@ -2,13 +2,27 @@ package com.tacs.rest.entity;
 
 import java.util.Date;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "public.DATAREPORT")
 public class DataReport implements Comparable<DataReport> {
 
+    @Id
+    @Column(name = "date")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Date date;
+    @Column(name= "deaths")
     private Integer deaths;
+    @Column(name= "confirmed")
     private Integer confirmed;
+    @Column(name= "recovered")
     private Integer recovered;
-
+    
+    
+    @ManyToOne
+    @JoinColumn(name = "id_Country",nullable = true)
+    Country country;
 
     public Date getDate() {
         return date;
@@ -26,6 +40,7 @@ public class DataReport implements Comparable<DataReport> {
         this.deaths = deaths;
     }
 
+
     public Integer getRecovered() {
         return recovered;
     }
@@ -33,6 +48,7 @@ public class DataReport implements Comparable<DataReport> {
     public void setRecovered(Integer recovered) {
         this.recovered = recovered;
     }
+
 
     public Integer getConfirmed() {
         return confirmed;

@@ -36,7 +36,7 @@ public class ParseUtil {
         user.setUsername((String) json.get("username"));
         user.setPassword((String) json.get("password"));
         user.setUserRole((String) json.get("userRole"));
-        if (((String) json.get("telegram_chat_id")) != null) {
+        if (json.get("telegram_chat_id") != null) {
             user.setTelegram_chat_id(Long.parseLong((String) json.get("telegram_chat_id")));
         }
 

@@ -1,94 +1,123 @@
 package com.tacs.rest.servicesImpl;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.tacs.rest.RestApplication;
+import com.tacs.rest.dao.UserDAO;
+import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.User;
 import com.tacs.rest.services.UserService;
 
 @Service
-@SuppressWarnings("unchecked")
 public class UserServiceImpl implements UserService {
 
-//	@Autowired
-//	private DaoUser daoUser;
+	@Autowired
+	private UserDAO daoUser;
 
     @Override
     public List<User> findAll() {
-        //TODO: LLamar a la BD
-//		List<User> listUsers= daoUser.findAll();
+    	return (List<User>) daoUser.findAll();
 
-        //MOCK
-        List<User> users = (List<User>) RestApplication.data.get("Users");
-        return users;
     }
 
     @Override
     public User findById(int id) {
-        //TODO: Llamar a la BD
-//		User user = daoUser.findById(id);
-
-        //MOCK
-        List<User> users = (List<User>) RestApplication.data.get("Users");
-        for (User user : users) {
-            if (user.getId() == id) {
-                return user;
-            }
-        }
-        return null;
+      
+    	return daoUser.findById(id).orElse(null);
+    	
     }
-
     @Override
-    public void save(User user) {
-//		daoUser.save(user);
+    public boolean save(User user) {
+        String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+        user.setPassword(pw_hash);
+
+        if (this.findByUsername(user.getUsername())!= null) {     	  
+     	   return false;
+        }
+        daoUser.save(user);
+        return true;
+    }
+    
+    @Override
+    public User findByUsername (String username){
+    	long cantUsers = 0;
+    	cantUsers = daoUser.count();
+    	for (int i = 0 ; i <(int) cantUsers; i ++) {
+    		User userTabla = this.findById(i+1);
+         	if(userTabla.getUsername().equals(username)) {
+         		return userTabla;
+         	}
+    	}
+    	return null;
+   	
     }
 
     @Override
     public void deleteById(int id) {
-//		daoUser.deleteById(id);
+		daoUser.deleteById(id);
     }
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-	@Override
-    public boolean registerUser(User user) {
-        // TODO Agregar llamada a la BD
-    	
-        //MOCK
-        List<User> users = (List<User>) RestApplication.data.get("Users");
-        for (User userBd : users) {
-            if (userBd.getUsername().equals(user.getUsername())) {
-                return false;
-            }
-        }
-
-        user.setId(users.size() + 1);
-                
-        String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-        user.setPassword(pw_hash);
-        users.add(user);
-
-        RestApplication.data.put("Users", users);
-        return true;
-    }
 
     @Override
     public User findByTelegramId(long telegram_id) {
-
-        //MOCK
-        List<User> users = (List<User>) RestApplication.data.get("Users");
-        for (User user : users) {
-            if (user.getTelegram_chat_id() == telegram_id) {
-                return user;
-            }
-        }
-        return null;
+    	long cantUsers = 0;
+    	cantUsers = daoUser.count();
+    	for (int i = 0 ; i <(int) cantUsers; i ++) {
+    		User userTabla = this.findById(i+1);
+         	if(userTabla.getTelegram_chat_id()==telegram_id) {
+         		return userTabla;
+         	}
+    		
+    	}
+    	return null;
     }
     
+    @Override 
+    public User checkUser (User user) {
+    	User userBD = this.findByUsername(user.getUsername());  	
+    	
+    	if (userBD != null && BCrypt.checkpw(user.getPassword(), userBD.getPassword())) {
+    		userBD.setLastAccess(new Date());
+    		return userBD;
+    	}
+    	return null;
+    }
+    
+    @Override
+	public boolean sameNameList(String nameList, int id) {
+    	User user  = this.findById(id);
+    	List<CountriesList> cl = user.getCountriesList();
+    	return cl.stream().anyMatch(n -> n.getName().equals(nameList));
+    }
+    
+	@Override
+	public int cantUsers() {
+		return (int)daoUser.count();
+	}
+	@Override
+	public User userWithCountriesList (int countriesListId) {
+		
+		List<User> users = this.findAll();
+		for(int i = 0 ; i < this.cantUsers() ; i++) {
+			users.get(i);
 
+			if (users.get(i).getCountriesList().stream().anyMatch(n -> n.getId()==countriesListId)) {
+				return users.get(i);
+			}
+			
+		}
+		return null;
+	}
+	@Override
+	public List<User> userInterestedOnCountry(int idCountry){
+		List<User>  usersDB = this.findAll();
+		return usersDB.stream().filter(u -> u.hasCountry(idCountry)).collect(Collectors.toList());	
+		
+	}
+	
 }

@@ -6,15 +6,25 @@ import com.tacs.rest.entity.User;
 
 public interface UserService {
 	
-	public List<User> findAll();
+	List<User> findAll();
 	
-	public User findById(int id);
+	User findById(int id);
 	
-	public void save(User user);
+	User findByUsername(String username);
 	
-	public void deleteById(int id);
+	boolean save(User user);
 	
-	public boolean registerUser(User user);
-
-	public User findByTelegramId(long telegram_id);
+	void deleteById(int id);
+	
+	User checkUser (User user);
+	
+	User findByTelegramId(long telegram_id);
+	
+	boolean sameNameList(String nameList, int id);
+	
+	public int cantUsers();
+	
+	public User userWithCountriesList (int countriesListId);
+	
+	public List<User> userInterestedOnCountry(int idCountry);
 }

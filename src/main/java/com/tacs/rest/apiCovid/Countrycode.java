@@ -3,6 +3,9 @@ package com.tacs.rest.apiCovid;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,14 +18,29 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "iso2",
         "iso3"
 })
+
+@Embeddable
 public class Countrycode {
 
+	@Transient
+    private int id_Countrycode;
     @JsonProperty("iso2")
     private String iso2;
     @JsonProperty("iso3")
     private String iso3;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    @Transient
+    private final Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+
+    
+    public int getId() {
+        return id_Countrycode;
+    }
+
+    public void setId(int id) {
+        this.id_Countrycode = id;
+    }
 
     @JsonProperty("iso2")
     public String getIso2() {
@@ -45,6 +63,7 @@ public class Countrycode {
     }
 
     @JsonAnyGetter
+    @Transient
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
