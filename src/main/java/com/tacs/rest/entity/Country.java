@@ -9,6 +9,7 @@ import com.tacs.rest.apiCovid.Countrycode;
 import com.tacs.rest.apiCovid.Location;
 
 @Entity
+
 @Table(name = "public.COUNTRY")
 public class Country {
 
@@ -19,7 +20,8 @@ public class Country {
     @Column(name = "name", nullable = false)
     private String name;
     
-    @OneToMany(mappedBy = "country", fetch = FetchType.EAGER)
+    
+    @OneToMany(mappedBy = "country", cascade = CascadeType.MERGE)
     private List<DataReport> dataReport = new ArrayList<>();
     
     @ManyToMany(mappedBy = "countries")

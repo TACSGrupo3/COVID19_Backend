@@ -3,6 +3,8 @@ package com.tacs.rest.services;
 import java.util.List;
 
 import com.tacs.rest.entity.Country;
+import com.tacs.rest.entity.DataReport;
+
 
 public interface CountryService {
 	
@@ -23,5 +25,13 @@ public interface CountryService {
 	boolean addSameCountries(List<Country> countries);
 	
 	public List<Country> searchAndSaveCountries(List<Country> countries);
+
+	Country findByName(String countryName);
+
+	void saveAll(List<Country> countries);
+
+	List<DataReport> getReport(int id);
+
+	List<Country> findCountriesByIds(List<Integer> countriesIds);
 	
 }

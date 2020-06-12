@@ -29,6 +29,7 @@ import com.tacs.rest.apiCovid.Covid19_latestResponse;
 
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
+import com.tacs.rest.entity.DataReport;
 import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.CountryService;
 
@@ -52,7 +53,7 @@ public class CountryRestController {
     @GetMapping("/countries")
     public ResponseEntity<List<Country>> listPaises(@RequestParam(required = false) String latitude,
                                     @RequestParam(required = false) String longitude, @RequestParam(required = false) String maxCountries,
-                                    @RequestParam(required = false) String iso) {
+                                    @RequestParam(required = false) String iso) throws Exception {
         if (latitude != null && longitude != null && maxCountries != null) {
         	return new ResponseEntity<List<Country>>(countriesService.findNearCountries(latitude, longitude, maxCountries), HttpStatus.OK);
 
@@ -124,6 +125,12 @@ public class CountryRestController {
         }
 
         return new ResponseEntity<Collection<Covid19_latestResponse>>(latestResponse, HttpStatus.OK);
+    }
+    @GetMapping("/countries/prueba/{idCountry}")
+    public ResponseEntity<List<DataReport>> verDataReport(@PathVariable(required = true) Integer idCountry) throws Exception {
+    	
+
+        return new ResponseEntity<List<DataReport>>(countriesService.getReport(idCountry), HttpStatus.OK);       
     }
 
 }	

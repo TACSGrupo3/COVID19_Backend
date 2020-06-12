@@ -5,10 +5,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.json.simple.JSONArray;
@@ -27,7 +32,10 @@ import com.tacs.rest.apiCovid.Covid19_latestResponse;
 import com.tacs.rest.dao.CountryDAO;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
+import com.tacs.rest.entity.DataReport;
 import com.tacs.rest.entity.User;
+import com.tacs.rest.services.CountryService;
+import com.tacs.rest.services.ReportService;
 import com.tacs.rest.util.IsoUtil;
 import com.tacs.rest.util.ParseUtil;
 
@@ -35,7 +43,9 @@ import com.tacs.rest.util.ParseUtil;
 public class DataBaseInitial implements ApplicationRunner{
 	
 	@Autowired
-	CountryDAO cs;
+	CountryService cs;
+	@Autowired
+	ReportService rs;
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception,IOException, URISyntaxException {
@@ -69,22 +79,68 @@ public class DataBaseInitial implements ApplicationRunner{
 
         JSONObject jsonObject = (JSONObject) obj;
         Iterator<JSONObject> iterator;
+        
+        
+        String uri = "https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/timeseries?OnlyCountries=true";
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(uri, String.class);
+
+        JSONArray json = (JSONArray) parser.parse(result);
+
+        List<Country> countriesTimeSeries = new ArrayList<Country>();
+        
+        List<Country> countriesToSave = new ArrayList<Country>();
+        List<DataReport> dataReportsToSave = new ArrayList <DataReport>();
+        List<DataReport> dataReportOfCountry = new ArrayList<DataReport>();
          
         try {
             latestResponse = gson.fromJson(apiCovid.connectionWithoutParams("latest"), collectionType);
 
-            int id =  1;
             for (Covid19_latestResponse response : latestResponse) {
-                Country country = ParseUtil.latestResponseToCountry(response);
-                country.setId(id);
-                listCountries.add(country);
-                                
-                cs.save(country);
-                id++;
-            }
+                Country country = ParseUtil.latestResponseToCountry(response);                 
+                
+                
+                for (int i = 0; i < json.size(); i++) {
+                	
+                	JSONObject object = (JSONObject) json.get(i);
+                	if(object.get("countryregion").toString().equals(country.getName())) {
+                	
+                		JSONObject timeseries = (JSONObject) object.get("timeseries");
+                		@SuppressWarnings("rawtypes")
+                		Set setOfDates = timeseries.keySet();
+
+                		
+                		for (Object objs : setOfDates) {                	
+                			DataReport dataReport = new DataReport();
+                			try {
+                				dataReport.setDate(new SimpleDateFormat("dd/MM/yy").parse((String) objs));
+                			} catch (ParseException e) {
+                				e.printStackTrace();
+                			}
+                        JSONObject data = (JSONObject) timeseries.get(objs);
+                        Long recovered = (Long) data.get("recovered");
+                        Long confirmed = (Long) data.get("confirmed");
+                        Long deaths = (Long) data.get("deaths");
+
+                        dataReport.setRecovered(recovered.intValue());
+                        dataReport.setConfirmed(confirmed != null ? confirmed.intValue() : 0);
+                        dataReport.setDeaths(deaths != null ? deaths.intValue() : 0);
+                        dataReport.setCountry(country);
+                        dataReportOfCountry.add(dataReport);
+                    	
+                    	dataReportsToSave.add(dataReport);
+                    }
+              }
+                	
+                	
+          }
+                countriesToSave.add(country);
+    }       
+            cs.saveAll(countriesToSave);
+            rs.saveAll(dataReportsToSave);
             
-            RestApplication.data.put("Countries", listCountries);
-         
+            /*     
 
             JSONArray countriesList = (JSONArray) jsonObject.get("countriesList");
             List<CountriesList> listCountriesList = new ArrayList<CountriesList>();
@@ -103,7 +159,7 @@ public class DataBaseInitial implements ApplicationRunner{
 
             RestApplication.data.put("Users", listUsers);
 
-            String uri = "https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/timeseries";
+            String uri = "https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/timeseries?OnlyCountries=true";
 
             RestTemplate restTemplate = new RestTemplate();
             String result = restTemplate.getForObject(uri, String.class);
@@ -113,12 +169,42 @@ public class DataBaseInitial implements ApplicationRunner{
             List<Country> countriesTimeSeries = new ArrayList<Country>();
             for (int i = 0; i < json.size(); i++) {
                 JSONObject object = (JSONObject) json.get(i);
-                countriesTimeSeries.add(ParseUtil.parseJsonToCountryTimeSeries(object));
+                Country country = cs.findByName(object.get("countryregion").toString());
+                JSONObject timeseries = (JSONObject) object.get("timeseries");
+                @SuppressWarnings("rawtypes")
+                Set setOfDates = timeseries.keySet();
+
+                List<DataReport> dataReportOfCountry = new ArrayList<DataReport>();
+                for (Object objs : setOfDates) {                	
+                    DataReport dataReport = new DataReport();
+                    try {
+                        dataReport.setDate(new SimpleDateFormat("dd/MM/yy").parse((String) objs));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    JSONObject data = (JSONObject) timeseries.get(objs);
+                    Long recovered = (Long) data.get("recovered");
+                    Long confirmed = (Long) data.get("confirmed");
+                    Long deaths = (Long) data.get("deaths");
+
+                    dataReport.setRecovered(recovered.intValue());
+                    dataReport.setConfirmed(confirmed != null ? confirmed.intValue() : 0);
+                    dataReport.setDeaths(deaths != null ? deaths.intValue() : 0);
+                    dataReport.setCountry(country);
+                    dataReportOfCountry.add(dataReport);
+                    rs.saveReportService(dataReport);
+                    
+                	
+                }
+                
+                country.setDataReport(dataReportOfCountry);
+
+               cs.save(country);
+            }*/
+
+            //RestApplication.data.put("CountriesTimeSeries", countriesTimeSeries);
             }
-
-            RestApplication.data.put("CountriesTimeSeries", countriesTimeSeries);
-
-        } catch (UnknownHostException ex) {
+         catch (UnknownHostException ex) {
             System.out.println("-------------------------ERROR AL CONECTAR CON LA API COVID 19-------------------");
             System.out.println("-------------------------VOLVIENDO A CONECTAR EN 10 SEGUNDOS-----------------------");
             try {

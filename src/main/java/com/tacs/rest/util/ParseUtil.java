@@ -17,6 +17,7 @@ import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.DataReport;
 import com.tacs.rest.entity.User;
+import com.tacs.rest.services.CountryService;
 
 public class ParseUtil {
 
@@ -143,10 +144,9 @@ public class ParseUtil {
         return palabraSinUltimaLetra;
     }
 
-    public static Country parseJsonToCountryTimeSeries(JSONObject object) {
+    public static Country parseJsonToCountryTimeSeries(JSONObject object, CountryService cs) {
 
-        Country country = new Country();
-        country.setName(object.get("countryregion").toString());
+        Country country = cs.findByName(object.get("countryregion").toString());
         JSONObject timeseries = (JSONObject) object.get("timeseries");
         @SuppressWarnings("rawtypes")
         Set setOfDates = timeseries.keySet();
@@ -169,8 +169,9 @@ public class ParseUtil {
             dataReport.setDeaths(deaths != null ? deaths.intValue() : 0);
 
             dataReportOfCountry.add(dataReport);
+            
         }
-
+        
         country.setDataReport(dataReportOfCountry);
 
         return country;

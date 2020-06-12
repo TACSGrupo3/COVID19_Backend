@@ -14,7 +14,7 @@ public class User {
     @Column(name = "id_user")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_user;
-    
+   
     @Column(name = "userName", nullable = false)
     private String username;
     @Column(name = "firstName", nullable = false)
@@ -122,7 +122,6 @@ public class User {
         this.username = username;
     }
 
-
     public String getFirstName() {
         return firstName;
     }
@@ -130,8 +129,6 @@ public class User {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
-
 
     public String getLastName() {
         return lastName;
@@ -175,7 +172,6 @@ public class User {
     public void setLastAccess(Date lastAccess) {
         this.lastAccess = lastAccess;
     }
-
 
     public String getUserRole() {
         return userRole;

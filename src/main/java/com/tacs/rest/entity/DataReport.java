@@ -4,13 +4,17 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "public.DATAREPORT")
 public class DataReport implements Comparable<DataReport> {
 
     @Id
-    @Column(name = "date")
+    @Column(name = "id_dataReport")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_dataReport;    
+    @Column(name = "date")
     private Date date;
     @Column(name= "deaths")
     private Integer deaths;
@@ -19,11 +23,17 @@ public class DataReport implements Comparable<DataReport> {
     @Column(name= "recovered")
     private Integer recovered;
     
-    
     @ManyToOne
     @JoinColumn(name = "id_Country",nullable = true)
     Country country;
-
+    
+    @JsonIgnore
+    public Country getCountry() {
+    	return country;
+    }
+    public void setCountry(Country country) {
+    	this.country = country;
+    }
     public Date getDate() {
         return date;
     }

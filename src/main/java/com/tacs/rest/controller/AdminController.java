@@ -18,8 +18,6 @@ import com.tacs.rest.entity.User;
 import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.UserService;
 
-// asegurar que me mande los parametros y enviar error si no lo hace.
-
 @RestController
 @RequestMapping("/admin") // esta sera la raiz de la url, es decir http: //127.0.0.1:8080/adminWS/
 public class AdminController {

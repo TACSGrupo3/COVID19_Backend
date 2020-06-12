@@ -4,19 +4,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tacs.rest.dao.CountryDAO;
 import com.tacs.rest.entity.Country;
+import com.tacs.rest.entity.DataReport;
 import com.tacs.rest.services.CountryService;
+import com.tacs.rest.services.ReportService;
 
 @Service
 public class CountryServiceImpl implements CountryService {
 
 	@Autowired
 	private CountryDAO daoCountry;
+	@Autowired
+	private ReportService rs;
 
 	@Override
 	public List<Country> findAll() {
@@ -28,7 +33,34 @@ public class CountryServiceImpl implements CountryService {
 	public Country findById(int id) {
     	return daoCountry.findById(id).orElse(null);
 	}
+	
+	@Override 
+	public List<Country> findCountriesByIds(List<Integer> countriesIds){
+		
+		return countriesIds.stream().map(id->this.findById(id)).collect(Collectors.toList());
+	}
 
+	@Override
+	public Country findByName(String countryName) {		
+		for(int i = 0; i < (int)daoCountry.count(); i++) {
+			
+			if (this.findAll().get(i).getName().equals(countryName)){
+				return this.findAll().get(i);
+			}
+		}
+		return null;
+		
+	}
+	@Override
+	public void saveAll(List<Country> countries) {
+		countries.forEach(country -> this.save(country));	
+	}
+	
+	@Override
+	public List<DataReport> getReport (int id) {
+		return this.findById(id).getDataReport();
+	}
+		
 	public List<Country> findByIso(String iso) {
 
     	long cantCountries = 0;
@@ -85,7 +117,7 @@ public class CountryServiceImpl implements CountryService {
 	}
 	
 	@Override
-	public boolean existsCountries (List<Country> countries) {
+	public boolean existsCountries (List<Country> countries){
 		
 		int cantCountries = countries.size();
 		
