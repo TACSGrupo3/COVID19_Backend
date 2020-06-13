@@ -43,6 +43,11 @@ public class UserServiceImpl implements UserService {
         return true;
     }
     
+	@Override
+	public void saveAll(List<User> users) {
+		users.forEach(user -> daoUser.save(user));	
+	}
+    
     @Override
     public User findByUsername (String username){
     	long cantUsers = 0;

@@ -161,5 +161,14 @@ public class CountriesListServiceImpl implements CountriesListService {
 		}
 		return userServ.userInterestedOnCountry(idCountry);
 	}
+	@Override
+	public void save(CountriesList countryList) {
+		countriesListDAO.save(countryList);
+	}
+	@Override
+	public void saveAll(List<CountriesList> countriesList) {
+		if(countriesList != null)
+		countriesList.stream().forEach(cl->this.save(cl));
+	}
 
 }

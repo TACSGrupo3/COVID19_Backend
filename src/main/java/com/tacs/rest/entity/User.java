@@ -29,7 +29,7 @@ public class User {
     @Column(name = "userRole", nullable = true)
     private String userRole;
     
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE)
     private List<CountriesList> countriesList;
     
     @Column(name = "telegram_chat_id", nullable = true)

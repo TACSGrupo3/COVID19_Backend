@@ -21,7 +21,7 @@ public class CountriesList {
     @Column(name = "creation_date", nullable = false)
     private Date creationDate;
     
-    @ManyToOne(fetch= FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
     User user;
        

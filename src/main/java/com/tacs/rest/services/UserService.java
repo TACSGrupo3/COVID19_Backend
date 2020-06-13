@@ -27,4 +27,6 @@ public interface UserService {
 	public User userWithCountriesList (int countriesListId);
 	
 	public List<User> userInterestedOnCountry(int idCountry);
+
+	void saveAll(List<User> users);
 }

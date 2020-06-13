@@ -25,4 +25,8 @@ public interface CountriesListService {
 	List<CountriesList> deleteListCountries(String countriesListId) throws Exception;
 
 	List<User> getIntrested(int countryId) throws Exception;
+
+	void save(CountriesList countryList);
+	
+	void saveAll (List<CountriesList> countriesList);
 }

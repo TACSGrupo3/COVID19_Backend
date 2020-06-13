@@ -14,16 +14,14 @@
 		}
 	],
 	"users": [
-		{
-			"id": "1",
-			"username": "Admin",
+		{ 	"username": "Admin",
 			"password": "$2a$10$ntKH1TkIA0kLeMT.wdRdxO8NE8SMek9H0566wPlUcJ8oXS.9nhJV.",
 			"firstName": "Administrador",
-			"lastName": "",
+			"lastName": "Administrador",
 			"userRole": "ADMIN"
+		
 		},
 		{
-			"id": "2",
 			"username": "TEST",
 			"password": "TEST",
 			"firstName": "TESTNAME",
@@ -31,7 +29,6 @@
 			"userRole": "USER",
 			"countriesList": [
 				{
-					"id": "1",
 					"name": "Listado TEST",
 					"creationDate": "2020-05-25",
 					"countries": [
@@ -48,7 +45,6 @@
 			]
 		},
 		{
-			"id": "3",
 			"username": "Rufus",
 			"password": "$2a$04$eXiOu5epUEbriIPy6Nck/OCbXQKZO1PLUY6ATQQBlRPGP2SEXdijy",
 			"firstName": "Rufus",
@@ -56,7 +52,6 @@
 			"userRole": "USER",
 			"countriesList": [
 				{
-					"id": "2",
 					"name": "Listado 1 de Rufus",
 					"creationDate": "2020-01-11",
 					"countries": [
@@ -71,7 +66,6 @@
 					]
 				},
 				{
-					"id": "3",
 					"name": "Listado 2 de Rufus",
 					"creationDate": "2020-05-19",
 					"countries": [
@@ -90,7 +84,6 @@
 	],
 	"countriesList": [
 		{
-			"id": "1",
 			"name": "Listado TEST",
 			"countries": [
 				{
@@ -105,7 +98,6 @@
 			]
 		},
 		{
-			"id": "2",
 			"name": "Listado 1 de Rufus",
 			"creationDate": "2020-01-11",
 			"countries": [
@@ -120,7 +112,6 @@
 			]
 		},
 		{
-			"id": "3",
 			"name": "Listado 2 de Rufus",
 			"creationDate": "2020-05-19",
 			"countries": [
@@ -135,27 +126,16 @@
 			]
 		},
 		{
-			"id": "4",
 			"name": "ListadoSudamerica1",
 			"creationDate": "2020-01-11T03:00:00.000+0000",
 			"countries": [
 				{
 					"id": "32",
-					"name": "Chile",
-					"region": {
-						"id": "1",
-						"nameRegion": "America del Sur",
-						"subRegion": "Sur"
-					}
+					"name": "Chile"
 				},
 				{
 					"id": "22",
-					"name": "Brasil",
-					"region": {
-						"id": "2",
-						"nameRegion": "America del Sur",
-						"subRegion": "Centro"
-					}
+					"name": "Brasil"
 				}
 			]
 		}

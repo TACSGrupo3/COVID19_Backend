@@ -3,14 +3,12 @@ package com.tacs.rest.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.tacs.rest.RestApplication;
 import com.tacs.rest.apiCovid.Countrycode;
 import com.tacs.rest.apiCovid.Covid19_latestResponse;
 import com.tacs.rest.entity.CountriesList;
@@ -29,9 +27,8 @@ public class ParseUtil {
         return country;
     }
 
-    public static User parseJsonToUser(JSONObject json) {
+    public static User parseJsonToUser(JSONObject json, List<Country> countriesBD) {
         User user = new User();
-        user.setId(Integer.valueOf((String) json.get("id")));
         user.setFirstName((String) json.get("firstName"));
         user.setLastName((String) json.get("lastName"));
         user.setUsername((String) json.get("username"));
@@ -42,23 +39,20 @@ public class ParseUtil {
         }
 
         JSONArray jsonCountriesList = (JSONArray) json.get("countriesList");
-
+        List<CountriesList> listOfCountriesList = new ArrayList<CountriesList>();
         if (jsonCountriesList != null) {
-            List<CountriesList> listOfCountriesList = new ArrayList<CountriesList>();
-
-            for (int i = 0; i < jsonCountriesList.size(); i++) {
-                listOfCountriesList.add(parseJsonToCountryList((JSONObject) jsonCountriesList.get(i)));
+        	for (int i = 0; i < jsonCountriesList.size(); i++) {
+            	CountriesList countriesList = parseJsonToCountryList((JSONObject) jsonCountriesList.get(i), countriesBD);
+            	countriesList.setUser(user);
+            	listOfCountriesList.add(countriesList);
             }
-            user.setCountriesList(listOfCountriesList);
         }
+        user.setCountriesList(listOfCountriesList);
         return user;
     }
 
-    @SuppressWarnings("unchecked")
-    public static CountriesList parseJsonToCountryList(JSONObject json) {
+    public static CountriesList parseJsonToCountryList(JSONObject json, List<Country> countriesBD) {
         CountriesList countriesList = new CountriesList();
-
-        countriesList.setId(Integer.valueOf((String) json.get("id")));
         countriesList.setName((String) json.get("name"));
         SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd");  
         try {
@@ -69,17 +63,18 @@ public class ParseUtil {
 		}
 
         JSONArray jsonCountries = (JSONArray) json.get("countries");
-        List<Country> countriesOfDb = (List<Country>) RestApplication.data.get("Countries");
+        
         List<Country> listOfCountry = new ArrayList<Country>();
-        for (int i = 0; i < jsonCountries.size(); i++) {
-            Country country = parseJsonToCountry((JSONObject) jsonCountries.get(i));
-            for (int j = 0; j < countriesOfDb.size(); j++) {
-                if (countriesOfDb.get(j).getId() == country.getId()) {
-                    country = countriesOfDb.get(j);
-                    listOfCountry.add(country);
-                    break;
-                }
-            }
+        if(listOfCountry != null) {
+        	for (int i = 0; i < jsonCountries.size(); i++) {
+        		Country country = parseJsonToCountry((JSONObject) jsonCountries.get(i));
+        		for (int j = 0; j < countriesBD.size(); j++) {
+        			if (countriesBD.get(j).getId() == country.getId()) {
+        				country = countriesBD.get(j);
+        				listOfCountry.add(country);
+        			}
+        		}
+        	}
         }
 
         countriesList.setCountries(listOfCountry);
