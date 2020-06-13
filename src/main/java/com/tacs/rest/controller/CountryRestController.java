@@ -1,6 +1,5 @@
 package com.tacs.rest.controller;
 
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Collection;
@@ -32,7 +31,6 @@ import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.DataReport;
 import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.CountryService;
-
 
 @RestController
 public class CountryRestController {
@@ -134,11 +132,5 @@ public class CountryRestController {
     }
 
 }	
-
-
-
-
-
-
 
 
