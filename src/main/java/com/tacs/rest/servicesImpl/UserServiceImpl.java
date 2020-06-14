@@ -32,15 +32,15 @@ public class UserServiceImpl implements UserService {
     	
     }
     @Override
-    public boolean save(User user) {
+    public User save(User user) {
         String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         user.setPassword(pw_hash);
 
         if (this.findByUsername(user.getUsername())!= null) {     	  
-     	   return false;
+     	   return null;
         }
         daoUser.save(user);
-        return true;
+        return user;
     }
     
 	@Override
@@ -91,19 +91,13 @@ public class UserServiceImpl implements UserService {
 	public int cantUsers() {
 		return (int)daoUser.count();
 	}
-	@Override
+	@Override //////////////////////////////////////////////////////
 	public User userWithCountriesList (int countriesListId) {
-		
-		List<User> users = this.findAll();
-		for(int i = 0 ; i < this.cantUsers() ; i++) {
-			users.get(i);
-
-			if (users.get(i).getCountriesList().stream().anyMatch(n -> n.getId()==countriesListId)) {
-				return users.get(i);
-			}
-			
-		}
-		return null;
+		List<User> users = daoUser.findByCountriesList_idCountriesList(countriesListId);
+    	if (!users.isEmpty()) {
+    		return users.get(0);
+    	}
+    	return null;
 	}
 	@Override
 	public List<User> userInterestedOnCountry(int idCountry){

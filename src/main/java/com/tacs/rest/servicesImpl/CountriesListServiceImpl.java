@@ -37,7 +37,7 @@ public class CountriesListServiceImpl implements CountriesListService {
 	}
 
 	@Override
-	public List<CountriesList> findFilterByDate(Date date) {
+	public List<CountriesList> findFilterByDate(Date date) {  ////////////////////////////////
 		List<CountriesList> filterByDate = new ArrayList<CountriesList>();
 		long cantCountriesList = countriesListDAO.count();
 		for (int i = 0; i < (int)cantCountriesList; i ++) {

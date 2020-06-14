@@ -25,8 +25,8 @@ public class UserRestController {
         if (UserValidator.registrationValidator(user)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No ingreso todos los datos requeridos");
         } else {
-            boolean registered = userService.save(user);
-            if (registered) {
+            User registered = userService.save(user);
+            if (registered!=null) {
                 return new ResponseEntity<User>(user, HttpStatus.OK);
             } else {
                 throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,

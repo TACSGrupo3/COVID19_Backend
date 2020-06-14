@@ -13,5 +13,6 @@ public interface UserDAO extends CrudRepository<User, Integer>  {
 
 	List<User> findByUsername(String username);
 	List<User> findByTelegramChatId(long telegram_chat_id);
+	List<User> findByCountriesList_idCountriesList(int idCountriesList);
 
 }

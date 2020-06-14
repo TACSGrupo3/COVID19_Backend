@@ -12,7 +12,7 @@ public interface UserService {
 	
 	User findByUsername(String username);
 	
-	boolean save(User user);
+	User save(User user);
 	
 	void deleteById(int id);
 	
