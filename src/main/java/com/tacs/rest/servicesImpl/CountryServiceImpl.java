@@ -62,20 +62,16 @@ public class CountryServiceImpl implements CountryService {
 	}
 		
 	public List<Country> findByIso(String iso) {
-
-    	long cantCountries = 0;
-    	cantCountries = daoCountry.count();
-    	for (int i = 0 ; i <(int) cantCountries; i ++) {
-    		Country countryTabla = this.findById(i+1);
-         	if(countryTabla.getCountryCode().getIso2().equals(iso) || countryTabla.getCountryCode().getIso3().equals(iso)) {
-         		return this.agregarAListCountry(countryTabla);
-         	}
+		
+	   	if (!daoCountry.findBycountryCode_Iso2(iso).isEmpty()) {
+    		return this.agregarAListCountry(daoCountry.findBycountryCode_Iso2(iso).get(0));
+    	} else if (!daoCountry.findBycountryCode_Iso3(iso).isEmpty()) {
+    		return this.agregarAListCountry(daoCountry.findBycountryCode_Iso3(iso).get(0));
     	}
-    	return null;	
+    	return null; 
 	}
 
-	public List<Country> agregarAListCountry(Country country){
-				
+	public List<Country> agregarAListCountry(Country country){				
 		List<Country> countries = new ArrayList<Country>() ;
 		countries.add(country);
 		return countries;

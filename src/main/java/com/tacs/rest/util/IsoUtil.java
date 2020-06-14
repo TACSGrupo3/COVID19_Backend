@@ -2,7 +2,6 @@ package com.tacs.rest.util;
 
 import java.util.HashMap;
 
-import com.tacs.rest.RestApplication;
 
 public class IsoUtil {
     public static HashMap<String, String> CountriesWithoutIso = new HashMap<String, String>();

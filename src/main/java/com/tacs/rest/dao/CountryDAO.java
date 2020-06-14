@@ -1,5 +1,7 @@
 package com.tacs.rest.dao;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -7,5 +9,7 @@ import com.tacs.rest.entity.Country;
 
 @Repository
 public interface CountryDAO extends CrudRepository<Country, Integer>{
-
+	
+	List<Country> findBycountryCode_Iso2(String iso2);
+	List<Country> findBycountryCode_Iso3(String iso3);
 }

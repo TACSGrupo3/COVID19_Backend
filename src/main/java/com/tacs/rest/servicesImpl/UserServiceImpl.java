@@ -53,15 +53,13 @@ public class UserServiceImpl implements UserService {
     	if (!daoUser.findByUsername(username).isEmpty()) {
     		return daoUser.findByUsername(username).get(0);
     	}
-    	return null;
-   	
+    	return null;  	
     }
 
     @Override
     public void deleteById(int id) {
 		daoUser.deleteById(id);
     }
-
 
     @Override
     public User findByTelegramId(long telegram_id) {
