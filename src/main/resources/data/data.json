@@ -50,6 +50,7 @@
 			"firstName": "Rufus",
 			"lastName": "Carmaicol",
 			"userRole": "USER",
+			"telegram_chat_id" : "827802252",
 			"countriesList": [
 				{
 					"name": "Listado 1 de Rufus",

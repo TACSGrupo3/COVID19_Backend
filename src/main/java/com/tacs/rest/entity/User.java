@@ -33,7 +33,7 @@ public class User {
     private List<CountriesList> countriesList;
     
     @Column(name = "telegram_chat_id", nullable = true)
-    private long telegram_chat_id;
+    private long telegramChatId;
     @Column(name = "telephone", nullable = true)
     private String telephone_number;
 
@@ -183,11 +183,11 @@ public class User {
 
 
     public long getTelegram_chat_id() {
-        return telegram_chat_id;
+        return telegramChatId;
     }
 
     public void setTelegram_chat_id(long telegram_chat_id) {
-        this.telegram_chat_id = telegram_chat_id;
+        this.telegramChatId = telegram_chat_id;
     }
 
 

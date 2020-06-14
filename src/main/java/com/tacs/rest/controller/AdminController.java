@@ -89,5 +89,14 @@ public class AdminController {
     	else
     		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dicho country id es inexistente");
     }
+    
+    @GetMapping("/usersTelegram/{telegram_id}")
+    public ResponseEntity<User> getUserWithTelegramId(@PathVariable long telegram_id) throws Exception {
+    	if(userService.findByTelegramId(telegram_id)!=null)
+    		return new ResponseEntity<User>(userService.findByTelegramId(telegram_id), HttpStatus.OK);
+    	else
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dicho telegram chat id es inexistente");
+    }
+    
 
 }

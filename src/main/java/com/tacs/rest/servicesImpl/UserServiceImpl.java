@@ -50,13 +50,8 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public User findByUsername (String username){
-    	long cantUsers = 0;
-    	cantUsers = daoUser.count();
-    	for (int i = 0 ; i <(int) cantUsers; i ++) {
-    		User userTabla = this.findById(i+1);
-         	if(userTabla.getUsername().equals(username)) {
-         		return userTabla;
-         	}
+    	if (!daoUser.findByUsername(username).isEmpty()) {
+    		return daoUser.findByUsername(username).get(0);
     	}
     	return null;
    	
@@ -70,14 +65,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByTelegramId(long telegram_id) {
-    	long cantUsers = 0;
-    	cantUsers = daoUser.count();
-    	for (int i = 0 ; i <(int) cantUsers; i ++) {
-    		User userTabla = this.findById(i+1);
-         	if(userTabla.getTelegram_chat_id()==telegram_id) {
-         		return userTabla;
-         	}
-    		
+    	if (!daoUser.findByTelegramChatId(telegram_id).isEmpty()) {
+    		return daoUser.findByTelegramChatId(telegram_id).get(0);
     	}
     	return null;
     }
