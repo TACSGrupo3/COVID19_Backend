@@ -21,7 +21,7 @@ public class ParseUtil {
 
     public static Country parseJsonToCountry(JSONObject json) {
         Country country = new Country();
-        country.setId(Integer.valueOf((String) json.get("id")));
+        country.setIdCountry(Integer.valueOf((String) json.get("id")));
         country.setName((String) json.get("name"));
 
         return country;
@@ -70,7 +70,7 @@ public class ParseUtil {
         	for (int i = 0; i < jsonCountries.size(); i++) {
         		Country country = parseJsonToCountry((JSONObject) jsonCountries.get(i));
         		for (int j = 0; j < countriesBD.size(); j++) {
-        			if (countriesBD.get(j).getId() == country.getId()) {
+        			if (countriesBD.get(j).getIdCountry() == country.getIdCountry()) {
         				country = countriesBD.get(j);
         				listOfCountry.add(country);
         			}

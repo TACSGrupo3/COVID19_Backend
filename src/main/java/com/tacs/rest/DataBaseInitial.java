@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -109,7 +110,9 @@ public class DataBaseInitial implements ApplicationRunner {
 						for (Object objs : setOfDates) {
 							DataReport dataReport = new DataReport();
 							try {
-								dataReport.setDate(new SimpleDateFormat("dd/MM/yy").parse((String) objs));
+								SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
+								Date date = sdf.parse((String) objs);
+								dataReport.setDate(date);
 							} catch (ParseException e) {
 								e.printStackTrace();
 							}

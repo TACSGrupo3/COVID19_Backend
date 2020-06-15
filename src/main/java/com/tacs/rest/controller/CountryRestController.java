@@ -25,7 +25,6 @@ import com.google.gson.reflect.TypeToken;
 import com.tacs.rest.apiCovid.ConnectionApiCovid;
 import com.tacs.rest.apiCovid.Covid19_briefResponse;
 import com.tacs.rest.apiCovid.Covid19_latestResponse;
-
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.DataReport;
@@ -63,8 +62,12 @@ public class CountryRestController {
     }
 
     @GetMapping("/countriesList")
-    public ResponseEntity<List<CountriesList>> getCountriesList() throws JsonIOException, JsonSyntaxException, URISyntaxException, IOException {
-    	return new ResponseEntity<List<CountriesList>>(countriesListService.findAll(), HttpStatus.OK);
+    public List<CountriesList> getCountriesList(@RequestParam(required = false, value="name") String name) {
+		if(name == null) {
+			return countriesListService.findByName(name);
+    	}else {
+    		return countriesListService.findAll();
+    	}
     }
     
     @GetMapping("/countriesList/{listId}")

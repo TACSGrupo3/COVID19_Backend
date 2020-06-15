@@ -3,9 +3,10 @@ package com.tacs.rest.services;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.User;
-import org.springframework.stereotype.Service;
 
 @Service
 public interface CountriesListService {
@@ -29,4 +30,6 @@ public interface CountriesListService {
 	void save(CountriesList countryList);
 	
 	void saveAll (List<CountriesList> countriesList);
+
+	List<CountriesList> findByName(String name);
 }

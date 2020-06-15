@@ -118,7 +118,7 @@ public class CountryServiceImpl implements CountryService {
 		int cantCountries = countries.size();
 		
 		for (int i = 0; i < (int)cantCountries; i ++) {
-			if (this.findById(countries.get(i).getId())==null) {
+			if (this.findById(countries.get(i).getIdCountry())==null) {
 				return false;
 			}
 		}
@@ -131,7 +131,7 @@ public class CountryServiceImpl implements CountryService {
 		int cantCountries = countries.size();
         for (int i = 0; i < cantCountries; i++) {
             for (int j = i+1; j <cantCountries ; j++) {
-                if(countries.get(i).getId()==countries.get(j).getId()){
+                if(countries.get(i).getIdCountry()==countries.get(j).getIdCountry()){
                     return true;
                 }
             }
@@ -142,7 +142,7 @@ public class CountryServiceImpl implements CountryService {
 	public List<Country> searchAndSaveCountries(List<Country> countries){
 		List<Country> countriesChequeados = new ArrayList<Country>();
 		for(int i = 0; i < countries.size(); i ++) {
-			Country country = daoCountry.findById(countries.get(i).getId()).get();
+			Country country = daoCountry.findById(countries.get(i).getIdCountry()).get();
 			countriesChequeados.add(country);
 			this.save(countriesChequeados.get(i));
 

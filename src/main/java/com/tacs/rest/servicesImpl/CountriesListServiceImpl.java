@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.tacs.rest.dao.CountriesListDAO;
@@ -35,7 +35,7 @@ public class CountriesListServiceImpl implements CountriesListService {
 
 		return countriesListDAO.findById(id).orElse(null);	
 	}
-
+	
 	@Override
 	public List<CountriesList> findFilterByDate(Date date) {  ////////////////////////////////
 		List<CountriesList> filterByDate = new ArrayList<CountriesList>();
@@ -169,6 +169,11 @@ public class CountriesListServiceImpl implements CountriesListService {
 	public void saveAll(List<CountriesList> countriesList) {
 		if(countriesList != null)
 		countriesList.stream().forEach(cl->this.save(cl));
+	}
+
+	@Override
+	public List<CountriesList> findByName(String name) {
+ 		return this.countriesListDAO.findByName(name.toUpperCase());
 	}
 
 }

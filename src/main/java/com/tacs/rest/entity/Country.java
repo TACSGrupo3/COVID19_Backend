@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tacs.rest.apiCovid.Countrycode;
 import com.tacs.rest.apiCovid.Location;
 
@@ -16,7 +17,7 @@ public class Country {
     @Id
     @Column(name = "id_Country")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_country;
+    private int idCountry;
     @Column(name = "name", nullable = false)
     private String name;
     
@@ -54,21 +55,22 @@ public class Country {
     	this.countriesList.add(cl);
     }   
  
-    public int getId() {
-        return id_country;
-    }
+    public int getIdCountry() {
+		return idCountry;
+	}
 
-    public void setId(int id) {
-        this.id_country = id;
-    }
+	public void setIdCountry(int idCountry) {
+		this.idCountry = idCountry;
+	}
 
-    public String getName() {
+	public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
+    
     public List<DataReport> getDataReport() {
         return dataReport;
     }

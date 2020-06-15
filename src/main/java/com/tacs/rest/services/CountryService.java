@@ -36,5 +36,5 @@ public interface CountryService {
 	List<Country> findCountriesByIds(List<Integer> countriesIds);
 
 	Country findByDataReportDate(Date date);
-	
+
 }

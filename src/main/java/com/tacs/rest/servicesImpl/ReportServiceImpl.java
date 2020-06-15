@@ -38,7 +38,11 @@ public class ReportServiceImpl implements ReportService {
 		List<Country> countriesToShow = new ArrayList<Country>();
 		
 			for (int i = 0 ; i <countriesPedidos.size(); i ++) {
+				
 					Country country = countriesPedidos.get(i);
+					List<DataReport> dataReprt = drDAO.findByCountry_idCountryOrderByDateAsc(country.getIdCountry());
+					
+					country.setDataReport(dataReprt);
 					DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
 					Date date;
 					try {
@@ -48,7 +52,7 @@ public class ReportServiceImpl implements ReportService {
 					}
 					
 					dataToadd = country.getDataReport().stream().filter(item -> {
-						return item.getDate().after(date) || item.getDate().equals(date);
+						return item.getDate().after(date) || item.getDate().getTime() == date.getTime();
 					}).collect(Collectors.toList());
 					
 					country.setDataReport(dataToadd);

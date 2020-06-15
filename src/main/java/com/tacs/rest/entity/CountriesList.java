@@ -83,6 +83,6 @@ public class CountriesList {
     }
     
     public boolean hasCountry (int id_Country) {
-    	return this.countries.stream().anyMatch(c->c.getId()==id_Country);
+    	return this.countries.stream().anyMatch(c->c.getIdCountry()==id_Country);
     }
 }
