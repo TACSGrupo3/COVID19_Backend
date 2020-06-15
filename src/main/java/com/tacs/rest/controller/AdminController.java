@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,10 +36,22 @@ public class AdminController {
      * example:  http://127.0.0.1:8080/admin/users
      */
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getUsers() {
-		return new ResponseEntity<List<User>>(userService.findAll(), HttpStatus.OK);
+    public Page<User> getUsers(@RequestParam(required = false, value = "page") Integer page,
+    		@RequestParam(required = false, value = "filter") String filter	) {
+    	if(page != null) {
+    		if(filter == null) {
+    			Pageable pageable = PageRequest.of(page, 10);
+    			return userService.findAllPageable(pageable);
+    		}else {
+    			Pageable pageable = PageRequest.of(page, 10);
+    			return userService.findByFilterPageable(pageable,filter);
+    		}
+    	}else {
+    		Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
+    		return userService.findAllPageable(pageable);
+    	}
     }
-
+    
     /**
      * Consigna: Ver los datos de un usuario
      *

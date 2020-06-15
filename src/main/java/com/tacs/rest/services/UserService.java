@@ -2,6 +2,9 @@ package com.tacs.rest.services;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.tacs.rest.entity.User;
 
 public interface UserService {
@@ -29,4 +32,8 @@ public interface UserService {
 	public List<User> userInterestedOnCountry(int idCountry);
 
 	void saveAll(List<User> users);
+
+	Page<User> findAllPageable(org.springframework.data.domain.Pageable pageable);
+
+	Page<User> findByFilterPageable(Pageable pageable, String filter);
 }

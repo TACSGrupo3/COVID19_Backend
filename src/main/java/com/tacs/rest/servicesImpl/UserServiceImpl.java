@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -36,9 +38,11 @@ public class UserServiceImpl implements UserService {
         String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         user.setPassword(pw_hash);
 
-        if (this.findByUsername(user.getUsername())!= null) {     	  
+        if (this.findByUsername(user.getUsername().toLowerCase())!= null) {     	  
      	   return false;
         }
+        
+        user.setUsername(user.getUsername().toLowerCase());
         daoUser.save(user);
         return true;
     }
@@ -50,8 +54,9 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public User findByUsername (String username){
-    	if (!daoUser.findByUsername(username).isEmpty()) {
-    		return daoUser.findByUsername(username).get(0);
+    	List<User> users = daoUser.findByUsername(username.toLowerCase());
+    	if(!users.isEmpty()) {
+    		return users.get(0);
     	}
     	return null;  	
     }
@@ -111,5 +116,16 @@ public class UserServiceImpl implements UserService {
 		return usersDB.stream().filter(u -> u.hasCountry(idCountry)).collect(Collectors.toList());	
 		
 	}
+
+	@Override
+	public Page<User> findAllPageable(Pageable pageable) {
+		return this.daoUser.findAll(pageable);
+	}
+
+	@Override
+	public Page<User> findByFilterPageable(Pageable pageable, String filter) {
+ 		return this.daoUser.fitlerUsersByString(filter.toUpperCase(), pageable);
+	}
+
 	
 }
