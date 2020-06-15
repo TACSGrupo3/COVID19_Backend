@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +41,8 @@ public class UserServiceImpl implements UserService {
         if (this.findByUsername(user.getUsername())!= null) {     	  
      	   return null;
         }
+        
+        user.setUsername(user.getUsername().toLowerCase());
         daoUser.save(user);
         return user;
     }
@@ -50,8 +54,9 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public User findByUsername (String username){
-    	if (!daoUser.findByUsername(username).isEmpty()) {
-    		return daoUser.findByUsername(username).get(0);
+    	List<User> users = daoUser.findByUsername(username.toLowerCase());
+    	if(!users.isEmpty()) {
+    		return users.get(0);
     	}
     	return null;  	
     }
@@ -91,7 +96,7 @@ public class UserServiceImpl implements UserService {
 	public int cantUsers() {
 		return (int)daoUser.count();
 	}
-	@Override //////////////////////////////////////////////////////
+	@Override
 	public User userWithCountriesList (int countriesListId) {
 		List<User> users = daoUser.findByCountriesList_idCountriesList(countriesListId);
     	if (!users.isEmpty()) {
@@ -105,5 +110,16 @@ public class UserServiceImpl implements UserService {
 		return usersDB.stream().filter(u -> u.hasCountry(idCountry)).collect(Collectors.toList());	
 		
 	}
+
+	@Override
+	public Page<User> findAllPageable(Pageable pageable) {
+		return this.daoUser.findAll(pageable);
+	}
+
+	@Override
+	public Page<User> findByFilterPageable(Pageable pageable, String filter) {
+ 		return this.daoUser.fitlerUsersByString(filter.toUpperCase(), pageable);
+	}
+
 	
 }

@@ -14,8 +14,8 @@
 		}
 	],
 	"users": [
-		{ 	"username": "Admin",
-			"password": "$2a$10$ntKH1TkIA0kLeMT.wdRdxO8NE8SMek9H0566wPlUcJ8oXS.9nhJV.",
+		{ 	"username": "admin",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
 			"firstName": "Administrador",
 			"lastName": "Administrador",
 			"userRole": "ADMIN"
@@ -81,7 +81,99 @@
 					]
 				}
 			]
+		},
+		{ 	"username": "Robert12",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
+			"firstName": "Roberto",
+			"lastName": "Perez",
+			"userRole": "USER"
+		
+		},
+		{ 	"username": "milton4",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
+			"firstName": "Milton",
+			"lastName": "Sanchez",
+			"userRole": "USER"
+		
+		},
+		{ 	"username": "enano51",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
+			"firstName": "Carlos",
+			"lastName": "Garay",
+			"userRole": "USER"
+		
+		},
+		{ 	"username": "usuarioPrueba",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
+			"firstName": "Usuario",
+			"lastName": "Prueba",
+			"userRole": "USER"
+		
+		},
+		{ 	"username": "betoVelez",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
+			"firstName": "Beto",
+			"lastName": "Velez",
+			"userRole": "USER"
+		
+		},
+		{ 	"username": "Woodrow",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
+			"firstName": "Alan",
+			"lastName": "Woodrow",
+			"userRole": "USER"
+		
+		},
+		{ 	"username": "lisaS",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
+			"firstName": "Lisa",
+			"lastName": "Simpson",
+			"userRole": "USER"
+		
+		},
+		{ 	"username": "margeS",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
+			"firstName": "Marge",
+			"lastName": "Simpson",
+			"userRole": "USER"
+		
+		},
+		{ 	"username": "homer",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
+			"firstName": "Homero",
+			"lastName": "Simpson",
+			"userRole": "USER"
+		
+		},
+		{ 	"username": "elbarto",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
+			"firstName": "Bart",
+			"lastName": "Simpson",
+			"userRole": "USER"
+		
+		},
+		{ 	"username": "NedFlanders",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
+			"firstName": "Ned",
+			"lastName": "Flanders",
+			"userRole": "USER"
+		
+		},
+		{ 	"username": "Milhouse",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
+			"firstName": "Milhouse",
+			"lastName": "Vanhouter",
+			"userRole": "USER"
+		
+		},
+		{ 	"username": "MartinPrince",
+			"password": "$2a$10$ksAvH3u0JOYSM6wn0lEXp.mZCp0l06PS8I.goMLQaxHG620tB.mle",
+			"firstName": "Martin",
+			"lastName": "Prince",
+			"userRole": "USER"
+		
 		}
+		
 	],
 	"countriesList": [
 		{
