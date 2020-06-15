@@ -130,6 +130,17 @@ public class ParseUtil {
         return country;
 
     }
+    
+    public static Country updateCountries (Covid19_latestResponse latestResponse, CountryService countryService) throws NullPointerException {
+    	
+    	Country country = countryService.findByName(latestResponse.getCountryregion());
+    	country.setConfirmed(latestResponse.getConfirmed());
+    	country.setDeaths(latestResponse.getDeaths());
+    	country.setRecovered(latestResponse.getRecovered());
+    	country.setLastupdate(latestResponse.getLastupdate());
+    	return country;
+    	
+    }
 
     public String quitarUltimaLetra(String palabra) {
         String palabraSinUltimaLetra = "";

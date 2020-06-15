@@ -3,6 +3,7 @@ package com.tacs.rest.servicesImpl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,11 +60,13 @@ public class CountryServiceImpl implements CountryService {
 	}
 		
 	public List<Country> findByIso(String iso) {
+		List<Country> countriesIso2 = daoCountry.findBycountryCode_Iso2(iso);
+		List<Country> countriesIso3 = daoCountry.findBycountryCode_Iso3(iso);
 		
-	   	if (!daoCountry.findBycountryCode_Iso2(iso).isEmpty()) {
-    		return this.agregarAListCountry(daoCountry.findBycountryCode_Iso2(iso).get(0));
+	   	if (!countriesIso2.isEmpty()) {
+    		return this.agregarAListCountry(countriesIso2.get(0));
     	} else if (!daoCountry.findBycountryCode_Iso3(iso).isEmpty()) {
-    		return this.agregarAListCountry(daoCountry.findBycountryCode_Iso3(iso).get(0));
+    		return this.agregarAListCountry(countriesIso3.get(0));
     	}
     	return null; 
 	}
@@ -146,6 +149,14 @@ public class CountryServiceImpl implements CountryService {
 		}
 		return countriesChequeados;
 
+	}
+	@Override
+	public Country findByDataReportDate(Date date){
+		List<Country> countries = daoCountry.findByDataReport_date(date);
+		if(!countries.isEmpty()) 
+			return countries.get(0);
+		else
+			return null;
 	}
 
 	

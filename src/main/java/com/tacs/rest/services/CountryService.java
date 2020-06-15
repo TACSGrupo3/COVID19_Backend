@@ -1,5 +1,6 @@
 package com.tacs.rest.services;
 
+import java.util.Date;
 import java.util.List;
 
 import com.tacs.rest.entity.Country;
@@ -33,5 +34,7 @@ public interface CountryService {
 	List<DataReport> getReport(int id);
 
 	List<Country> findCountriesByIds(List<Integer> countriesIds);
+
+	Country findByDataReportDate(Date date);
 	
 }
