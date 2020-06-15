@@ -13,15 +13,12 @@ import com.tacs.rest.dao.CountryDAO;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.DataReport;
 import com.tacs.rest.services.CountryService;
-import com.tacs.rest.services.ReportService;
 
 @Service
 public class CountryServiceImpl implements CountryService {
 
 	@Autowired
 	private CountryDAO daoCountry;
-	@Autowired
-	private ReportService rs;
 
 	@Override
 	public List<Country> findAll() {

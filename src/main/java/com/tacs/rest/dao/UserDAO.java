@@ -16,6 +16,7 @@ public interface UserDAO extends PagingAndSortingRepository<User, Integer> {
 	List<User> findByUsername(String username);
 
 	List<User> findByTelegramChatId(long telegram_chat_id);
+	List<User> findByCountriesList_idCountriesList(int idCountriesList);
 
 	@Query(value = "SELECT * FROM public.USER WHERE UPPER(USERNAME) LIKE %:filter% OR UPPER(LASTNAME) LIKE %:filter% OR UPPER(FIRSTNAME) LIKE %:filter%", 
 	countQuery = "SELECT count(*) FROM public.USER WHERE UPPER(USERNAME) LIKE %:filter% OR UPPER(LASTNAME) LIKE %:filter% OR UPPER(FIRSTNAME) LIKE %:filter%", 

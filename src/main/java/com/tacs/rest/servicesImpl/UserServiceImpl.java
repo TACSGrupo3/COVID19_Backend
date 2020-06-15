@@ -34,17 +34,17 @@ public class UserServiceImpl implements UserService {
     	
     }
     @Override
-    public boolean save(User user) {
+    public User save(User user) {
         String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         user.setPassword(pw_hash);
 
-        if (this.findByUsername(user.getUsername().toLowerCase())!= null) {     	  
-     	   return false;
+        if (this.findByUsername(user.getUsername())!= null) {     	  
+     	   return null;
         }
         
         user.setUsername(user.getUsername().toLowerCase());
         daoUser.save(user);
-        return true;
+        return user;
     }
     
 	@Override
