@@ -31,8 +31,6 @@ import com.tacs.rest.services.ReportService;
 import com.tacs.rest.services.UserService;
 import com.tacs.rest.util.ParseUtil;
 
-
-
 @Configuration
 @EnableScheduling
 public class DataBaseUpdate {
@@ -44,7 +42,7 @@ public class DataBaseUpdate {
 	@Autowired
 	ReportService reportService;
 	
-	@Scheduled(fixedRate = 6000, initialDelay = 240000) //velocidad
+	@Scheduled(fixedRate = 6000, initialDelay = 240000) //fixedRate= velocidad initalDelay= arranca a los 4 mins
     public void executeTask1() throws org.json.simple.parser.ParseException, JsonIOException, JsonSyntaxException, IOException, URISyntaxException, ParseException {
 		
 		//Hacer que se actualicen datos de latests
@@ -110,12 +108,11 @@ public class DataBaseUpdate {
             countriesToSave.add(country);
         }       
         countryService.saveAll(countriesToSave); // se guardan los countries modificados
-        reportService.saveAll(dataReportsToSave); //se agregan los nuevos dataReports
-       
+        reportService.saveAll(dataReportsToSave); //se agregan los nuevos dataReports       
 		
         System.out.println("La cantidad de veces modificados fueron: " + k);
         try {
-        	Thread.sleep(220000); //espera 10 segundos
+        	Thread.sleep(240000); //espera 4mins para recargar
         } catch (InterruptedException e) {
         	// TODO Auto-generated catch block
         	e.printStackTrace();
