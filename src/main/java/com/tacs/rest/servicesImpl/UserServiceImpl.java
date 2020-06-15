@@ -98,17 +98,11 @@ public class UserServiceImpl implements UserService {
 	}
 	@Override
 	public User userWithCountriesList (int countriesListId) {
-		
-		List<User> users = this.findAll();
-		for(int i = 0 ; i < this.cantUsers() ; i++) {
-			users.get(i);
-
-			if (users.get(i).getCountriesList().stream().anyMatch(n -> n.getId()==countriesListId)) {
-				return users.get(i);
-			}
-			
-		}
-		return null;
+		List<User> users = daoUser.findByCountriesList_idCountriesList(countriesListId);
+    	if (!users.isEmpty()) {
+    		return users.get(0);
+    	}
+    	return null;
 	}
 	@Override
 	public List<User> userInterestedOnCountry(int idCountry){
