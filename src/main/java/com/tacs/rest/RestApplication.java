@@ -66,6 +66,7 @@ public class RestApplication {
                     .antMatchers(HttpMethod.POST, "/session").permitAll()
                     .antMatchers(HttpMethod.POST, "/users").permitAll()
                     .antMatchers(HttpMethod.POST, "/sessionWithSocial").permitAll()
+                    .antMatchers(HttpMethod.POST, "/telegram/new_message").permitAll()
                     .anyRequest().authenticated().and().
                     exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
