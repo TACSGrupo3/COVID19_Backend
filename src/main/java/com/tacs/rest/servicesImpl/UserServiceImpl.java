@@ -121,5 +121,32 @@ public class UserServiceImpl implements UserService {
  		return this.daoUser.fitlerUsersByString(filter.toUpperCase(), pageable);
 	}
 
+	@Override
+	public User modifyUser(Integer userID, User user) {
+		User userBd = this.daoUser.findById(userID).orElse(null);
+		if(userBd == null) return null;
+		
+		if(!userBd.getFirstName().equals(user.getFirstName()) && isNotNullOrEmpty(user.getFirstName()))
+			userBd.setFirstName(user.getFirstName());
+		
+		if(!userBd.getLastName().equals(user.getLastName()) && isNotNullOrEmpty(user.getLastName()))
+			userBd.setLastName(user.getLastName());
+		
+		if(isNotNullOrEmpty(user.getPassword())) {
+			if(!BCrypt.checkpw(user.getPassword(), userBd.getPassword()))
+				userBd.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
+		}
+		if(userBd.getTelegram_chat_id() != user.getTelegram_chat_id())
+			userBd.setTelegram_chat_id(user.getTelegram_chat_id());
+		
+		return this.daoUser.save(userBd);
+	}
+
+	private boolean isNotNullOrEmpty(String string){
+		if(string != null && !string.equals(""))
+			return true;
+		else 
+			return false;
+	}
 	
 }

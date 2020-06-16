@@ -36,4 +36,6 @@ public interface UserService {
 	Page<User> findAllPageable(org.springframework.data.domain.Pageable pageable);
 
 	Page<User> findByFilterPageable(Pageable pageable, String filter);
+
+	User modifyUser(Integer userID, User user);
 }
