@@ -10,4 +10,6 @@ public interface ReportService {
 	public List<Country> reportData(List<Integer> countries, List<String> offset) throws Exception;
 	public void saveReportService(DataReport dataReport);
 	void saveAll(List<DataReport> dataReports);
+	
+	List<DataReport> findByCountryId(int countryId);
 }

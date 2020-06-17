@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,5 +36,18 @@ public class UserRestController {
             }
 
         }
+    }
+    
+    @PatchMapping("/users/{userID}")
+    public ResponseEntity<User> modifyUser(@PathVariable(required = true) Integer userID,
+                                             @RequestBody User user){
+    	User userModified = this.userService.modifyUser(userID, user);
+
+    	if(userModified != null){
+    		 return new ResponseEntity<User>(userModified, HttpStatus.OK);
+    	}else {
+    		throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "No se pudo realizar la modificación del usuario");
+    	}
     }
 }

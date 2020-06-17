@@ -40,15 +40,9 @@ public class CountryServiceImpl implements CountryService {
 
 	@Override
 	public Country findByName(String countryName) {		
-		for(int i = 0; i < (int)daoCountry.count(); i++) {
-			
-			if (this.findAll().get(i).getName().equals(countryName)){
-				return this.findAll().get(i);
-			}
-		}
-		return null;
-		
+		return this.daoCountry.findByName(countryName.toUpperCase());
 	}
+	
 	@Override
 	public void saveAll(List<Country> countries) {
 		countries.forEach(country -> this.save(country));	

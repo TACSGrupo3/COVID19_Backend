@@ -27,6 +27,7 @@
 			"firstName": "TESTNAME",
 			"lastName": "TESTLASTNAME",
 			"userRole": "USER",
+			"telegram_chat_id": "827802252",
 			"countriesList": [
 				{
 					"name": "Listado TEST",
@@ -50,7 +51,7 @@
 			"firstName": "Rufus",
 			"lastName": "Carmaicol",
 			"userRole": "USER",
-			"telegram_chat_id" : "827802252",
+			"telegram_chat_id" : "777029289",
 			"countriesList": [
 				{
 					"name": "Listado 1 de Rufus",
