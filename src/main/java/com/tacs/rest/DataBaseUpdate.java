@@ -42,7 +42,7 @@ public class DataBaseUpdate {
 	@Autowired
 	ReportService reportService;
 	
-	@Scheduled(fixedRate = 6000, initialDelay = 240000) //fixedRate= velocidad initalDelay= arranca a los 4 mins
+	@Scheduled(fixedRate = 6000, initialDelay = 43200000) //fixedRate= velocidad initalDelay= arranca a los 4 mins
     public void executeTask1() throws org.json.simple.parser.ParseException, JsonIOException, JsonSyntaxException, IOException, URISyntaxException, ParseException {
 		
 		//Hacer que se actualicen datos de latests
@@ -112,7 +112,7 @@ public class DataBaseUpdate {
 		
         System.out.println("La cantidad de veces modificados fueron: " + k);
         try {
-        	Thread.sleep(240000); //espera 4mins para recargar
+        	Thread.sleep(86400000); //espera 4mins para recargar
         } catch (InterruptedException e) {
         	// TODO Auto-generated catch block
         	e.printStackTrace();
