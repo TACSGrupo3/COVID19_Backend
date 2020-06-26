@@ -22,4 +22,9 @@ public interface UserDAO extends PagingAndSortingRepository<User, Integer> {
 	countQuery = "SELECT count(*) FROM public.USER WHERE UPPER(USERNAME) LIKE %:filter% OR UPPER(LASTNAME) LIKE %:filter% OR UPPER(FIRSTNAME) LIKE %:filter%", 
 	nativeQuery = true)
 	Page<User> fitlerUsersByString(String filter, Pageable pageable);
+	
+	@Query(value = "SELECT * FROM public.USER u INNER JOIN public.COUNTRIESLIST c ON c.id_user = u.id_user"
+			+ " WHERE u.telegram_chat_id = :telegram_chat_id", 
+			nativeQuery = true)
+	User findUserAndListsByTelegramChatId(long telegram_chat_id);
 }

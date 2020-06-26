@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.FetchMode;
+
 @Entity
 @Table(name = "public.USER")
 public class User {
@@ -28,8 +30,9 @@ public class User {
     private Date lastAccess;
     @Column(name = "userRole", nullable = true)
     private String userRole;
-    
-    @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+     
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @org.hibernate.annotations.Fetch(FetchMode.SELECT)
     private List<CountriesList> countriesList;
     
     @Column(name = "telegram_chat_id", nullable = true)

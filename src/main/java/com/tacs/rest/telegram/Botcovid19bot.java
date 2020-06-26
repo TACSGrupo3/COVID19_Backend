@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.JTableHeader;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -85,14 +86,7 @@ public class Botcovid19bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         // We check if the update has a message and the message has text
         if (update.hasMessage() && update.getMessage().hasText()) {
-            // Set variables
-            InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-            List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-            List<InlineKeyboardButton> rowInline1 = new ArrayList<>();
-            List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-            List<InlineKeyboardButton> rowInline3 = new ArrayList<>();
-            List<InlineKeyboardButton> rowInline4 = new ArrayList<>();
-            List<InlineKeyboardButton> rowInline5 = new ArrayList<>();
+            
             long chat_id = update.getMessage().getChatId();
             // Check user info
             User checkedUser = userService.findByTelegramId(chat_id);
@@ -215,25 +209,13 @@ public class Botcovid19bot extends TelegramLongPollingBot {
                             message.setChatId(chat_id)
                                     .setText("No posee usuario de Telegram configurado en la aplicacion TACS-Grupo3. "
                                     		+ "Para utilizar las funciones de Telegram: \n"
-                                    		+ "1. Dirigite a la aplicación https://localhost:4200. \n"
+                                    		+ "1. Dirigite a la aplicación https://covid19tacsgrupo3.azurewebsites.net/. \n"
                                     		+ "2. Crea una cuenta o inicia sesión en tu cuenta. \n"
                                     		+ "3. Dirigete a la opción 'Datos Personales'. \n"
                                     		+ "4. Ingresa tu Telegram Id: "+ chat_id);
                         } else {
                             // User found, show options
-                            rowInline1.add(new InlineKeyboardButton().setText("Agregar un pais a lista").setCallbackData("action1"));
-                            rowsInline.add(rowInline1);
-                            rowInline2.add(new InlineKeyboardButton().setText("Consultar tabla de comparacion").setCallbackData("action2"));
-                            rowsInline.add(rowInline2);
-                            rowInline3.add(new InlineKeyboardButton().setText("Consultar ultimos valores por lista").setCallbackData("action3"));
-                            rowsInline.add(rowInline3);
-                            rowInline4.add(new InlineKeyboardButton().setText("Consultar ultimos valores por pais").setCallbackData("action4"));
-                            rowsInline.add(rowInline4);
-                            rowInline5.add(new InlineKeyboardButton().setText("Revisar los paises de una lista").setCallbackData("action5"));
-                            rowsInline.add(rowInline5);
-                            // Add it to the message
-                            markupInline.setKeyboard(rowsInline);
-                            message.setReplyMarkup(markupInline);
+                            message.setReplyMarkup(loadOptions());
                         }
                         break;
                     case "WRITE_COUNTRY":
@@ -316,6 +298,32 @@ public class Botcovid19bot extends TelegramLongPollingBot {
         }
     }
 
+	private InlineKeyboardMarkup loadOptions() {
+		InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+		
+		List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+        List<InlineKeyboardButton> rowInline1 = new ArrayList<>();
+        List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
+        List<InlineKeyboardButton> rowInline3 = new ArrayList<>();
+        List<InlineKeyboardButton> rowInline4 = new ArrayList<>();
+        List<InlineKeyboardButton> rowInline5 = new ArrayList<>();
+        
+        rowInline1.add(new InlineKeyboardButton().setText("Agregar un pais a lista").setCallbackData("action1"));
+        rowsInline.add(rowInline1);
+        rowInline2.add(new InlineKeyboardButton().setText("Consultar tabla de comparacion").setCallbackData("action2"));
+        rowsInline.add(rowInline2);
+        rowInline3.add(new InlineKeyboardButton().setText("Consultar ultimos valores por lista").setCallbackData("action3"));
+        rowsInline.add(rowInline3);
+        rowInline4.add(new InlineKeyboardButton().setText("Consultar ultimos valores por pais").setCallbackData("action4"));
+        rowsInline.add(rowInline4);
+        rowInline5.add(new InlineKeyboardButton().setText("Revisar los paises de una lista").setCallbackData("action5"));
+        rowsInline.add(rowInline5);
+
+        markupInline.setKeyboard(rowsInline);
+        
+        return markupInline;
+	}
+
 	private void createTable(Update update) {
 		 try {
 			 CountriesList countriesList = findCountriesList(update,this.listToCompare);
@@ -324,7 +332,12 @@ public class Botcovid19bot extends TelegramLongPollingBot {
 			 try{
 				cantDays = Integer.valueOf(cantDaysString);
 			 } catch ( Exception e) {
-				 message.setText("Ingresó un número incorrecto");
+				 if(cantDaysString.equals("/start")) {
+					 message.setText("Bienvenido al Bot del TP COVID19 - Grupo 3\\n");
+					 message.setReplyMarkup(loadOptions()); 
+				 }else
+					 message.setText("Ingresó un número incorrecto.");
+				 
 				 return;
 			 }
 			 try{
@@ -439,10 +452,12 @@ public class Botcovid19bot extends TelegramLongPollingBot {
     	return null;
     }
     
+    @Transactional
     private void set_message_listCountries(Update update, String action, String messageString) {
         // Show user's lists of countries
         long chat_id = update.getCallbackQuery().getFrom().getId();
-        Iterator iterator = userService.findByTelegramId(chat_id).getCountriesList().iterator();
+        User user = userService.findByTelegramId(chat_id);
+        Iterator iterator = user.getCountriesList().iterator();
         while (iterator.hasNext()) {
             CountriesList listName = (CountriesList) iterator.next();
             messageString = messageString + listName.getName() + action + listName.getName().replaceAll("\\s+", "_") + "\n";

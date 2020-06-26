@@ -148,5 +148,9 @@ public class UserServiceImpl implements UserService {
 		else 
 			return false;
 	}
+
+	public User findUserAndListsByTelegramChatId(long chat_id) {
+		return this.daoUser.findUserAndListsByTelegramChatId(chat_id);
+	}
 	
 }
