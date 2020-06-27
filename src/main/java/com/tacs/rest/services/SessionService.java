@@ -4,7 +4,7 @@ import com.tacs.rest.entity.User;
 
 public interface SessionService {
 
-	User login(User user);
-	
-	User loginWithSocial(User user);
+    User login(User user);
+
+    User loginWithSocial(User user);
 }

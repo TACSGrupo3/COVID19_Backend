@@ -17,163 +17,165 @@ import com.tacs.rest.services.CountriesListService;
 
 @Service
 public class CountriesListServiceImpl implements CountriesListService {
-	
-	@Autowired
-	CountriesListDAO countriesListDAO;
-	@Autowired
-	UserServiceImpl userServ;
-	@Autowired
-	CountryServiceImpl countryServ;
-	
-	@Override
-	public List<CountriesList> findAll() {
-		return (List<CountriesList>) countriesListDAO.findAll();
-	}
 
-	@Override
-	public CountriesList findById(int id) {
+    @Autowired
+    CountriesListDAO countriesListDAO;
+    @Autowired
+    UserServiceImpl userServ;
+    @Autowired
+    CountryServiceImpl countryServ;
 
-		return countriesListDAO.findById(id).orElse(null);	
-	}
-	
-	@Override
-	public List<CountriesList> findFilterByDate(Date date) {  ////////////////////////////////
-		List<CountriesList> filterByDate = new ArrayList<CountriesList>();
-		long cantCountriesList = countriesListDAO.count();
-		for (int i = 0; i < (int)cantCountriesList; i ++) {
-			CountriesList elem = this.findById(i+1);
-			if(elem.getCreationDate().getTime()>date.getTime()) {
-				filterByDate.add(elem);
-			}
-		}
-		return filterByDate;
-	}
+    @Override
+    public List<CountriesList> findAll() {
+        return (List<CountriesList>) countriesListDAO.findAll();
+    }
 
-	@Override
-	public List<CountriesList> addListCountries(String userId, List<CountriesList> countriesListToAdd)throws Exception {
+    @Override
+    public CountriesList findById(int id) {
 
-		User user = userServ.findById(Integer.valueOf(userId));
+        return countriesListDAO.findById(id).orElse(null);
+    }
 
-		for (CountriesList listToAdd : countriesListToAdd) {
+    @Override
+    public List<CountriesList> findFilterByDate(Date date) {
+        List<CountriesList> filterByDate = new ArrayList<CountriesList>();
+        long cantCountriesList = countriesListDAO.count();
+        for (int i = 0; i < (int) cantCountriesList; i++) {
+            CountriesList elem = this.findById(i + 1);
+            if (elem.getCreationDate().getTime() > date.getTime()) {
+                filterByDate.add(elem);
+            }
+        }
+        return filterByDate;
+    }
 
-			this.validacionNombresListas(userId, listToAdd);
-			CountriesList listToPersist = new CountriesList();
+    @Override
+    public List<CountriesList> addListCountries(String userId, List<CountriesList> countriesListToAdd) throws Exception {
 
-			listToPersist.setCreationDate(new Date());
-			listToPersist.setName(listToAdd.getName());
+        User user = userServ.findById(Integer.valueOf(userId));
 
-			List <Country> countriesDelRequest = listToAdd.getCountries();
+        for (CountriesList listToAdd : countriesListToAdd) {
 
+            this.validacionNombresListas(userId, listToAdd);
+            CountriesList listToPersist = new CountriesList();
 
-			this.validacionPaises(countriesDelRequest);
-			List<Country> countries2 = countryServ.searchAndSaveCountries(countriesDelRequest);
+            listToPersist.setCreationDate(new Date());
+            listToPersist.setName(listToAdd.getName());
 
-			listToPersist.setCountries(countries2);			
-			listToPersist.setUser(user);
-			user.addList(listToPersist);
-			countriesListDAO.save(listToPersist);
-			userServ.save(user);
-
-		}
-		return user.getCountriesList();
-	}
+            List<Country> countriesDelRequest = listToAdd.getCountries();
 
 
-	public void validacionPaises(List<Country> countriesDelRequest) throws Exception {
-		if (!countryServ.existsCountries(countriesDelRequest)) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Ingresó un país Inválido");
-		}
-		if (countryServ.addSameCountries(countriesDelRequest)) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Ingresó el mismo pais 2 veces en la misma lista");
-		}
-	}
-	
-	public void validacionNombresListas(String userId, CountriesList listToAdd) throws Exception {
-		
-		if (userServ.sameNameList(listToAdd.getName(),Integer.valueOf(userId))) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Este usuario ya posee una lista con igual nombre");
-		}
-		if (listToAdd.getName() == null || listToAdd.getName().equals("")) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El nombre de la lista no puede estar vacío.");
-		}
-	}
-	
-	@Override
-	public CountriesList modifyListCountries(int countryListId, CountriesList list) throws Exception {
+            this.validacionPaises(countriesDelRequest);
+            List<Country> countries2 = countryServ.searchAndSaveCountries(countriesDelRequest);
 
-		if (list.getName() == null || list.getName().equals("")) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El nombre de la lista no puede estar vacío.");
-		}
-		
-		validacionPaises(list.getCountries());
-		CountriesList countriesList = countriesListDAO.findById(countryListId).orElse(null);
-		if (countriesList == null) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El id del Country List es inexistente");
-		}
-		
-		countriesList.setName(list.getName());
+            listToPersist.setCountries(countries2);
+            listToPersist.setUser(user);
+            user.addList(listToPersist);
+            countriesListDAO.save(listToPersist);
+            userServ.save(user);
 
-		List <Country> countriesDelRequest = list.getCountries();
+        }
+        return user.getCountriesList();
+    }
 
-		this.validacionPaises(countriesDelRequest);
-		
-		User user = userServ.userWithCountriesList(countryListId);		
-		
-		List<Country> countries2 = countryServ.searchAndSaveCountries(countriesDelRequest);
 
-		countriesList.setCountries(countries2);
-		user.modifyList(countriesList);
-		countriesListDAO.save(countriesList);
-		userServ.save(user);
-		return countriesList ;
-		
-	}
+    public void validacionPaises(List<Country> countriesDelRequest) throws Exception {
+        if (!countryServ.existsCountries(countriesDelRequest)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ingresó un país Inválido");
+        }
+        if (countryServ.addSameCountries(countriesDelRequest)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ingresó el mismo pais 2 veces en la misma lista");
+        }
+    }
 
-	@Override
-	public List<CountriesList> findByUserId(int idUser) {		
-		User user = userServ.findById(idUser);
-		if(user == null) {
-			return null;
-		}
-		return user.getCountriesList();
-	}
+    public void validacionNombresListas(String userId, CountriesList listToAdd) throws Exception {
 
-	@Override
-	public List<CountriesList> deleteListCountries(String countriesListId) throws Exception {
-		
-		CountriesList cl = countriesListDAO.findById(Integer.valueOf(countriesListId)).orElse(null);
-		if(cl == null) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El countries list id es inexistente");
-		}
-		User user = cl.getUser();
-		user.removeList(cl);
-		userServ.save(user);
-		countriesListDAO.delete(cl);	
-		return user.getCountriesList();
-		
-	}
+        if (userServ.sameNameList(listToAdd.getName(), Integer.valueOf(userId))) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Este usuario ya posee una lista con igual nombre");
+        }
+        if (listToAdd.getName() == null || listToAdd.getName().equals("")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre de la lista no puede estar vacío.");
+        }
+    }
 
-	@Override
-	public List<User> getIntrested(int idCountry) throws Exception {
-		
-		if(countryServ.findById(idCountry)==null) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El countries id es inexistente"); 
-		}
-		return userServ.userInterestedOnCountry(idCountry);
-	}
-	@Override
-	public void save(CountriesList countryList) {
-		countriesListDAO.save(countryList);
-	}
-	@Override
-	public void saveAll(List<CountriesList> countriesList) {
-		if(countriesList != null)
-		countriesList.stream().forEach(cl->this.save(cl));
-	}
+    @Override
+    public CountriesList modifyListCountries(int countryListId, CountriesList list) throws Exception {
 
-	@Override
-	public List<CountriesList> findByName(String name) {
- 		return this.countriesListDAO.findByName(name.toUpperCase());
-	}
+        if (list.getName() == null || list.getName().equals("")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre de la lista no puede estar vacío.");
+        }
+
+        validacionPaises(list.getCountries());
+        CountriesList countriesList = countriesListDAO.findById(countryListId).orElse(null);
+        if (countriesList == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El id del Country List es inexistente");
+        }
+
+        countriesList.setName(list.getName());
+
+        List<Country> countriesDelRequest = list.getCountries();
+
+        this.validacionPaises(countriesDelRequest);
+
+        User user = userServ.userWithCountriesList(countryListId);
+
+        List<Country> countries2 = countryServ.searchAndSaveCountries(countriesDelRequest);
+
+        countriesList.setCountries(countries2);
+        user.modifyList(countriesList);
+        countriesListDAO.save(countriesList);
+        userServ.save(user);
+        return countriesList;
+
+    }
+
+    @Override
+    public List<CountriesList> findByUserId(int idUser) {
+        User user = userServ.findById(idUser);
+        if (user == null) {
+            return null;
+        }
+        return user.getCountriesList();
+    }
+
+    @Override
+    public List<CountriesList> deleteListCountries(String countriesListId) throws Exception {
+
+        CountriesList cl = countriesListDAO.findById(Integer.valueOf(countriesListId)).orElse(null);
+        if (cl == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El countries list id es inexistente");
+        }
+        User user = cl.getUser();
+        user.removeList(cl);
+        userServ.save(user);
+        countriesListDAO.delete(cl);
+        return user.getCountriesList();
+
+    }
+
+    @Override
+    public List<User> getIntrested(int idCountry) throws Exception {
+
+        if (countryServ.findById(idCountry) == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El countries id es inexistente");
+        }
+        return userServ.userInterestedOnCountry(idCountry);
+    }
+
+    @Override
+    public void save(CountriesList countryList) {
+        countriesListDAO.save(countryList);
+    }
+
+    @Override
+    public void saveAll(List<CountriesList> countriesList) {
+        if (countriesList != null)
+            countriesList.stream().forEach(cl -> this.save(cl));
+    }
+
+    @Override
+    public List<CountriesList> findByName(String name) {
+        return this.countriesListDAO.findByName(name.toUpperCase());
+    }
 
 }

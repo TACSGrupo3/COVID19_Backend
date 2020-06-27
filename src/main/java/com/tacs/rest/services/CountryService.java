@@ -1,44 +1,44 @@
 package com.tacs.rest.services;
 
-import java.util.Date;
-import java.util.List;
-
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.DataReport;
 
+import java.util.Date;
+import java.util.List;
+
 
 public interface CountryService {
-	
-	List<Country> findAll();
-	
-	Country findById(int id);
-	
-	void save(Country country);
 
-	List<Country> findNearCountries(String latitud, String longitud, String maxCountries);
+    List<Country> findAll();
 
-	List<Country> findByIso(String iso);
-	
-	boolean existsCountries (List<Country> countries);
-	
-	boolean addSameCountries(List<Country> countries);
-	
-	public List<Country> searchAndSaveCountries(List<Country> countries);
+    Country findById(int id);
 
-	Country findByName(String countryName);
+    void save(Country country);
 
-	void saveAll(List<Country> countries);
+    List<Country> findNearCountries(String latitud, String longitud, String maxCountries);
 
-	List<DataReport> getReport(int id);
+    List<Country> findByIso(String iso);
 
-	List<Country> findCountriesByIds(List<Integer> countriesIds);
+    boolean existsCountries(List<Country> countries);
 
-	Country findByDataReportDate(Date date);
+    boolean addSameCountries(List<Country> countries);
 
-	long getCount();
+    public List<Country> searchAndSaveCountries(List<Country> countries);
 
-	void deleteAll();
+    Country findByName(String countryName);
 
-	boolean existsCountry(String name);
+    void saveAll(List<Country> countries);
+
+    List<DataReport> getReport(int id);
+
+    List<Country> findCountriesByIds(List<Integer> countriesIds);
+
+    Country findByDataReportDate(Date date);
+
+    long getCount();
+
+    void deleteAll();
+
+    boolean existsCountry(String name);
 
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public interface TelegramService {
 
     CountriesList countries_list(int user_id, int list_id);
+
     Country get_country_information(String name);
-
-
+    
 }
