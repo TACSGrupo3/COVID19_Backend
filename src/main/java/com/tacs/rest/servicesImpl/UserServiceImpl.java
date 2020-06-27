@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         user.setUserRole("USER");
+        user.setLastAccess(new Date());
         user.setUsername(user.getUsername().toLowerCase());
         daoUser.save(user);
         return user;
@@ -79,8 +80,22 @@ public class UserServiceImpl implements UserService {
         User userBD = this.findByUsername(user.getUsername());
 
         if (userBD != null && BCrypt.checkpw(user.getPassword(), userBD.getPassword())) {
-            userBD.setLastAccess(new Date());
-            return userBD;
+            
+        	User newUser = new User();
+        	
+        	newUser.setCountriesList(userBD.getCountriesList());
+        	newUser.setFirstName(userBD.getFirstName());
+        	newUser.setId(userBD.getId());
+        	newUser.setLastAccess(userBD.getLastAccess());
+        	newUser.setLastName(userBD.getLastName());
+        	newUser.setPassword(userBD.getPassword());
+        	newUser.setTelegram_chat_id(userBD.getTelegram_chat_id());
+        	newUser.setToken(userBD.getToken());
+        	newUser.setUsername(userBD.getUsername());
+        	newUser.setUserRole(userBD.getUserRole());        	
+        	userBD.setLastAccess(new Date());
+        	this.save(userBD);
+            return newUser;
         }
         return null;
     }

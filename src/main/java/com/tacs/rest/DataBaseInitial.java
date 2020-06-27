@@ -28,8 +28,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tacs.rest.apiCovid.ConnectionApiCovid;
 import com.tacs.rest.apiCovid.Covid19_latestResponse;
+import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.DataReport;
+import com.tacs.rest.entity.User;
 import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.CountryService;
 import com.tacs.rest.services.ReportService;
@@ -139,6 +141,33 @@ public class DataBaseInitial implements ApplicationRunner {
             countryService.saveAll(countriesToSave);
             reportService.saveAll(dataReportsToSave);
             }
+            
+            
+            JSONArray usersList = (JSONArray) jsonObject.get("users");
+            List<Country> countriesBD = countryService.findAll();
+
+            List<User> usersToSave = new ArrayList<User>();
+            List<CountriesList> countriesListToSave = new ArrayList<CountriesList>();
+
+            for (int i = 0; i < usersList.size(); i++) {
+
+                JSONObject object = (JSONObject) usersList.get(i);
+
+                User user = ParseUtil.parseJsonToUser(object, countriesBD);
+                
+                if(userService.findByUsername(user.getUsername())==null) {
+                	
+                	user.setLastAccess(new Date());
+                	usersToSave.add(user);
+                	user.getCountriesList().forEach(c -> countriesListToSave.add(c));
+                	user.setCountriesList(new ArrayList<CountriesList>());
+                }
+            }
+
+            userService.saveAll(usersToSave);
+            countriesListService.saveAll(countriesListToSave);
+            
+            
             
             
         } catch (ResourceAccessException ex) {
