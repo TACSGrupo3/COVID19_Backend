@@ -76,13 +76,16 @@ public class CountryServiceImpl implements CountryService {
 	public void save(Country country) {
 		daoCountry.save(country);
 	}
-
+	
 	@Override
-	public void deleteById(int id) {
-		// TODO Auto-generated method stub
-
+	public long getCount() {
+		return daoCountry.count();
 	}
 
+	@Override
+	public void deleteAll() {
+		daoCountry.deleteAll();
+	}
 	@Override
 	public List<Country> findNearCountries(String latitud, String longitud, String maxCountries) {
 		

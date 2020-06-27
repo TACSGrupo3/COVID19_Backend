@@ -14,8 +14,6 @@ public interface CountryService {
 	Country findById(int id);
 	
 	void save(Country country);
-	
-	void deleteById(int id);
 
 	List<Country> findNearCountries(String latitud, String longitud, String maxCountries);
 
@@ -36,5 +34,9 @@ public interface CountryService {
 	List<Country> findCountriesByIds(List<Integer> countriesIds);
 
 	Country findByDataReportDate(Date date);
+
+	long getCount();
+
+	void deleteAll();
 
 }

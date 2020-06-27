@@ -80,10 +80,10 @@ public class CountriesListServiceImpl implements CountriesListService {
 
 
 	public void validacionPaises(List<Country> countriesDelRequest) throws Exception {
-		if (countryServ.existsCountries(countriesDelRequest)==false) {
+		if (!countryServ.existsCountries(countriesDelRequest)) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Ingresó un país Inválido");
 		}
-		if (countryServ.addSameCountries(countriesDelRequest)==true) {
+		if (countryServ.addSameCountries(countriesDelRequest)) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Ingresó el mismo pais 2 veces en la misma lista");
 		}
 	}

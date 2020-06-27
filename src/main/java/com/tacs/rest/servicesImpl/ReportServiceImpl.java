@@ -71,7 +71,11 @@ public class ReportServiceImpl implements ReportService {
 		drDAO.save(dataReport);
 		
 	}
-
+	
+	@Override
+	public void deleteAll() {
+		drDAO.deleteAll();
+	}
 	@Override
 	public List<DataReport> findByCountryId(int countryId) {
 		return this.drDAO.findByCountry_idCountryOrderByDateDesc(countryId);

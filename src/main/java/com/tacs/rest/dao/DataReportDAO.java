@@ -10,4 +10,5 @@ public interface DataReportDAO extends CrudRepository<DataReport, Integer> {
 
 	List<DataReport> findByCountry_idCountryOrderByDateAsc(int id);
 	List<DataReport> findByCountry_idCountryOrderByDateDesc(int id);
+	void deleteAll();
 }
