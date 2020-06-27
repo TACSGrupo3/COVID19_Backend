@@ -39,4 +39,6 @@ public interface CountryService {
 
 	void deleteAll();
 
+	boolean existsCountry(String name);
+
 }

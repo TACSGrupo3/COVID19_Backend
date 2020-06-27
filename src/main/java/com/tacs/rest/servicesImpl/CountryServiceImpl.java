@@ -47,6 +47,13 @@ public class CountryServiceImpl implements CountryService {
 	public void saveAll(List<Country> countries) {
 		countries.forEach(country -> this.save(country));	
 	}
+	@Override
+	public boolean existsCountry(String name) {
+		if(this.findByName(name)!=null) {
+			return true;			
+		}
+		return false;
+	}
 	
 	@Override
 	public List<DataReport> getReport (int id) {

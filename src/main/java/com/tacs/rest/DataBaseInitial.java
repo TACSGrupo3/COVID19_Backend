@@ -28,10 +28,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tacs.rest.apiCovid.ConnectionApiCovid;
 import com.tacs.rest.apiCovid.Covid19_latestResponse;
-import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.DataReport;
-import com.tacs.rest.entity.User;
 import com.tacs.rest.services.CountriesListService;
 import com.tacs.rest.services.CountryService;
 import com.tacs.rest.services.ReportService;
@@ -95,11 +93,10 @@ public class DataBaseInitial implements ApplicationRunner {
 
             latestResponse = gson.fromJson(apiCovid.connectionWithoutParams("latest"), collectionType);
             
-            int cantCountries = latestResponse.size();
+            int cantCountries = latestResponse.size();                                    
                         
             if(countryService.getCount()!=(long)cantCountries) {           	
-            	reportService.deleteAll();
-            	countryService.deleteAll();
+            	latestResponse.stream().filter(c->!countryService.existsCountry(c.getCountryregion()));
             
             for (Covid19_latestResponse response : latestResponse) {
                 Country country = ParseUtil.latestResponseToCountry(response);
@@ -140,30 +137,10 @@ public class DataBaseInitial implements ApplicationRunner {
                 countriesToSave.add(country);
             }
             countryService.saveAll(countriesToSave);
-            
-            }
-
-            JSONArray usersList = (JSONArray) jsonObject.get("users");
-            List<Country> countriesBD = countryService.findAll();
-
-            List<User> usersToSave = new ArrayList<User>();
-            List<CountriesList> countriesListToSave = new ArrayList<CountriesList>();
-
-            for (int i = 0; i < usersList.size(); i++) {
-
-                JSONObject object = (JSONObject) usersList.get(i);
-
-                User user = ParseUtil.parseJsonToUser(object, countriesBD);
-
-                usersToSave.add(user);
-
-                user.getCountriesList().forEach(c -> countriesListToSave.add(c));
-                user.setCountriesList(new ArrayList<CountriesList>());
-            }
-
-            //userService.saveAll(usersToSave);
-            //countriesListService.saveAll(countriesListToSave);
             reportService.saveAll(dataReportsToSave);
+            }
+            
+            
         } catch (ResourceAccessException ex) {
             System.out.println("-------------------------ERROR AL CONECTAR CON LA API COVID 19-------------------");
             System.out.println("-------------------------VOLVIENDO A CONECTAR EN 10 SEGUNDOS-----------------------");
