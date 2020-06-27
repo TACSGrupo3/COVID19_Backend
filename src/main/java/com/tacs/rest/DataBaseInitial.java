@@ -94,7 +94,13 @@ public class DataBaseInitial implements ApplicationRunner {
             List<DataReport> dataReportOfCountry = new ArrayList<DataReport>();
 
             latestResponse = gson.fromJson(apiCovid.connectionWithoutParams("latest"), collectionType);
-
+            
+            int cantCountries = latestResponse.size();
+                        
+            if(countryService.getCount()!=(long)cantCountries) {           	
+            	reportService.deleteAll();
+            	countryService.deleteAll();
+            
             for (Covid19_latestResponse response : latestResponse) {
                 Country country = ParseUtil.latestResponseToCountry(response);
 
@@ -134,6 +140,8 @@ public class DataBaseInitial implements ApplicationRunner {
                 countriesToSave.add(country);
             }
             countryService.saveAll(countriesToSave);
+            
+            }
 
             JSONArray usersList = (JSONArray) jsonObject.get("users");
             List<Country> countriesBD = countryService.findAll();

@@ -52,7 +52,7 @@ public class ParseUtil {
         return user;
     }
 
-    public static CountriesList parseJsonToCountryList(JSONObject json, List<Country> countriesBD) {
+	public static CountriesList parseJsonToCountryList(JSONObject json, List<Country> countriesBD) {
         CountriesList countriesList = new CountriesList();
         countriesList.setName((String) json.get("name"));
         SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd");  
@@ -66,7 +66,7 @@ public class ParseUtil {
         JSONArray jsonCountries = (JSONArray) json.get("countries");
         
         List<Country> listOfCountry = new ArrayList<Country>();
-        if(listOfCountry != null) {
+        
         	for (int i = 0; i < jsonCountries.size(); i++) {
         		Country country = parseJsonToCountry((JSONObject) jsonCountries.get(i));
         		for (int j = 0; j < countriesBD.size(); j++) {
@@ -76,7 +76,6 @@ public class ParseUtil {
         			}
         		}
         	}
-        }
 
         countriesList.setCountries(listOfCountry);
         return countriesList;

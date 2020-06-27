@@ -21,5 +21,9 @@ public interface CountryDAO extends PagingAndSortingRepository<Country, Integer>
 	@Query(value = "SELECT c.* FROM public.COUNTRY c WHERE UPPER(NAME) LIKE %:name% ", 
 						nativeQuery = true)
 	Country findByName(String name);
+	
+	long count();
+	
+	void deleteAll();
 
 }

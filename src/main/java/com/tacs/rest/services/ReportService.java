@@ -12,4 +12,5 @@ public interface ReportService {
 	void saveAll(List<DataReport> dataReports);
 	
 	List<DataReport> findByCountryId(int countryId);
+	void deleteAll();
 }
