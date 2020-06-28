@@ -61,10 +61,6 @@ public class Country {
     @Column(name = "last_update", nullable = true)
     private String lastupdate;
     
-    public void addCountriesList(CountriesList cl) {
-    	this.countriesList.add(cl);
-    }   
- 
     public int getIdCountry() {
 		return idCountry;
 	}

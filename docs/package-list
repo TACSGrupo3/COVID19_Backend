@@ -1,0 +1,11 @@
+com.tacs.rest
+com.tacs.rest.apiCovid
+com.tacs.rest.controller
+com.tacs.rest.dao
+com.tacs.rest.entity
+com.tacs.rest.security
+com.tacs.rest.services
+com.tacs.rest.servicesImpl
+com.tacs.rest.telegram
+com.tacs.rest.util
+com.tacs.rest.validator
