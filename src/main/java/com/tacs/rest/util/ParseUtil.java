@@ -19,7 +19,8 @@ import com.tacs.rest.services.CountryService;
 
 public class ParseUtil {
 
-
+	static SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd"); 
+	
     public List<String> quitarComasQueryParams(String iso) {
         String pais = "";
         List<String> paises = new ArrayList<String>();
@@ -124,7 +125,7 @@ public class ParseUtil {
 	public static CountriesList parseJsonToCountryList(JSONObject json, List<Country> countriesBD) {
         CountriesList countriesList = new CountriesList();
         countriesList.setName((String) json.get("name"));
-        SimpleDateFormat formatter =new SimpleDateFormat("yyyy-MM-dd");  
+         
         try {
 			countriesList.setCreationDate(json.get("creationDate") != null ? 
 					formatter.parse((String) json.get("creationDate")) : null);

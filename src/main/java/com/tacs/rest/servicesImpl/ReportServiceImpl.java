@@ -34,10 +34,10 @@ public class ReportServiceImpl implements ReportService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ingresó un país Inválido");
         }
 
-        List<DataReport> dataToadd = new ArrayList<DataReport>();
         List<Country> countriesToShow = new ArrayList<Country>();
 
         for (int i = 0; i < countriesPedidos.size(); i++) {
+        	List<DataReport> dataToadd = new ArrayList<DataReport>();
 
             Country country = countriesPedidos.get(i);
             List<DataReport> dataReprt = drDAO.findByCountry_idCountryOrderByDateAsc(country.getIdCountry());
