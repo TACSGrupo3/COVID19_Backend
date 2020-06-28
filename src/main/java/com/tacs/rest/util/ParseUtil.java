@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -121,6 +122,7 @@ public class ParseUtil {
         return user;
     }
 
+	@SuppressWarnings("unchecked")
 	public static CountriesList parseJsonToCountryList(JSONObject json, List<Country> countriesBD) {
         CountriesList countriesList = new CountriesList();
         countriesList.setName((String) json.get("name"));
@@ -135,16 +137,12 @@ public class ParseUtil {
         JSONArray jsonCountries = (JSONArray) json.get("countries");
 
         List<Country> listOfCountry = new ArrayList<Country>();
-
-        	for (int i = 0; i < jsonCountries.size(); i++) {
-        		Country country = parseJsonToCountry((JSONObject) jsonCountries.get(i));
-        		for (int j = 0; j < countriesBD.size(); j++) {
-        			if (countriesBD.get(j).getIdCountry() == country.getIdCountry()) {
-        				country = countriesBD.get(j);
-        				listOfCountry.add(country);
-        			}
-        		}
-        	}
+        
+        jsonCountries.stream().forEach(country-> {        	
+        	List<Country> countries = countriesBD.stream().filter(c-> c.getName().equals(parseJsonToCountry((JSONObject) country).getName())).collect(Collectors.toList());
+        	if (countries.size()!=0) {
+        	listOfCountry.add(countries.get(0));   	}
+        });
 
         countriesList.setCountries(listOfCountry);
         return countriesList;
