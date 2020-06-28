@@ -199,7 +199,7 @@ public class Botcovid19bot extends TelegramLongPollingBot {
                             message.setChatId(chat_id)
                                     .setText("No posee usuario de Telegram configurado en la aplicacion TACS-Grupo3. "
                                             + "Para utilizar las funciones de Telegram: \n"
-                                            + "1. Dirigite a la aplicación https://covid19tacsgrupo3.azurewebsites.net/. \n"
+                                            + "1. Dirigite a la aplicación https://tacsgrupo3covid19.azurewebsites.net/. \n"
                                             + "2. Crea una cuenta o inicia sesión en tu cuenta. \n"
                                             + "3. Dirigete a la opción 'Datos Personales'. \n"
                                             + "4. Ingresa tu Telegram Id: " + chat_id);
@@ -253,9 +253,6 @@ public class Botcovid19bot extends TelegramLongPollingBot {
             // Get buttons replies
             message.setReplyMarkup(null);
             long chat_id = update.getCallbackQuery().getFrom().getId();
-//            User checkedUser = userService.findByTelegramId(chat_id);
-//            List<CountriesList> countryList = countriesListSerivce.findByUserId(checkedUser.getId());
-//            Iterator iterator = countryList.iterator();
             switch (update.getCallbackQuery().getData()) {
                 case "action1":
                     set_message_listCountries(update, " /ModLista", "Listas de países:\n");
