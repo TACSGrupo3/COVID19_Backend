@@ -27,6 +27,7 @@ public class User {
     private String password;
     private String token;
     @Column(name = "lastAccess", nullable = true)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date lastAccess;
     @Column(name = "userRole", nullable = true)
     private String userRole;

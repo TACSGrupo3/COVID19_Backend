@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
         	newUser.setUsername(userBD.getUsername());
         	newUser.setUserRole(userBD.getUserRole());        	
         	userBD.setLastAccess(new Date());
-        	this.save(userBD);
+        	daoUser.save(userBD);
             return newUser;
         }
         return null;
