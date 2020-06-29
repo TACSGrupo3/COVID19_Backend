@@ -51,7 +51,7 @@ public class Botcovid19bot extends TelegramLongPollingBot {
     String listToModify = "";
     String listToCompare = "";
     @Autowired
-    UserServiceImpl userService = new UserServiceImpl();
+    UserServiceImpl userService;
     @Autowired
     TelegramServiceImpl telegramService;
     @Autowired
