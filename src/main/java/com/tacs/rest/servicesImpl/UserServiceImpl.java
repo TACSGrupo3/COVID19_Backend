@@ -4,7 +4,6 @@ import com.tacs.rest.dao.UserDAO;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.User;
 import com.tacs.rest.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCrypt;

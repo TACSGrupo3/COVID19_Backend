@@ -1,6 +1,7 @@
 package com.tacs.rest.telegram;
 
 import com.neovisionaries.i18n.CountryCode;
+import com.tacs.rest.dao.UserDAO;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.Country;
 import com.tacs.rest.entity.DataReport;
@@ -51,7 +52,9 @@ public class Botcovid19bot extends TelegramLongPollingBot {
     String listToModify = "";
     String listToCompare = "";
     @Autowired
-    UserServiceImpl userService = new UserServiceImpl();
+    UserDAO userDAO;
+    @Autowired
+    UserServiceImpl userService = new UserServiceImpl(userDAO);
     @Autowired
     TelegramServiceImpl telegramService;
     @Autowired
