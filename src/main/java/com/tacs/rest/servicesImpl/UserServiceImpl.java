@@ -17,9 +17,12 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserDAO daoUser;
+    private final UserDAO daoUser;
 
+    public UserServiceImpl(UserDAO daoUser) {
+      this.daoUser = daoUser;
+    }
+        
     @Override
     public List<User> findAll() {
         return (List<User>) daoUser.findAll();

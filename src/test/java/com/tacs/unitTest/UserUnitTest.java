@@ -30,10 +30,10 @@ public class UserUnitTest {
 
 	  @BeforeEach
 	  void initUseCase() {
-//		  userService = new UserServiceImpl(userRepository); 
-//		  sessionService = new SessionServiceImpl(userService);
-//		  user = new User (1, "rufus", "rufus", "Carmaicol", "rufus", "USER");
-//		  
+		  userService = new UserServiceImpl(userRepository); 
+		  sessionService = new SessionServiceImpl(userService);
+		  user = new User (1, "rufus", "rufus", "Carmaicol", "rufus", "USER");
+		  
 	  }
 	  
 	  @Test

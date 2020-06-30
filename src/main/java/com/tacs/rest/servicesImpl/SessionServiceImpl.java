@@ -1,6 +1,5 @@
 package com.tacs.rest.servicesImpl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tacs.rest.entity.User;
@@ -10,9 +9,13 @@ import com.tacs.rest.services.UserService;
 @Service
 public class SessionServiceImpl implements SessionService {
 
+    
+    private final UserService userService;
 
-    @Autowired
-    UserService userService;
+    public SessionServiceImpl(UserService userService) {
+      this.userService = userService;
+    }
+    
 
     @Override
     public User login(User user) {
