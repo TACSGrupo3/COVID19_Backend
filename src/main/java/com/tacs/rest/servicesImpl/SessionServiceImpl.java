@@ -1,18 +1,18 @@
 package com.tacs.rest.servicesImpl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tacs.rest.entity.User;
 import com.tacs.rest.services.SessionService;
 import com.tacs.rest.services.UserService;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class SessionServiceImpl implements SessionService {
 
-    private final UserService userService;
+
+    @Autowired
+    UserService userService;
 
     @Override
     public User login(User user) {

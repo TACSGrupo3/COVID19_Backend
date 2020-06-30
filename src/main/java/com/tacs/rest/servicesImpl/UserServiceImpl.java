@@ -4,9 +4,6 @@ import com.tacs.rest.dao.UserDAO;
 import com.tacs.rest.entity.CountriesList;
 import com.tacs.rest.entity.User;
 import com.tacs.rest.services.UserService;
-
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +15,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserDAO daoUser;
+    @Autowired
+    private UserDAO daoUser;
 
     @Override
     public List<User> findAll() {
