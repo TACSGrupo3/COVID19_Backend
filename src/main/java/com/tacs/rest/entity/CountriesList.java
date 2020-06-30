@@ -74,10 +74,6 @@ public class CountriesList {
         this.creationDate = creationDate;
     }
 
-    public void addCountry(Country newCountry) {
-        countries.add(newCountry);
-    }
-
     public void removeCountry(Country exCountry) {
         countries.remove(exCountry);
     }
