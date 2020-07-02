@@ -37,7 +37,7 @@ public class ReportServiceImpl implements ReportService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ingresó un país Inválido");
         }
         
-        return Streams.zip(countriesPedidos.stream(), offsets.stream(), (country, offset) -> {
+        Streams.forEachPair(countriesPedidos.stream(), offsets.stream(), (country, offset) -> {
         	       	
             DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
             Date date;
@@ -45,16 +45,12 @@ public class ReportServiceImpl implements ReportService {
                 date = formatter.parse(offset);
             } catch (Exception e) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El formato de las fechas debe ser dd/mm/aaaa.");
-            }
-       	
-        	country.setDataReport(country.getDataReport().stream().filter(item -> {
-                return item.getDate().after(date) || item.getDate().getTime() == date.getTime();
-            }).sorted(Comparator.comparing(DataReport::getDate)).collect(Collectors.toList()));
-        	
-        	return country; 
-        	
-        }).collect(Collectors.toList());
-        
+            }       	
+        	country.setDataReport(country.getDataReport().stream()
+        			.filter(item ->!item.getDate().before(date))
+        			.sorted(Comparator.comparing(DataReport::getDate)).collect(Collectors.toList()));               	
+        });        
+        return countriesPedidos;              
     }
 
     @Override
