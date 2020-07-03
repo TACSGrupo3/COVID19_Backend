@@ -3,6 +3,7 @@ package com.tacs.rest.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -116,6 +117,7 @@ public class ParseUtil {
         	for (int i = 0; i < jsonCountriesList.size(); i++) {
             	CountriesList countriesList = parseJsonToCountryList((JSONObject) jsonCountriesList.get(i), countriesBD);
             	countriesList.setUser(user);
+            	countriesList.setCreationDate(new Date());
             	listOfCountriesList.add(countriesList);
             }
         }

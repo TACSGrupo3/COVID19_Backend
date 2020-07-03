@@ -1,5 +1,6 @@
 package com.tacs.rest.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -15,5 +16,10 @@ public interface CountriesListDAO extends PagingAndSortingRepository<CountriesLi
 			countQuery = "SELECT count(*) FROM public.COUNTRIESLIST WHERE UPPER(NAME) LIKE %:name%",
 			nativeQuery = true)
 	List<CountriesList> findByName(String name);
-
+	
+	@Query(value = "SELECT c.* FROM public.COUNTRIESLIST c WHERE creation_date >=:date ", 
+			countQuery = "SELECT count(*) FROM public.COUNTRIESLIST creation_date >=:date",
+			nativeQuery = true)
+	
+	List<CountriesList> findByFilterDate(Date date);
 }

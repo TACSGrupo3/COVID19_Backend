@@ -16,7 +16,11 @@ public class CountryServiceImpl implements CountryService {
     @Autowired
     private CountryDAO daoCountry;
 
-    @Override
+	public CountryServiceImpl(CountryDAO countryDAO) {
+		this.daoCountry= countryDAO;
+	}
+
+	@Override
     public List<Country> findAll() {
         return (List<Country>) daoCountry.findAll();
 
