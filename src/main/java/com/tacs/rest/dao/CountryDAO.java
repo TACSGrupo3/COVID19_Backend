@@ -18,7 +18,7 @@ public interface CountryDAO extends PagingAndSortingRepository<Country, Integer>
 
 	List<Country> findByDataReport_date(Date date);
 	
-	@Query(value = "SELECT c.* FROM public.COUNTRY c WHERE UPPER(NAME) LIKE %:name% ", 
+	@Query(value = "SELECT c.* FROM public.COUNTRY c WHERE UPPER(NAME) = :name ", 
 						nativeQuery = true)
 	Country findByName(String name);
 	
