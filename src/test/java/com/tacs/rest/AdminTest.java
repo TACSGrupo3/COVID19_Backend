@@ -91,6 +91,7 @@ public class AdminTest {
 		Assert.assertEquals(null, userService.findById(id));
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void H_getCountriesListByDay() {
 		Country country1 =countryService.findById(1);
@@ -128,6 +129,7 @@ public class AdminTest {
 		cl.setUser(user);
 		countriesListService.save(cl);
 		user.addList(cl);
+		userService.save(user);
 		Assert.assertEquals(3,countriesListService.findAll().size());
 	}
 	
@@ -146,6 +148,7 @@ public class AdminTest {
 		cl.setUser(user);
 		countriesListService.save(cl);
 		user.addList(cl);
+		userService.save(user);
 		Assert.assertEquals(2, countriesListService.getIntrested(7).size());
 	}
 	
@@ -156,6 +159,13 @@ public class AdminTest {
 		} catch (Exception e) {
 			Assert.assertTrue(e.getMessage().contains("El country id es inexistente"));
 		}
+	}
+	
+	@Test
+	public void M_getUserByTelegramId() {
+		user.setTelegram_chat_id(124);
+		userService.save(user);
+		Assert.assertEquals(user, userService.findByTelegramId(124));
 	}
 	
 	

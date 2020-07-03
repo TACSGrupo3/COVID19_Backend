@@ -33,8 +33,12 @@ public class ReportServiceImpl implements ReportService {
     public List<Country> reportData(List<Integer> countries, List<String> offsets) {
 
         List<Country> countriesPedidos = countryServ.findCountriesByIds(countries);
+        
+        if(countries.size()!=offsets.size()) {
+        	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Debe ingresar un offset para cada pais");
+        }
         if (countriesPedidos.stream().anyMatch(c -> c == null)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ingresó un país Inválido");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ingresó un país inválido");
         }
         
         Streams.forEachPair(countriesPedidos.stream(), offsets.stream(), (country, offset) -> {
