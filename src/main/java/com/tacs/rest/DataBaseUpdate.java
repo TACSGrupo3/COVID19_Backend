@@ -46,7 +46,7 @@ public class DataBaseUpdate {
 
 	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
 
-	@Scheduled(fixedRate = 6000, initialDelay = 10000) // fixedRate= velocidad initalDelay= arranca a los 4 mins
+	@Scheduled(fixedRate = 6000, initialDelay = 43200000) // fixedRate= velocidad initalDelay= arranca a los 4 mins
 	public void executeTask1() throws org.json.simple.parser.ParseException, JsonIOException, JsonSyntaxException,
 			IOException, URISyntaxException, ParseException {
 
