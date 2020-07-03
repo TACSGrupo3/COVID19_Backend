@@ -1,6 +1,5 @@
 package com.tacs.rest.servicesImpl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,15 +37,7 @@ public class CountriesListServiceImpl implements CountriesListService {
 
     @Override
     public List<CountriesList> findFilterByDate(Date date) {
-        List<CountriesList> filterByDate = new ArrayList<CountriesList>();
-        long cantCountriesList = countriesListDAO.count();
-        for (int i = 0; i < (int) cantCountriesList; i++) {
-            CountriesList elem = this.findById(i + 1);
-            if (elem.getCreationDate().getTime() > date.getTime()) {
-                filterByDate.add(elem);
-            }
-        }
-        return filterByDate;
+    	return countriesListDAO.findByFilterDate(date);
     }
 
     @Override
@@ -131,11 +122,10 @@ public class CountriesListServiceImpl implements CountriesListService {
 
     @Override
     public List<CountriesList> findByUserId(int idUser) {
-        User user = userServ.findById(idUser);
-        if (user == null) {
+        if (userServ.findById(idUser) == null) {
             return null;
         }
-        return user.getCountriesList();
+        return userServ.findById(idUser).getCountriesList();
     }
 
     @Override
@@ -143,7 +133,7 @@ public class CountriesListServiceImpl implements CountriesListService {
 
         CountriesList cl = countriesListDAO.findById(Integer.valueOf(countriesListId)).orElse(null);
         if (cl == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El countries list id es inexistente");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El country list id es inexistente");
         }
         User user = cl.getUser();
         user.removeList(cl);
@@ -157,7 +147,7 @@ public class CountriesListServiceImpl implements CountriesListService {
     public List<User> getIntrested(int idCountry) throws Exception {
 
         if (countryServ.findById(idCountry) == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El countries id es inexistente");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El country id es inexistente");
         }
         return userServ.userInterestedOnCountry(idCountry);
     }

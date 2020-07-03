@@ -62,6 +62,7 @@ public class UserTest {
 		user2.setUsername("Pruebita");
 		Assert.assertTrue(UserValidator.registrationValidator(user2));			
 	}
+	
 	@Test
 	public void D_cannotAcceptNullLastName() {		
 		User user2 = new User();
@@ -70,6 +71,7 @@ public class UserTest {
 		user2.setFirstName("Pruebita");
 		Assert.assertTrue(UserValidator.registrationValidator(user2));			
 	}
+	
 	@Test
 	public void E_cannotAcceptNullUsername() {		
 		User user2 = new User();
@@ -78,6 +80,7 @@ public class UserTest {
 		user2.setFirstName("Pruebita");
 		Assert.assertTrue(UserValidator.registrationValidator(user2));			
 	}
+	
 	@Test
 	public void F_cannotAcceptNullPassword() {		
 		User user2 = new User();
@@ -86,11 +89,13 @@ public class UserTest {
 		user2.setUsername("Pruebita");
 		Assert.assertTrue(UserValidator.registrationValidator(user2));			
 	}
+	
 	@Test
 	public void G_ExistsTreeUsers() {
 		//Son Rufus, el admin y el userprueba
 		Assert.assertEquals(3, userService.findAll().size());
 	}
+	
 	@Test
 	public void H_ModifyUserFirstName() {
 		User u = userService.findByUsername(user.getUsername());
