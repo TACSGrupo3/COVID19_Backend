@@ -46,7 +46,7 @@ public class DataBaseUpdate {
 
 	SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy");
 
-	@Scheduled(fixedRate = 6000, initialDelay = 43200000) // fixedRate= velocidad initalDelay= arranca a los 4 mins
+	@Scheduled(fixedRate = 6000, initialDelay = 43200000) // fixedRate= velocidad initalDelay= arranca a las 12 horas
 	public void executeTask1() throws org.json.simple.parser.ParseException, JsonIOException, JsonSyntaxException,
 			IOException, URISyntaxException, ParseException {
 
@@ -60,7 +60,7 @@ public class DataBaseUpdate {
 			}.getType();
 			Collection<Covid19_latestResponse> latestResponse;
 
-			String uri = "https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/timeseries?OnlyCountries=true";
+			String uri = "https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/timeseries?onlyCountries=true";
 
 			RestTemplate restTemplate = new RestTemplate();
 			String result = restTemplate.getForObject(uri, String.class);

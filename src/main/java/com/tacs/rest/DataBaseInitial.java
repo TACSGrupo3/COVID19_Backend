@@ -82,7 +82,7 @@ public class DataBaseInitial implements ApplicationRunner {
 
             JSONObject jsonObject = (JSONObject) obj;
 
-            String uri = "https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/timeseries?OnlyCountries=true";
+            String uri = "https://wuhan-coronavirus-api.laeyoung.endpoint.ainize.ai/jhu-edu/timeseries?onlyCountries=true";
 
             RestTemplate restTemplate = new RestTemplate();
             String result = restTemplate.getForObject(uri, String.class);
